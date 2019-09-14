@@ -6,3 +6,4 @@ djangorestframework==3.10.2
 djangorestframework-csv==2.1.0
 httpie==1.0.3
 thorn==1.5.2
+uWSGI==2.0.18
