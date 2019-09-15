@@ -1,2 +1,2 @@
 #!/bin/bash
-uwsgi --ini iotsite/uwsgi.ini
+uwsgi --ini iotsite/uwsgi.ini --enable-threads --thunder-lock
