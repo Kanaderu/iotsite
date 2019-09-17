@@ -31,9 +31,15 @@ class SensorData(models.Model):
 
         def payload(self, sensor_data):
             return {
-                'package_id': sensor_data.package_id,
+                'id': sensor_data.id,
                 'timestamp': sensor_data.timestamp,
                 'units': sensor_data.units,
+                'data': sensor_data.data,
+                'longitude': sensor_data.longitude,
+                'latitude': sensor_data.latitude,
+                'altitude': sensor_data.altitude,
+                'speed': sensor_data.speed,
+                'climb': sensor_data.climb,
             }
 
     def get_absolute_url(self):
