@@ -13,7 +13,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(PROJECT_DIR)
+print('PROJECT_DIR = {}'.format(PROJECT_DIR))
+print('BASE_DIR = {}'.format(BASE_DIR))
 
 # Application definition
 INSTALLED_APPS = [
@@ -26,7 +29,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
-    'sensors.apps.SensorsConfig',
+    'sensors',
 
     'thorn.django',
 ]
