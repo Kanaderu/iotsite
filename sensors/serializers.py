@@ -5,6 +5,6 @@ class SensorDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SensorData
-        fields = ['package_id', 'timestamp', 'relay_id', 'sensor_id',
+        fields = ['id', 'timestamp', 'relay_id', 'sensor_id',
                   'sensor_type', 'units', 'data', 'longitude', 'latitude',
                   'altitude', 'speed', 'climb']

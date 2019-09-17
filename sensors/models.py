@@ -9,7 +9,6 @@ from thorn import ModelEvent, webhook_model
 class SensorData(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
-    package_id = models.CharField(max_length=100, blank=True, default='')
     timestamp = models.DateTimeField(blank=True, null=True)
     relay_id = models.CharField(max_length=100, blank=True, default='')
     sensor_id = models.CharField(max_length=100, blank=True, default='')

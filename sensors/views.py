@@ -12,7 +12,7 @@ from rest_framework.decorators import action
 
 # define custom CSV headers when rendering
 class SensorCSVRender(CSVRenderer):
-    header = ['package_id', 'timestamp', 'relay_id', 'sensor_id',
+    header = ['id', 'timestamp', 'relay_id', 'sensor_id',
               'sensor_type', 'units', 'data', 'longitude', 'latitude',
               'altitude', 'speed', 'climb']
 
