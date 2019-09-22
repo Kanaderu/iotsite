@@ -113,7 +113,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# javascript, node, npm, yarn
+# javascript, node, npm, yarn, webpack
 .npm
 node_modules/
 jspm_packages
@@ -122,6 +122,7 @@ yarn-debug.log*
 yarn-error.log*
 package-lock.json
 yarn.lock
+webpack-stats.json
 
 # Bower dependency directory (https://bower.io/)
 bower_components

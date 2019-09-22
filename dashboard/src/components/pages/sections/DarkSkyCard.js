@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { /*MDBCollapse,*/ MDBIcon, MDBProgress, /*MDBBtn,*/ MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
+import dayton_img from '../../../assets/dayton.jpeg'
 
 class DarkSkyCard extends Component {
 
@@ -37,7 +38,7 @@ class DarkSkyCard extends Component {
         return (
         <MDBCol>
             <MDBCard style={{ width: "28rem" }}>
-                <MDBCardImage className="img-fluid" src="static/dayton.jpeg" waves />
+                <MDBCardImage className="img-fluid" src={dayton_img} waves />
                 <MDBCardBody>
                     <MDBCardTitle className="display-1 card-title font-weight-bold">
                         Dayton<br />
