@@ -4,10 +4,14 @@ var BundleTracker = require('webpack-bundle-tracker');
 var ExtractText = require('extract-text-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
-    entry:      path.join(__dirname, 'assets/src/js/index'),
+    mode:           'development',
+    context:        path.join(__dirname, 'assets'),
+    entry: {
+        main: './src/js/index',
+    },
     output: {
-        path:       path.join(__dirname, 'assets/dist'),
+        path:       path.resolve('./assets/dist'),
+        publicPath: '/static/dist/',
         filename:   '[name]-[hash].js'
     },
     plugins: [
@@ -43,7 +47,7 @@ module.exports = {
                         loader: 'file-loader',
                         options: {
                             name: '[name].[ext]',
-                            outputPath: 'static/dist/fonts/'
+                            outputPath: 'fonts/'
                         }
                 }]
             },
@@ -53,7 +57,7 @@ module.exports = {
                     loader: 'url-loader',
                     options: {
                         limit: 25000, // Convert images < 8kb to base64 strings
-                        name: 'static/dist/images/[hash]-[name].[ext]'
+                        name: 'images/[hash]-[name].[ext]'
                     }
                 }]
             }
