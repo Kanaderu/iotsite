@@ -1,30 +1,54 @@
-from django.shortcuts import render
-
-class MyApi(generics.GenericAPIView):
-
-    def get(self, request, *args, **kwargs):
-        external_api_url = ""
-        res = urllib.urlopen(external_api_url).read()
-        data = json.loads(res)
-        return Response(data, status=HTTP_200_OK)
-
 import json
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from urllib.request import urlopen
-from .models import Person
-from .serializers import PersonSerializer
+from rest_framework.views import APIView
+from django.conf import settings
+from django.http import JsonResponse
+from django.utils.timezone import utc
+import datetime
+from .models import DarkSky
 
+class DarkSkyView(APIView):
 
-class PersonView(APIView):
+    def __init__(self):
+        key = settings.DARKSKY_KEY
+        latitude = settings.DARKSKY_LAT
+        longitude = settings.DARKSKY_LON
+        time = '' # TODO
+
+        self.update_th = settings.DARKSKY_THRESH
+
+        self.darksky_forcast_url = "https://api.darksky.net/forecast/{}/{},{}".format(key, latitude, longitude)
+        self.darksky_time_machine_url = "https://api.darksky.net/forecast/{}/{},{},{}".format(key, latitude, longitude, time)
+        super(DarkSkyView, self)
 
     def get(self, request):
-        data = urlopen("<JSONURLHERE>").read()
-        output = json.loads(data)
-        persons = Person.objects.all()
-        serializer = PersonSerializer(persons, many=True)
-        for person in output:
-            if person['id'] not in [i.id for i in persons]:
-                Person.objects.create(id=person['id'], name=person['name'], image_url=person['image_url'],
-                                          title=person['title'], bio=person['bio'])
-        return Response(serializer.data)
+        fetch_update = False
+        response = None
+
+        # get list of past queries, most recent first
+        ds_queryset = DarkSky.objects.order_by('-created')
+
+        # if empty
+        if not ds_queryset:
+            fetch_update = True
+        else:
+            last_query = ds_queryset[0]                             # last time updated
+            now = datetime.datetime.utcnow().replace(tzinfo=utc)    # current time
+            timedelta = now - last_query.created                    # time difference
+
+            if timedelta.total_seconds() > self.update_th:
+                # trigger update
+                fetch_update = True
+            else:
+                # send latest saved query
+                response = last_query.data
+
+        if fetch_update:
+            # fetch and save response into database
+            output = urlopen(self.darksky_forcast_url).read()
+            data = json.loads(output)
+            DarkSky.objects.create(data=data)
+        elif response is not None:
+            data = response
+
+        return JsonResponse(data)

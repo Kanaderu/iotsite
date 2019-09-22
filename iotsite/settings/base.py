@@ -28,11 +28,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'thorn.django',
+    'django_mysql',
 
     'sensors',
     'external_api',
-
-    'thorn.django',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +143,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# DarkSky API CONF
+DARKSKY_KEY = os.environ['DARKSKY_KEY']
+DARKSKY_LAT = os.environ['DARKSKY_LAT']
+DARKSKY_LON = os.environ['DARKSKY_LON']
+DARKSKY_THRESH = float(os.environ['DARKSKY_THRESH'])
+
+# ignore system checks to support JSONField()
+# https://github.com/adamchainz/django-mysql/issues/342
+SILENCED_SYSTEM_CHECKS = [
+    'django_mysql.E016',
+]
