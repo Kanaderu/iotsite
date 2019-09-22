@@ -120,6 +120,8 @@ jspm_packages
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+package-lock.json
+yarn.lock
 
 # Bower dependency directory (https://bower.io/)
 bower_components
