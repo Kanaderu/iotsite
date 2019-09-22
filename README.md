@@ -62,3 +62,12 @@ Basic users have not been impemented yet.
 - [ ] Override rest\_framework template
 - [ ] Validate sensor model logic
 - [ ] Add default landing page (React?)
+
+
+# MariaDB Setup
+
+If MariaDB is to be used, install the required libraries using
+
+```
+sudo apt-get install libmariadbclient-dev
+```
