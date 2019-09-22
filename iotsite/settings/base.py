@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'sensors',
+    'external_api',
 
     'thorn.django',
 ]

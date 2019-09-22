@@ -1,0 +1,82 @@
+from django.db import models
+
+class DarkSkyDataPoint(models.Model):
+    apparentTemperature = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    apparentTemperatureHigh = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    apparentTemperatureHighTime = models.PositiveIntegerField(null=True, blank=True)
+    apparentTemperatureLow = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    apparentTemperatureLowTime = models.PositiveIntegerField(null=True, blank=True)
+    apparentTemperatureMax = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    apparentTemperatureMaxTime = models.PositiveIntegerField(null=True, blank=True)
+    apparentTemperatureMin = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    apparentTemperatureMinTime = models.PositiveIntegerField(null=True, blank=True)
+    cloudCover = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+    dewPoint = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    humidity = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+    icon = models.CharField(max_length=128, null=True, blank=True)
+    moonPhase = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+    nearestStormBearing = models.PositiveIntegerField(null=True, blank=True)
+    nearestStormDistance = models.PositiveIntegerField(null=True, blank=True)
+    ozone = models.DecimalField(max_digits=7, decimal_places=4, null=True, blank=True)
+    precipAccumulation = models.DecimalField(max_digits=7, decimal_places=4, null=True, blank=True)
+    precipIntensity = models.DecimalField(max_digits=7, decimal_places=4, null=True, blank=True)
+    precipIntensityError = models.DecimalField(max_digits=7, decimal_places=4, null=True, blank=True)
+    precipIntensityMax = models.DecimalField(max_digits=7, decimal_places=4, null=True, blank=True)
+    precipIntensityMaxTime = models.PositiveIntegerField(null=True, blank=True)
+    precipProbability = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+    precipType = models.CharField(max_length=16, null=True, blank=True)
+    pressure = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
+    summary = models.CharField(max_length=256, null=True, blank=True)
+    sunriseTime = models.PositiveIntegerField(null=True, blank=True)
+    sunsetTime = models.PositiveIntegerField(null=True, blank=True)
+    temperature = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    temperatureHigh = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    temperatureHighTime = models.PositiveIntegerField(null=True, blank=True)
+    temperatureLow = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    temperatureLowTime = models.PositiveIntegerField(null=True, blank=True)
+    temperatureMax = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    temperatureMaxTime = models.PositiveIntegerField(null=True, blank=True)
+    temperatureMin = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    temperatureMinTime = models.PositiveIntegerField(null=True, blank=True)
+    time = models.PositiveIntegerField()
+    uvIndex = models.IntegerField(null=True, blank=True)
+    uvIndexTime = models.PositiveIntegerField(null=True, blank=True)
+    visibility = models.DecimalField(max_digits=7, decimal_places=5, null=True, blank=True)
+    windBearing = models.PositiveIntegerField(null=True, blank=True)
+    windGust = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    windGustTime = models.PositiveIntegerField(null=True, blank=True)
+    windSpeed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+
+class DarkSkyDataBlock(models.Model):
+    #data = [DarkSkyDataPoint]
+    summary = models.CharField(max_length=256, null=True, blank=True)
+    icon = models.CharField(max_length=128, null=True, blank=True)
+
+class DarkSkyAlerts(models.Model):
+    summary = models.CharField(max_length=1024, null=True, blank=True)
+    expires = models.PositiveIntegerField(null=True, blank=True)
+    #regions = [strings]
+    time = models.PositiveIntegerField(null=True, blank=True)
+    title = models.CharField(max_length=256, null=True, blank=True)
+    uri = models.CharField(max_length=256, null=True, blank=True)
+
+class DarkSkyFlag(models.Model):
+    darksky_unavailable = models.BooleanField(null=True, blank=True)
+    nearest_station = models.DecimalField(max_digits=7, decimal_places=4)
+    #sources = models.CharField(max_length=1024)
+    units = models.CharField(max_length=256)
+
+class DarkSky(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+
+    latitude = models.DecimalField(max_digits=11, decimal_places=8)
+    longitude = models.DecimalField(max_digits=11, decimal_places=8)
+    timezone = models.CharField(max_length=254)
+    offset = models.IntegerField(null=True, blank=True)
+    #currently = models.IntegerField()
+    #minutely = models.IntegerField()
+    #hourly = models.IntegerField()
+    #daily = models.IntegerField()
+    #alerts = models.IntegerField()
+    #flags = models.IntegerField()
+
