@@ -1,0 +1,53 @@
+{
+  "name": "iotsite",
+  "version": "1.0.0",
+  "description": "The IoT Site repository is used for implementing and testing the use of webhooks for use of publishing and distributing sensor data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./node_modules/.bin/webpack --config webpack.config.js",
+    "watch": "npm run start -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kanaderu/iotsite.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kanaderu/iotsite/issues"
+  },
+  "homepage": "https://github.com/Kanaderu/iotsite#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.6.0",
+    "@fortawesome/fontawesome": "^1.1.8",
+    "@fortawesome/fontawesome-free": "^5.11.1",
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.6",
+    "bootstrap-css-only": "^4.3.1",
+    "css-loader": "^3.2.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^4.2.0",
+    "google-map-react": "^1.1.5",
+    "mdbreact": "^4.20.0",
+    "node-sass": "^4.12.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-router-dom": "^5.0.1",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "url-loader": "^2.1.0",
+    "webpack": "^4.40.2",
+    "webpack-bundle-tracker": "^0.4.2-beta",
+    "webpack-cli": "^3.3.9"
+  },
+  "dependencies": {}
+}
