@@ -10,8 +10,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': 'dist/', # must end with '/'
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'BUNDLE_DIR_NAME': 'dashboard/static/', # must end with '/'
+        'STATS_FILE': os.path.join(BASE_DIR, 'dashboard', 'webpack-stats.json'),
     }
 }
 

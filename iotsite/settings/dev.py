@@ -10,8 +10,8 @@ SECRET_KEY = '65=fldls_qvn(tvd3a@3&b=_#@s_bz1&55))2zjw@&-8whjdz&'
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': 'dist/', # must end with '/'
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'BUNDLE_DIR_NAME': 'dashboard/static/', # must end with '/'
+        'STATS_FILE': os.path.join(BASE_DIR, 'dashboard', 'webpack-stats.json'),
     }
 }
 
