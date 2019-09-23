@@ -33,10 +33,10 @@ class TopNavigation extends Component {
                             <MDBNavLink to="/react/">Home</MDBNavLink>
                         </MDBNavItem>
                         <MDBNavItem>
-                            <a rel="noopener noreferrer" className="nav-link Ripple-parent" href="/api/">Webservice</a>
+                            <a rel="noopener noreferrer" className="nav-link Ripple-parent" href="api/">Webservice</a>
                         </MDBNavItem>
                         <MDBNavItem>
-                            <a rel="noopener noreferrer" className="nav-link Ripple-parent" href="/hooks/">Webhooks</a>
+                            <a rel="noopener noreferrer" className="nav-link Ripple-parent" href="hooks/">Webhooks</a>
                         </MDBNavItem>
                         <MDBNavItem>
                             <a rel="noopener noreferrer" className="nav-link Ripple-parent" href="/jupyter/">Jupyter</a>
