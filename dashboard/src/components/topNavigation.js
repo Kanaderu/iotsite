@@ -24,7 +24,7 @@ class TopNavigation extends Component {
                 <MDBNavbarBrand>
                     <a rel="noopener noreferrer" className="nav-link Ripple-parent" href="https://mdbootstrap.com/" target="_blank">
                     <strong>MDB</strong>
-		    </a>
+                    </a>
                 </MDBNavbarBrand>
                 <MDBNavbarToggler onClick = { this.onClick } />
                 <MDBCollapse isOpen = { this.state.collapse } navbar>

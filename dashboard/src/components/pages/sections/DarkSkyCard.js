@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { /*MDBCollapse,*/ MDBIcon, MDBProgress, /*MDBBtn,*/ MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
+import { MDBIcon, MDBProgress, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
 import dayton_img from '../../../assets/dayton.jpeg'
 
 class DarkSkyCard extends Component {

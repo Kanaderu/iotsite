@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { MDBCol, MDBCard, MDBCardBody, MDBCardHeader, MDBRow } from 'mdbreact';
-import { Line, /*Doughnut, Radar*/ } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 class ChartSection5 extends Component {
 
@@ -104,7 +104,6 @@ class ChartSection5 extends Component {
             </MDBRow>
         )
     }
-
 }
 
 export default ChartSection5;
