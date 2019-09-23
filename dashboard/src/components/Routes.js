@@ -7,6 +7,7 @@ class Routes extends React.Component {
         return (
             <Switch>
                 <Route path='/' exact component={DashboardPage} />
+                <Route path='/ws/' exact component={DashboardPage} />
             </Switch>
         );
     }
