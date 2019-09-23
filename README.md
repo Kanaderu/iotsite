@@ -16,9 +16,28 @@ pip install -r requirements
 
 Serving the project in production mode is avaliable but not fully implemented as it varies on the server configuration. uWSGI is setup for this project but is not required. To run the server in uWSGI use the `start_server.sh` script to load the server in production mode. The parameters in `iotsite/uwsgi.ini` and `iotsite/wsgi.py` may need to be configured properly. Running the server in debug mode should run fine without having use uWSGI. Debug mode is the default mode and should be run using regular Django development commands.
 
-### Set Up Environment Variables
+### Setup Environment Variables
 
 Private parameters that are not to be shared publicly are generally loaded in through envionment variables. A template of which variables to set are defined in the file `setup.env.template`. It is best to copy this template (`cp setup.env.template setup.env`) with user only permissions (`chmod 600 setup.env`) for security reasons. To use the `setup.env` parameters, run `source setup.ev` which will make the variables persist for the executing terminal only. Once the terminal has been closed, it will need to be resourced as they will be lost upon reopening.
+
+### Building Frontend React
+
+React is used to build the frontend dashboard. Using React and Django involves the integration of two separate web development frameworks. Integration is being peformed with the used of webpack and node/yarn. The react app is stored into the `dashboard` folder. To build the `dashboard` app, `npm` is need to be installed. Run the following commands to build the `dashboard` react project using `yarn`.
+
+```
+cd dashboard/
+yarn install
+yarn run
+```
+
+Inplace of `yarn`, `npm` can be used instead using the following commands.
+
+```
+cd dashboard/
+npm install
+npm run start
+npm run watch # persist updates
+```
 
 ## Running Development Mode
 

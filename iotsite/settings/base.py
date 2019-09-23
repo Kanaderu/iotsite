@@ -27,12 +27,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',
-    'thorn.django',
-    'django_mysql',
+    'webpack_loader',   # react webpack integration
+    'rest_framework',   # rest framework library
+    'thorn.django',     # webhooks library
+    'django_mysql',     # mysql support for API proxy
 
+    # custom apps
     'sensors',
     'external_api',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -135,9 +138,9 @@ STATIC_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, 'static'),
-]
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'assets'),
+#]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'

@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sensors.urls')),
     path('', include('external_api.urls')),
+    path('', include('dashboard.urls')),
 ]
