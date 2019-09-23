@@ -13,12 +13,12 @@ class DarkSkyView(APIView):
         key = settings.DARKSKY_KEY
         latitude = settings.DARKSKY_LAT
         longitude = settings.DARKSKY_LON
-        time = '' # TODO
+        #time = '' # TODO
 
         self.update_th = settings.DARKSKY_THRESH
 
         self.darksky_forcast_url = "https://api.darksky.net/forecast/{}/{},{}".format(key, latitude, longitude)
-        self.darksky_time_machine_url = "https://api.darksky.net/forecast/{}/{},{},{}".format(key, latitude, longitude, time)
+        #self.darksky_time_machine_url = "https://api.darksky.net/forecast/{}/{},{},{}".format(key, latitude, longitude, time)
         super(DarkSkyView, self)
 
     def get(self, request):
