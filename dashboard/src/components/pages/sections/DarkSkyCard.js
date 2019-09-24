@@ -50,7 +50,7 @@ class DarkSkyCard extends Component {
                         { this.renderWeatherIcon(this.props.data.currently.icon) }
                         </div>
                         <div className="d-flex justify-content-between mb-4">
-                        <div><MDBIcon icon="tint" size="lg" className="cyan-text pr-2"/>{ this.props.data.currently.precipProbability }% Precipitation</div>
+                        <div><MDBIcon icon="tint" size="lg" className="cyan-text pr-2"/>{ this.props.data.currently.precipProbability * 100.0}% Precipitation</div>
                         <div><MDBIcon icon="leaf" size="lg" className="grey-text pr-2"/>{ this.props.data.currently.windSpeed } mi/h Winds</div>
                         <div><MDBIcon icon="water" size="lg" className="blue-text pr-2" />{ this.props.data.currently.humidity * 100.0}% Humidity</div>
                         </div>
