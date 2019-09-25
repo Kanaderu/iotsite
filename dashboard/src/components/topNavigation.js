@@ -30,7 +30,7 @@ class TopNavigation extends Component {
                 <MDBCollapse isOpen = { this.state.collapse } navbar>
                     <MDBNavbarNav left>
                         <MDBNavItem active>
-                            <MDBNavLink to="/react/">Home</MDBNavLink>
+                            <MDBNavLink to="/ws/">Home</MDBNavLink>
                         </MDBNavItem>
                         <MDBNavItem>
                             <a rel="noopener noreferrer" className="nav-link Ripple-parent" href="/ws/api/">Webservice</a>
