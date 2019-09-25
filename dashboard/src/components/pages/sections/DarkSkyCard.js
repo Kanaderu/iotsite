@@ -35,14 +35,16 @@ class DarkSkyCard extends Component {
         const currentDay = new Date(this.props.data.currently.time * 1000).toDateString();
         const currentTime = new Date();
         const percentTime = 100*(currentTime.getHours()*60.0 + currentTime.getMinutes()) / 1440.0;
+        console.log(this.props.data)
         return (
         <MDBCol>
             <MDBCard style={{ width: "28rem" }}>
                 <MDBCardImage className="img-fluid" src={dayton_img} waves />
                 <MDBCardBody>
                     <MDBCardTitle className="display-1 card-title font-weight-bold">
-                        Dayton<br />
-                        { currentDay }
+                        Dayton <br />
+                        { currentDay } <hr />
+                        {this.props.data.currently.summary} <br />
                     </MDBCardTitle>
                     <MDBCardText tag="div">
                         <div className="d-flex justify-content-between">
