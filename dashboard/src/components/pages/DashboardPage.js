@@ -46,7 +46,6 @@ class DashboardPage extends Component {
                 });
             })
             .catch((error) => {
-                console.log("Error!");
                 console.log(error);
             })
     }

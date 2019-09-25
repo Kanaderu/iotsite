@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { MDBIcon, MDBProgress, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
+import { MDBCardHeader, MDBIcon, MDBProgress, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
 import dayton_img from '../../../assets/dayton.jpeg'
 
 class DarkSkyCard extends Component {
@@ -35,10 +35,10 @@ class DarkSkyCard extends Component {
         const currentDay = new Date(this.props.data.currently.time * 1000).toDateString();
         const currentTime = new Date();
         const percentTime = 100*(currentTime.getHours()*60.0 + currentTime.getMinutes()) / 1440.0;
-        console.log(this.props.data)
         return (
-        <MDBCol>
-            <MDBCard style={{ width: "28rem" }}>
+        <MDBCol md="4" className="mb-4">
+            <MDBCard>
+                <MDBCardHeader>DarkSky</MDBCardHeader>
                 <MDBCardImage className="img-fluid" src={dayton_img} waves />
                 <MDBCardBody>
                     <MDBCardTitle className="display-1 card-title font-weight-bold">
