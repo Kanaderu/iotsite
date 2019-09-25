@@ -6,6 +6,7 @@ import ChartSection4 from './sections/ChartSection4';
 import ChartSection5 from './sections/ChartSection5';
 import ChartSection6 from './sections/ChartSection6';
 import MapSection from './sections/MapSection';
+import MapVectorSection from './sections/MapVectorSection';
 
 class DashboardPage extends Component {
     state = {
@@ -65,6 +66,7 @@ class DashboardPage extends Component {
             <ChartSection5 data={data} />
             <ChartSection6 data={data} />
             <MapSection />
+            <MapVectorSection />
           </React.Fragment>
         )
     }
