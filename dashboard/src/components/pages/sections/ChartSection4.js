@@ -89,16 +89,14 @@ class ChartSection4 extends Component {
     };
 
         return (
-            <MDBRow className="mb-4">
-                <MDBCol md="12" className="mb-4">
-                    <MDBCard className="mb-4">
-                        <MDBCardHeader>Temperature</MDBCardHeader>
-                        <MDBCardBody>
-                            <Line data={dataLine} options={opts} />
-                        </MDBCardBody>
-                    </MDBCard>
-                </MDBCol>
-            </MDBRow>
+            <MDBCol md="4" className="mb-4">
+                <MDBCard className="mb-12">
+                    <MDBCardHeader>Current Temperature</MDBCardHeader>
+                    <MDBCardBody>
+                        <Line data={dataLine} options={opts} />
+                    </MDBCardBody>
+                </MDBCard>
+            </MDBCol>
         )
     }
 }
