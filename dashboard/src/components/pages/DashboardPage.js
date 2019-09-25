@@ -67,8 +67,10 @@ class DashboardPage extends Component {
                 <ChartSection5 data={data} />
                 <ChartSection6 data={data} />
             </MDBRow>
-            <MapSection />
-            <MapVectorSection />
+            <MDBRow className="mb-6">
+                <MapSection />
+                <MapVectorSection />
+            </MDBRow>
           </React.Fragment>
         )
     }
