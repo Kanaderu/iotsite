@@ -67,6 +67,8 @@ class LoRaGatewayPayloadFields(models.Model):
     sm2 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
     sm3 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
     sm4 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
+    t1 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
+    t2 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
 
 
 class LoRaGatewayMetadata(models.Model):

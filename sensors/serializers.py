@@ -32,7 +32,7 @@ class LoRaGatewayPayloadFieldsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LoRaGatewayPayloadFields
-        fields = ['b', 'sm1', 'sm2', 'sm3', 'sm4']
+        fields = ['b', 'sm1', 'sm2', 'sm3', 'sm4', 't1', 't2']
 
 
 class LoRaGatewayDataSerializer(serializers.ModelSerializer):
