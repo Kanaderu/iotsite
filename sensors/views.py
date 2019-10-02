@@ -10,18 +10,19 @@ from django.urls import reverse
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
+
 # define custom CSV headers when rendering
 class SensorCSVRender(CSVRenderer):
     header = ['id', 'timestamp', 'relay_id', 'sensor_id',
               'sensor_type', 'units', 'data', 'longitude', 'latitude',
               'altitude', 'speed', 'climb']
 
+
 class SensorDataViewSet(viewsets.ModelViewSet):
     queryset = SensorData.objects.all()
     serializer_class = SensorDataSerializer
     #parser_classes = (JSONParser, FormParser, MultiPartParser, CSVParser,)
     renderer_classes = (JSONRenderer, BrowsableAPIRenderer, SensorCSVRender,)
-
 
     @action(methods=['POST'], detail=False)
     def bulk_post(self, request, *args, **kwargs):
@@ -38,6 +39,7 @@ class SensorDataViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_303_SEE_OTHER, headers={'Location': reverse('sensordata-list')})
+
 
 class LoRaGatewayDataView(viewsets.ModelViewSet):
     queryset = LoRaGatewayData.objects.all()

@@ -7,6 +7,7 @@ from django.utils.timezone import utc
 import datetime
 from .models import DarkSky
 
+
 class DarkSkyView(APIView):
 
     def __init__(self):

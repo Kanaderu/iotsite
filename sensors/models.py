@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from thorn import ModelEvent, webhook_model
 
+
 #@webhook_model(
 #    sender_field='author.account.user',
 #)
@@ -45,6 +46,7 @@ class SensorData(models.Model):
     def get_absolute_url(self):
         return reverse('sensordata-detail', args=[str(self.id)])
 
+
 class LoRaGatewayData(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
@@ -56,6 +58,7 @@ class LoRaGatewayData(models.Model):
     payload_raw = models.CharField(max_length=128, blank=True, default='')
     downlink_url = models.CharField(max_length=1024, blank=True, default='')
 
+
 class LoRaGatewayPayloadFields(models.Model):
     gateway_data = models.OneToOneField('LoRaGatewayData', related_name='payload_fields', null=True, on_delete=models.CASCADE)
 
@@ -65,15 +68,16 @@ class LoRaGatewayPayloadFields(models.Model):
     sm3 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
     sm4 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
 
+
 class LoRaGatewayMetadata(models.Model):
     gateway_data = models.OneToOneField('LoRaGatewayData', related_name='metadata', null=True, on_delete=models.CASCADE)
-    #gateways = models.ForeignKey('LoRaGateway', related_name='metadata', null=True, on_delete=models.CASCADE)
 
     time = models.DateTimeField(blank=True, null=True)
     frequency = models.DecimalField(max_digits=8, decimal_places=3, blank=True, null=True)
     modulation = models.CharField(max_length=128, blank=True, default='')
     data_rate = models.CharField(max_length=128, blank=True, default='')
     coding_rate = models.CharField(max_length=128, blank=True, default='')
+
 
 class LoRaGateway(models.Model):
     metadata = models.ForeignKey('LoRaGatewayMetadata', related_name='gateways', null=True, on_delete=models.CASCADE)

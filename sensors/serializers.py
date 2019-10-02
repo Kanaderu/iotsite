@@ -1,6 +1,6 @@
-#from django.utils.dateparse import parse_datetime
 from rest_framework import serializers
 from sensors.models import *
+
 
 class SensorDataSerializer(serializers.ModelSerializer):
 
@@ -10,12 +10,14 @@ class SensorDataSerializer(serializers.ModelSerializer):
                   'sensor_type', 'units', 'data', 'longitude', 'latitude',
                   'altitude', 'speed', 'climb']
 
+
 class LoRaGatewaySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LoRaGateway
         fields = ['gtw_id', 'gtw_trusted', 'timestamp', 'time', 'channel',
                   'rssi', 'snr', 'rf_chain', 'latitude', 'longitude']
+
 
 class LoRaGatewayMetadataSerializer(serializers.ModelSerializer):
 
@@ -25,11 +27,13 @@ class LoRaGatewayMetadataSerializer(serializers.ModelSerializer):
         model = LoRaGatewayMetadata
         fields = ['time', 'frequency', 'modulation', 'data_rate', 'coding_rate', 'gateways']
 
+
 class LoRaGatewayPayloadFieldsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LoRaGatewayPayloadFields
         fields = ['b', 'sm1', 'sm2', 'sm3', 'sm4']
+
 
 class LoRaGatewayDataSerializer(serializers.ModelSerializer):
 
