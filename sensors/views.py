@@ -1,5 +1,5 @@
-from sensors.models import SensorData
-from sensors.serializers import SensorDataSerializer
+from sensors.models import SensorData, LoRaGatewayData
+from sensors.serializers import SensorDataSerializer, LoRaGatewayDataSerializer
 from rest_framework import viewsets, status
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework_csv.renderers import CSVRenderer
@@ -38,3 +38,7 @@ class SensorDataViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_303_SEE_OTHER, headers={'Location': reverse('sensordata-list')})
+
+class LoRaGatewayDataView(viewsets.ModelViewSet):
+    queryset = LoRaGatewayData.objects.all()
+    serializer_class = LoRaGatewayDataSerializer
