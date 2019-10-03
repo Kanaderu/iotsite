@@ -1,3 +1,4 @@
+from __future__ import print_function
 """
 Django settings for iotsite project.
 
@@ -11,12 +12,16 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import sys
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
-print('PROJECT_DIR = {}'.format(PROJECT_DIR))
-print('BASE_DIR = {}'.format(BASE_DIR))
+eprint('PROJECT_DIR = {}'.format(PROJECT_DIR))
+eprint('BASE_DIR = {}'.format(BASE_DIR))
 
 # Application definition
 INSTALLED_APPS = [
@@ -109,7 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 LANGUAGE_CODE = 'en-us'
-#TIME_ZONE = 'UTC'
 TIME_ZONE = 'America/New_York'
 USE_I18N = True
 USE_L10N = True
