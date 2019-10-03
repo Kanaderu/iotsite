@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { MDBCol, MDBCard, MDBCardBody, MDBCardHeader, MDBRow } from 'mdbreact';
-import { Line } from 'react-chartjs-2';
+import { Chart, Line } from 'react-chartjs-2';
+import Hammer from 'react-hammerjs';
+import zoom from 'chartjs-plugin-zoom';
 
 class ChartSection6 extends Component {
+
+    componentWillMount(){
+        Chart.plugins.register(zoom);
+    }
 
     render(){
 
@@ -111,6 +117,18 @@ class ChartSection6 extends Component {
                         drawBorder: true
                     }
                 }]
+            },
+            plugins: {
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'xy'
+                    },
+                    zoom: {
+                        enabled: true,
+                        mode: 'xy'
+                    }
+                }
             }
     };
 
