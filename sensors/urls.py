@@ -17,8 +17,8 @@ urlpatterns = [
     #   * `title` and `description` parameters are passed to `SchemaGenerator`.
     #   * Provide view name for use with `reverse()`.
     url('openapi', get_schema_view(
-        title="Your Project",
-        description="API for all things …",
+        title="UD Sensors API",
+        description="An API to interact with UD based Sensors",
     ), name='openapi-schema'),
 
     # Route TemplateView to serve the ReDoc template.
