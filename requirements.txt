@@ -9,6 +9,7 @@ djangorestframework-csv==2.1.0
 httpie==1.0.3
 mysql==0.0.2
 mysqlclient==1.4.4
+psycopg2==2.8.3
 PyYAML==5.1.2
 thorn==1.5.2
 uritemplate==3.0.0
