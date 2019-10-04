@@ -23,6 +23,8 @@ class SensorData(models.Model):
     climb = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
 
     class Meta:
+        verbose_name = 'Sensor Data'
+        verbose_name_plural = 'Sensor Data'
         ordering = ['created']
 
     class webhooks:
@@ -58,6 +60,10 @@ class LoRaGatewayData(models.Model):
     payload_raw = models.CharField(max_length=128, blank=True, default='')
     downlink_url = models.CharField(max_length=1024, blank=True, default='')
 
+    class Meta:
+        verbose_name = 'LoRa Gateway Data'
+        verbose_name_plural = 'LoRa Gateway Data'
+
 
 class LoRaGatewayPayloadFields(models.Model):
     gateway_data = models.OneToOneField('LoRaGatewayData', related_name='payload_fields', null=True, on_delete=models.CASCADE)
@@ -70,6 +76,10 @@ class LoRaGatewayPayloadFields(models.Model):
     t1 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
     t2 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
 
+    class Meta:
+        verbose_name = 'LoRa Gateway Payload Field'
+        verbose_name_plural = 'LoRa Gateway Payload Fields'
+
 
 class LoRaGatewayMetadata(models.Model):
     gateway_data = models.OneToOneField('LoRaGatewayData', related_name='metadata', null=True, on_delete=models.CASCADE)
@@ -79,6 +89,10 @@ class LoRaGatewayMetadata(models.Model):
     modulation = models.CharField(max_length=128, blank=True, default='')
     data_rate = models.CharField(max_length=128, blank=True, default='')
     coding_rate = models.CharField(max_length=128, blank=True, default='')
+
+    class Meta:
+        verbose_name = 'LoRa Gateway Metadata'
+        verbose_name_plural = 'LoRa Gateway Metadata'
 
 
 class LoRaGateway(models.Model):
@@ -95,6 +109,10 @@ class LoRaGateway(models.Model):
     latitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     longitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
 
+    class Meta:
+        verbose_name = 'LoRa Gateway'
+        verbose_name_plural = 'LoRa Gateway'
+
 
 class FeatherData(models.Model):
     TimeStamp = models.CharField(max_length=128, blank=True, default='')
@@ -108,15 +126,27 @@ class FeatherData(models.Model):
     Latitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     Longitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
 
+    class Meta:
+        verbose_name = 'Feather Data'
+        verbose_name_plural = 'Feather Data'
+
 
 class FeatherSensorID(models.Model):
     feather_data = models.ForeignKey('FeatherData', related_name='SensorID', null=True, on_delete=models.CASCADE)
     sensor_id = models.CharField(max_length=32, blank=True, default='')
 
+    class Meta:
+        verbose_name = 'Feather Sensor ID'
+        verbose_name_plural = 'Feather Sensor IDs'
+
 
 class FeatherSensorTemperature(models.Model):
     feather_data = models.ForeignKey('FeatherData', related_name='Temperature', null=True, on_delete=models.CASCADE)
     temperature = models.CharField(max_length=32, blank=True, default='')
+
+    class Meta:
+        verbose_name = 'Feather Sensor Temperature'
+        verbose_name_plural = 'Feather Sensor Temperatures'
 
     def __str__(self):
         return self.temperature
