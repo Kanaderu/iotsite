@@ -152,10 +152,17 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # DarkSky API CONF
-DARKSKY_KEY = os.environ['DARKSKY_KEY']
-DARKSKY_LAT = os.environ['DARKSKY_LAT']
-DARKSKY_LON = os.environ['DARKSKY_LON']
-DARKSKY_THRESH = float(os.environ['DARKSKY_THRESH'])
+if 'DARKSKY_KEY' in os.environ:
+    DARKSKY_KEY = os.environ['DARKSKY_KEY']
+    DARKSKY_LAT = os.environ['DARKSKY_LAT']
+    DARKSKY_LON = os.environ['DARKSKY_LON']
+    DARKSKY_THRESH = float(os.environ['DARKSKY_THRESH'])
+else:
+    eprint('DARKSKY_KEY Environment Variable is NOT set! Ignoring...')
+    DARKSKY_KEY = 'NONE'
+    DARKSKY_LAT = 'NONE'
+    DARKSKY_LON = 'NONE'
+    DARKSKY_THRESH = 'NONE'
 
 # ignore system checks to support JSONField()
 # https://github.com/adamchainz/django-mysql/issues/342
