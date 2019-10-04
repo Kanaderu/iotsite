@@ -7,6 +7,7 @@ from sensors import views
 router = routers.DefaultRouter()
 router.register(r'sensors', views.SensorDataViewSet)
 router.register(r'LoRaGateway', views.LoRaGatewayDataView)
+router.register(r'Feather', views.FeatherDataView)
 
 urlpatterns = [
     url(r'^hooks/', include(('thorn.django.rest_framework.urls', 'thorn'), namespace='webhook')),

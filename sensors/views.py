@@ -1,5 +1,5 @@
-from sensors.models import SensorData, LoRaGatewayData
-from sensors.serializers import SensorDataSerializer, LoRaGatewayDataSerializer
+from sensors.models import SensorData, LoRaGatewayData, FeatherData
+from sensors.serializers import SensorDataSerializer, LoRaGatewayDataSerializer, FeatherDataSerializer
 from rest_framework import viewsets, status
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework_csv.renderers import CSVRenderer
@@ -44,3 +44,8 @@ class SensorDataViewSet(viewsets.ModelViewSet):
 class LoRaGatewayDataView(viewsets.ModelViewSet):
     queryset = LoRaGatewayData.objects.all()
     serializer_class = LoRaGatewayDataSerializer
+
+
+class FeatherDataView(viewsets.ModelViewSet):
+    queryset = FeatherData.objects.all()
+    serializer_class = FeatherDataSerializer
