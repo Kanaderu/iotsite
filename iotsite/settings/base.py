@@ -36,11 +36,13 @@ INSTALLED_APPS = [
     'rest_framework',   # rest framework library
     'thorn.django',     # webhooks library
     'django_mysql',     # mysql support for API proxy
+    'django_filters',   # field filtering for REST
 
     # custom apps
     'sensors',
     'external_api',
     'dashboard',
+    #'users',
 ]
 
 MIDDLEWARE = [
@@ -120,17 +122,38 @@ USE_L10N = True
 USE_TZ = True
 
 REST_FRAMEWORK = {
+    #'PAGE_SIZE': 20,
+    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework_csv.renderers.CSVRenderer',
+    ),
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser',
         'rest_framework_csv.parsers.CSVParser'
     ],
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-        'rest_framework_csv.renderers.CSVRenderer',
-    ),
+    'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata'
+
+    #'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
+    #'DEFAULT_FILTER_BACKENDS': (
+    #    'rest_framework_json_api.filters.QueryParameterValidationFilter',
+    #    'rest_framework_json_api.filters.OrderingFilter',
+    #    'rest_framework_json_api.django_filters.DjangoFilterBackend',
+    #    'rest_framework.filters.SearchFilter',
+    #),
+    #'SEARCH_PARAM': 'filter[search]',
+    #'TEST_REQUEST_RENDERER_CLASSES': (
+    #    'rest_framework_json_api.renderers.JSONRenderer',
+    #),
+    #'TEST_REQUEST_DEFAULT_FORMAT': 'vnd.api+json'
 }
 
 THORN_HMAC_SIGNER = 'thorn.utils.hmac:sign'

@@ -23,6 +23,9 @@ class SensorDataViewSet(viewsets.ModelViewSet):
     serializer_class = SensorDataSerializer
     #parser_classes = (JSONParser, FormParser, MultiPartParser, CSVParser,)
     renderer_classes = (JSONRenderer, BrowsableAPIRenderer, SensorCSVRender,)
+    filterset_fields = '__all__'
+    search_fields = ['timestamp', 'relay_id', 'sensor_id', 'sensor_type', 'units', 'data', 'longitude', 'latitude', 'altitude', 'speed', 'climb']
+    ordering_fields = '__all__'
 
     @action(methods=['POST'], detail=False)
     def bulk_post(self, request, *args, **kwargs):
@@ -44,8 +47,14 @@ class SensorDataViewSet(viewsets.ModelViewSet):
 class LoRaGatewayDataView(viewsets.ModelViewSet):
     queryset = LoRaGatewayData.objects.all()
     serializer_class = LoRaGatewayDataSerializer
+    filterset_fields = '__all__'
+    search_fields = ['app_id', 'dev_id', 'hardware_serial', 'port', 'counter', 'payload_raw', 'downlink_url', 'payload_fields__b', 'payload_fields__sm1', 'payload_fields__sm2', 'payload_fields__sm3', 'payload_fields__sm4', 'payload_fields__t1', 'payload_fields__t2', 'metadata__time', 'metadata__frequency', 'metadata__modulation', 'metadata__data_rate', 'metadata__coding_rate', 'metadata__gateways__gtw_id', 'metadata__gateways__gtw_trusted', 'metadata__gateways__timestamp', 'metadata__gateways__time', 'metadata__gateways__channel', 'metadata__gateways__rssi', 'metadata__gateways__snr', 'metadata__gateways__rf_chain']
+    ordering_fields = '__all__'
 
 
 class FeatherDataView(viewsets.ModelViewSet):
     queryset = FeatherData.objects.all()
     serializer_class = FeatherDataSerializer
+    filterset_fields = '__all__'
+    search_fields = ['TimeStamp', 'TimeFormat', 'Date', 'TempFormat', 'DeviceID', 'Location', 'Latitude', 'Longitude']
+    ordering_fields = '__all__'
