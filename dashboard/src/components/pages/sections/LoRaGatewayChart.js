@@ -40,8 +40,6 @@ class LoRaGatewayChart extends Component {
     }
 
     render(){
-        console.log(this.state);
-
         const dataLine = {
             labels: this.state.data.map((data) => {
                 return data.counter;

@@ -6,7 +6,7 @@ import zoom from 'chartjs-plugin-zoom';
 
 class ChartSection5 extends Component {
 
-    componentWillMount(){
+    UNSAFE_componentWillMount(){
         Chart.plugins.register(zoom);
     }
 
