@@ -7,6 +7,7 @@ import ChartSection5 from './sections/ChartSection5';
 import ChartSection6 from './sections/ChartSection6';
 import MapSection from './sections/MapSection';
 import MapVectorSection from './sections/MapVectorSection';
+import LoRaGatewayChart from './sections/LoRaGatewayChart';
 
 class DashboardPage extends Component {
     state = {
@@ -60,6 +61,7 @@ class DashboardPage extends Component {
           <React.Fragment>
             <MDBRow className="mb-4">
                 <DarkSkyCard data={data} />
+                <LoRaGatewayChart />
             </MDBRow>
             <MDBRow className="mb-4">
                 <ChartSection4 data={data} />
