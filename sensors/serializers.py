@@ -88,3 +88,39 @@ class FeatherDataSerializer(serializers.ModelSerializer):
         model = FeatherData
         fields = ['TimeStamp', 'TimeFormat', 'Date', 'SensorID', 'Temperature',
                   'TempFormat', 'DeviceID', 'Location', 'Latitude', 'Longitude']
+
+
+class FeatherMetadataV2Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FeatherMetadataV2
+        fields = ['location', 'latitude', 'longitude', 'time']
+
+
+class FeatherSensorDataV2Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FeatherSensorDataV2
+        fields = ['sensor_id', 'sensor_type', 'sensor_data', 'sensor_units']
+
+
+class FeatherDataV2Serializer(serializers.ModelSerializer):
+
+    metadata = FeatherMetadataV2Serializer(required=True)
+    data = FeatherSensorDataV2Serializer(many=True, required=False)
+
+    class Meta:
+        model = FeatherDataV2
+        fields = ['dev_id', 'metadata', 'data']
+
+    def create(self, validated_data):
+        metadata_data = validated_data.pop('metadata')
+        sensors_data = validated_data.pop('data')
+
+        instance = FeatherDataV2.objects.create(**validated_data)
+        FeatherMetadataV2.objects.create(feather_data=instance, **metadata_data)
+
+        for sensor_data in sensors_data:
+            FeatherSensorDataV2.objects.create(feather_data=instance, **sensor_data)
+
+        return instance

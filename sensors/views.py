@@ -1,5 +1,5 @@
-from sensors.models import SensorData, LoRaGatewayData, FeatherData
-from sensors.serializers import SensorDataSerializer, LoRaGatewayDataSerializer, FeatherDataSerializer
+from sensors.models import SensorData, LoRaGatewayData, FeatherData, FeatherDataV2
+from sensors.serializers import SensorDataSerializer, LoRaGatewayDataSerializer, FeatherDataSerializer, FeatherDataV2Serializer
 from rest_framework import viewsets, status
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework_csv.renderers import CSVRenderer
@@ -57,4 +57,12 @@ class FeatherDataView(viewsets.ModelViewSet):
     serializer_class = FeatherDataSerializer
     filterset_fields = '__all__'
     search_fields = ['TimeStamp', 'TimeFormat', 'Date', 'TempFormat', 'DeviceID', 'Location', 'Latitude', 'Longitude']
+    ordering_fields = '__all__'
+
+
+class FeatherDataV2View(viewsets.ModelViewSet):
+    queryset = FeatherDataV2.objects.all()
+    serializer_class = FeatherDataV2Serializer
+    filterset_fields = '__all__'
+    search_fields = ['dev_id', 'metadata', 'data']
     ordering_fields = '__all__'

@@ -150,3 +150,23 @@ class FeatherSensorTemperature(models.Model):
 
     def __str__(self):
         return self.temperature
+
+
+class FeatherDataV2(models.Model):
+    dev_id = models.PositiveIntegerField(blank=True)
+
+
+class FeatherMetadataV2(models.Model):
+    feather_data = models.OneToOneField('FeatherDataV2', related_name='metadata', null=True, on_delete=models.CASCADE)
+    location = models.CharField(max_length=64, blank=True, default='')
+    latitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
+    time = models.DateTimeField(blank=True, null=True)
+
+
+class FeatherSensorDataV2(models.Model):
+    feather_data = models.ForeignKey('FeatherDataV2', related_name='data', null=True, on_delete=models.CASCADE)
+    sensor_id = models.PositiveIntegerField(blank=True)
+    sensor_type = models.CharField(max_length=64, blank=True, default='')
+    sensor_data = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
+    sensor_units = models.CharField(max_length=8, blank=True, default='')
