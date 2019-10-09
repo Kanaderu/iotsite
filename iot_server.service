@@ -1,0 +1,14 @@
+[Unit]
+Description="IoT Webserver"
+After=syslog.target network.target
+
+[Service]
+User=fan
+EnvironmentFile=/home/fan/Projects/iotsite/setup.env
+Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/home/fan/.conda/envs/django/bin:/opt/anaconda3/bin"
+PassEnvironment=DARKSKY_KEY DARKSKY_LAT DARKSKY_LON DARKSKY_THRESH SECRET_KEY
+ExecStart=/home/fan/.conda/envs/django/bin/uwsgi --ini iotsite/uwsgi.ini --enable-threads --thunder-lock
+WorkingDirectory=/home/fan/Projects/iotsite/
+
+[Install]
+WantedBy=multi-user.target
