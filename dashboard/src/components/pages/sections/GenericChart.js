@@ -84,6 +84,7 @@ class GenericChart extends Component {
             <Card>
                 <CardHeader
                     title={this.props.title}
+                    titleTypographyProps={{variant: 'h6'}}
                 />
                 <CardContent>
                     <Line data={dataLine} options={opts} />

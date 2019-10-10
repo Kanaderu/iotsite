@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Grid } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import { MDBRow } from 'mdbreact';
+
+import Button from '@material-ui/core/Button';
 
 import DarkSkyCard from './sections/DarkSkyCard';
 import ChartSection4 from './sections/ChartSection4';
@@ -32,6 +36,18 @@ class DashboardPage extends Component {
         },
         flags: {}
     }
+
+    theme = createMuiTheme({
+        palette: {
+            primary: {
+                main: '#0091EA'
+            },
+            secondary: {
+                main: '#64dd17'
+            }
+        }
+    });
+
 
     fetchDarkSkyData() {
         fetch('https://udsensors.tk/ws/darksky/')
@@ -155,6 +171,7 @@ class DashboardPage extends Component {
         ];
         return (
             <React.Fragment>
+                {/*
                 <MDBRow className="mb-4">
                     <DarkSkyCard data={data} />
                     <LoRaGatewayChart />
@@ -168,6 +185,8 @@ class DashboardPage extends Component {
                     <MapSection />
                     <MapVectorSection />
                 </MDBRow>
+                */}
+                <ThemeProvider theme={this.theme}>
                 <Test />
                 <Grid container spacing={3}>
                     <Grid item xs={4}>
@@ -192,6 +211,7 @@ class DashboardPage extends Component {
                         />
                     </Grid>
                 </Grid>
+                </ThemeProvider>
             </React.Fragment>
         )
     }
