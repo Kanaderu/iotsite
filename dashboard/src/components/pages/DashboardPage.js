@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { MDBRow } from 'mdbreact';
 
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 
 import DarkSkyCard from './sections/DarkSkyCard';
 import ChartSection4 from './sections/ChartSection4';
@@ -15,6 +17,15 @@ import MapVectorSection from './sections/MapVectorSection';
 import LoRaGatewayChart from './sections/LoRaGatewayChart';
 import GenericChart from './sections/GenericChart';
 import Test from './Test';
+
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    paper: {
+        //height: 200,
+    },
+});
 
 class DashboardPage extends Component {
     state = {
@@ -75,6 +86,8 @@ class DashboardPage extends Component {
     }
 
     render() {
+        const { classes } = this.props;
+
         const data = this.state;
         //// darksky data
         // current
@@ -170,7 +183,7 @@ class DashboardPage extends Component {
             }
         ];
         return (
-            <React.Fragment>
+            <div classes={classes.root}>
                 {/*
                 <MDBRow className="mb-4">
                     <DarkSkyCard data={data} />
@@ -185,36 +198,71 @@ class DashboardPage extends Component {
                     <MapSection />
                     <MapVectorSection />
                 </MDBRow>
+                <Test />
                 */}
                 <ThemeProvider theme={this.theme}>
-                <Test />
-                <Grid container spacing={3}>
-                    <Grid item xs={4}>
-                        <GenericChart
-                            title="Current Temperature"
-                            labels={darksky_current_labels}
-                            data={darksky_current_data}
-                        />
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={4}>
+                        <Paper className={classes.paper}>
+                            <GenericChart
+                                title="Current Temperature"
+                                labels={darksky_current_labels}
+                                data={darksky_current_data}
+                            />
+                        </Paper>
                     </Grid>
-                    <Grid item xs={4}>
-                        <GenericChart
-                            title="Daily Temperature High/Low"
-                            labels={darksky_daily_labels}
-                            data={darksky_daily_temp_data}
-                        />
+                    <Grid item xs={12} sm={4}>
+                        <Paper className={classes.paper}>
+                            <GenericChart
+                                title="Daily Temperature High/Low"
+                                labels={darksky_daily_labels}
+                                data={darksky_daily_temp_data}
+                            />
+                        </Paper>
                     </Grid>
-                    <Grid item xs={4}>
-                        <GenericChart
-                            title="Percent Precipitation, Cloud Cover, and Humidity"
-                            labels={darksky_daily_labels}
-                            data={darksky_daily_precip_data}
-                        />
+                    <Grid item xs={12} sm={4}>
+                        <Paper className={classes.paper}>
+                            <GenericChart
+                                title="Percentages"
+                                labels={darksky_daily_labels}
+                                data={darksky_daily_precip_data}
+                            />
+                        </Paper>
                     </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Paper className={classes.paper}>
+                            <GenericChart
+                                title="Current Temperature"
+                                labels={darksky_current_labels}
+                                data={darksky_current_data}
+                            />
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Paper className={classes.paper}>
+                            <GenericChart
+                                title="Daily Temperature High/Low"
+                                labels={darksky_daily_labels}
+                                data={darksky_daily_temp_data}
+                            />
+                        </Paper>
+                    </Grid>
+                    {/*
+                    <Grid item xs={12} sm={4}>
+                        <Paper className={classes.paper}>
+                            <GenericChart
+                                title="Percentages"
+                                labels={darksky_daily_labels}
+                                data={darksky_daily_precip_data}
+                            />
+                        </Paper>
+                    </Grid>
+                    */}
                 </Grid>
                 </ThemeProvider>
-            </React.Fragment>
+            </div>
         )
     }
 }
 
-export default DashboardPage;
+export default withStyles(styles)(DashboardPage);

@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import { Card, CardContent, CardHeader, Paper } from '@material-ui/core';
 import { Chart, Line } from 'react-chartjs-2';
 import Hammer from 'react-hammerjs';
 import zoom from 'chartjs-plugin-zoom';
+
+const styles = theme => ({
+    card: {
+        //height: 400
+    }
+});
 
 class GenericChart extends Component {
 
@@ -11,6 +18,7 @@ class GenericChart extends Component {
     }
 
     render(){
+        const { classes } = this.props;
         const dataLine = {
             labels: this.props.labels,
 
@@ -81,7 +89,7 @@ class GenericChart extends Component {
         };
 
         return (
-            <Card>
+            <Card className={classes.card}>
                 <CardHeader
                     title={this.props.title}
                     titleTypographyProps={{variant: 'h6'}}
@@ -94,4 +102,4 @@ class GenericChart extends Component {
     }
 }
 
-export default GenericChart;
+export default withStyles(styles)(GenericChart);
