@@ -16,7 +16,7 @@ import MapSection from './sections/MapSection';
 import MapVectorSection from './sections/MapVectorSection';
 import LoRaGatewayChart from './sections/LoRaGatewayChart';
 import GenericChart from './sections/GenericChart';
-import Test from './Test';
+//import Test from './Test';
 
 const styles = theme => ({
     root: {
