@@ -47,7 +47,7 @@ class LoRaGatewayChart extends Component {
         const dataLine = {
             labels: this.state.data.map((data) => {
                 const d = new Date(data.metadata.time);
-                return months[d.getMonth()] + "-" + d.getDate() + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
+                return months[d.getMonth()] + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
             }),
             datasets: [
                 {
