@@ -40,9 +40,14 @@ class LoRaGatewayChart extends Component {
     }
 
     render(){
+        console.log(this.state);
+
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
         const dataLine = {
             labels: this.state.data.map((data) => {
-                return data.counter;
+                const d = new Date(data.metadata.time);
+                return months[d.getMonth()] + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
             }),
             datasets: [
                 {
@@ -65,7 +70,8 @@ class LoRaGatewayChart extends Component {
                     pointRadius: 1,
                     pointHitRadius: 10,
                     data: this.state.data.map((data) => {
-                        return parseFloat(data.payload_fields.t1);
+                        const cVal = (data.payload_fields.t1 - 32.0)*5.0/9.0;
+                        return parseFloat(cVal).toFixed(2);
                     }),
                 },
                 {
@@ -88,7 +94,8 @@ class LoRaGatewayChart extends Component {
                     pointRadius: 1,
                     pointHitRadius: 10,
                     data: this.state.data.map((data) => {
-                        return parseFloat(data.payload_fields.t2);
+                        const cVal = (data.payload_fields.t2 - 32.0)*5.0/9.0;
+                        return parseFloat(cVal).toFixed(2);
                     }),
                 },
             ]
@@ -100,7 +107,7 @@ class LoRaGatewayChart extends Component {
                     ticks: { display: true },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Counter'
+                        labelString: 'Timestep'
                     },
                     gridLines: {
                         display: true,
@@ -111,7 +118,7 @@ class LoRaGatewayChart extends Component {
                     ticks: { display: true },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Temperature'
+                        labelString: 'Temperature (C)'
                     },
                     gridLines: {
                         display: true,

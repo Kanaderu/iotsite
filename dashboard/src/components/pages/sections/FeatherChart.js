@@ -40,7 +40,7 @@ class FeatherChart extends Component {
         const dataLine = {
             labels: this.state.data.map((data) => {
                 const d = new Date(data.metadata.time);
-                return months[d.getMonth()] + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes();
+                return months[d.getMonth()] + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
             }),
             datasets: [
                 {
@@ -63,7 +63,7 @@ class FeatherChart extends Component {
                     pointRadius: 1,
                     pointHitRadius: 10,
                     data: this.state.data.map((data) => {
-                        return parseFloat(data.data[0].sensor_data);
+                        return parseFloat(data.data[0].sensor_data).toFixed(2);
                     }),
                 },
                 {
@@ -86,7 +86,7 @@ class FeatherChart extends Component {
                     pointRadius: 1,
                     pointHitRadius: 10,
                     data: this.state.data.map((data) => {
-                        return parseFloat(data.data[1].sensor_data);
+                        return parseFloat(data.data[1].sensor_data).toFixed(2);
                     }),
                 },
             ]
