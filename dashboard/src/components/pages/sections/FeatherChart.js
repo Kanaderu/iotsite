@@ -63,7 +63,7 @@ class FeatherChart extends Component {
                     pointRadius: 1,
                     pointHitRadius: 10,
                     data: this.state.data.map((data) => {
-                        return parseFloat(data.data[0].sensor_data);
+                        return parseFloat(data.data[0].sensor_data).toFixed(2);
                     }),
                 },
                 {
@@ -86,7 +86,7 @@ class FeatherChart extends Component {
                     pointRadius: 1,
                     pointHitRadius: 10,
                     data: this.state.data.map((data) => {
-                        return parseFloat(data.data[1].sensor_data);
+                        return parseFloat(data.data[1].sensor_data).toFixed(2);
                     }),
                 },
             ]

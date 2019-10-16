@@ -71,7 +71,7 @@ class LoRaGatewayChart extends Component {
                     pointHitRadius: 10,
                     data: this.state.data.map((data) => {
                         const cVal = (data.payload_fields.t1 - 32.0)*5.0/9.0;
-                        return parseFloat(cVal);
+                        return parseFloat(cVal).toFixed(2);
                     }),
                 },
                 {
@@ -95,7 +95,7 @@ class LoRaGatewayChart extends Component {
                     pointHitRadius: 10,
                     data: this.state.data.map((data) => {
                         const cVal = (data.payload_fields.t2 - 32.0)*5.0/9.0;
-                        return parseFloat(cVal);
+                        return parseFloat(cVal).toFixed(2);
                     }),
                 },
             ]
