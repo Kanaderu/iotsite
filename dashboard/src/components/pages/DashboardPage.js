@@ -11,7 +11,6 @@ import Paper from '@material-ui/core/Paper';
 import DarkSkyCard from './sections/DarkSkyCard';
 import MapSection from './sections/MapSection';
 import MapVectorSection from './sections/MapVectorSection';
-import LoRaGatewayChart from './sections/LoRaGatewayChart';
 import GenericChart from './sections/GenericChart';
 
 const styles = theme => ({
