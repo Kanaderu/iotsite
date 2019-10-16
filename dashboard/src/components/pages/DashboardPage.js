@@ -138,12 +138,14 @@ class DashboardPage extends Component {
                         "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
         // lora data
         const lora_labels = data.lora.map((data) => {
-            return data.counter;
+            const d = new Date(data.metadata.time);
+            return months[d.getMonth()] + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
         });
         const lora_data = [
             {
                 data: data.lora.map((data) => {
-                    return parseFloat(data.payload_fields.t1);
+                    const cVal = (data.payload_fields.t1 - 32.0)*5.0/9.0;
+                    return parseFloat(cVal).toFixed(2);
                 }),
                 label: 'T1',
                 backgroundColor: 'rgba(75,192,192,0.4)',
@@ -155,7 +157,8 @@ class DashboardPage extends Component {
             },
             {
                 data: data.lora.map((data) => {
-                    return parseFloat(data.payload_fields.t2);
+                    const cVal = (data.payload_fields.t2 - 32.0)*5.0/9.0;
+                    return parseFloat(cVal).toFixed(2);
                 }),
                 label: 'T2',
                 backgroundColor: 'rgba(255,100,100,0.4)',
@@ -171,12 +174,12 @@ class DashboardPage extends Component {
         // feather data
         const feather_labels = data.feather.map((data) => {
             const d = new Date(data.metadata.time);
-            return months[d.getMonth()] + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes();
+            return months[d.getMonth()] + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
         });
         const feather_data = [
             {
                 data: data.feather.map((data) => {
-                    return parseFloat(data.data[0].sensor_data);
+                    return parseFloat(data.data[0].sensor_data).toFixed(2);
                 }),
                 label: '1',
                 backgroundColor: 'rgba(75,192,192,0.4)',
@@ -188,7 +191,7 @@ class DashboardPage extends Component {
             },
             {
                 data: data.feather.map((data) => {
-                    return parseFloat(data.data[1].sensor_data);
+                    return parseFloat(data.data[1].sensor_data).toFixed(2);
                 }),
                 label: '2',
                 backgroundColor: 'rgba(255,100,100,0.4)',
@@ -296,22 +299,6 @@ class DashboardPage extends Component {
         ];
         return (
             <div classes={classes.root}>
-                {/*
-                <MDBRow className="mb-4">
-                    <DarkSkyCard data={data} />
-                    <LoRaGatewayChart />
-                </MDBRow>
-                <MDBRow className="mb-4">
-                    <ChartSection4 data={data} />
-                    <ChartSection5 data={data} />
-                    <ChartSection6 data={data} />
-                </MDBRow>
-                <MDBRow className="mb-6">
-                    <MapSection />
-                    <MapVectorSection />
-                </MDBRow>
-                <Test />
-                */}
                 <ThemeProvider theme={this.theme}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={4}>
@@ -359,17 +346,6 @@ class DashboardPage extends Component {
                             />
                         </Paper>
                     </Grid>
-                    {/*
-                    <Grid item xs={12} sm={4}>
-                        <Paper className={classes.paper}>
-                            <GenericChart
-                                title="Percentages"
-                                labels={darksky_daily_labels}
-                                data={darksky_daily_precip_data}
-                            />
-                        </Paper>
-                    </Grid>
-                    */}
                 </Grid>
                 </ThemeProvider>
             </div>
