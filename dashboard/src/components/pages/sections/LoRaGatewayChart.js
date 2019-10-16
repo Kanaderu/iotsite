@@ -107,7 +107,7 @@ class LoRaGatewayChart extends Component {
                     ticks: { display: true },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Counter'
+                        labelString: 'Timestep'
                     },
                     gridLines: {
                         display: true,
