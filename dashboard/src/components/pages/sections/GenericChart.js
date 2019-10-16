@@ -55,7 +55,7 @@ class GenericChart extends Component {
                     ticks: { display: true },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Timestamp'
+                        labelString: this.props.xlabel
                     },
                     gridLines: {
                         display: true,
@@ -66,7 +66,7 @@ class GenericChart extends Component {
                     ticks: { display: true },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Temperature'
+                        labelString: this.props.ylabel
                     },
                     gridLines: {
                         display: true,

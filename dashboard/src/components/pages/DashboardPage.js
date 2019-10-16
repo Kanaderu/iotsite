@@ -9,14 +9,10 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 
 import DarkSkyCard from './sections/DarkSkyCard';
-import ChartSection4 from './sections/ChartSection4';
-import ChartSection5 from './sections/ChartSection5';
-import ChartSection6 from './sections/ChartSection6';
 import MapSection from './sections/MapSection';
 import MapVectorSection from './sections/MapVectorSection';
 import LoRaGatewayChart from './sections/LoRaGatewayChart';
 import GenericChart from './sections/GenericChart';
-//import Test from './Test';
 
 const styles = theme => ({
     root: {
@@ -301,39 +297,14 @@ class DashboardPage extends Component {
             <div classes={classes.root}>
                 <ThemeProvider theme={this.theme}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} sm={4}>
-                        <Paper className={classes.paper}>
-                            <GenericChart
-                                title="Current Temperature"
-                                labels={darksky_current_labels}
-                                data={darksky_current_data}
-                            />
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <Paper className={classes.paper}>
-                            <GenericChart
-                                title="Daily Temperature High/Low"
-                                labels={darksky_daily_labels}
-                                data={darksky_daily_temp_data}
-                            />
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <Paper className={classes.paper}>
-                            <GenericChart
-                                title="Percentages"
-                                labels={darksky_daily_labels}
-                                data={darksky_daily_precip_data}
-                            />
-                        </Paper>
-                    </Grid>
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.paper}>
                             <GenericChart
                                 title="LoRa Gateway Temperatures"
                                 labels={lora_labels}
                                 data={lora_data}
+                                xlabel="Timestamp"
+                                ylabel="Temperature (C)"
                             />
                         </Paper>
                     </Grid>
@@ -343,6 +314,41 @@ class DashboardPage extends Component {
                                 title="Feather Temperatures"
                                 labels={feather_labels}
                                 data={feather_data}
+                                xlabel="Timestamp"
+                                ylabel="Temperature (C)"
+                            />
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <Paper className={classes.paper}>
+                            <GenericChart
+                                title="Current Temperature"
+                                labels={darksky_current_labels}
+                                data={darksky_current_data}
+                                xlabel="Timestamp"
+                                ylabel="Temperature"
+                            />
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <Paper className={classes.paper}>
+                            <GenericChart
+                                title="Daily Temperature High/Low"
+                                labels={darksky_daily_labels}
+                                data={darksky_daily_temp_data}
+                                xlabel="Day"
+                                ylabel="Temperature"
+                            />
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <Paper className={classes.paper}>
+                            <GenericChart
+                                title="Percentages"
+                                labels={darksky_daily_labels}
+                                data={darksky_daily_precip_data}
+                                xlabel="Day"
+                                ylabel="Percentage"
                             />
                         </Paper>
                     </Grid>
