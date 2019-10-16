@@ -45,7 +45,9 @@ class DashboardPage extends Component {
         minutely: {
             data: []
         },
-        flags: {}
+        flags: {},
+        feather: [],
+        lora: []
     }
 
     theme = createMuiTheme({
@@ -59,6 +61,45 @@ class DashboardPage extends Component {
         }
     });
 
+    fetchFeather() {
+        fetch('https://udsensors.tk/ws/api/FeatherV2/')
+            .then(response => response.json())
+            .then(responses => {
+                this.setState({
+                    feather: responses.map(response => ({
+                        dev_id: response.dev_id,
+                        metadata: response.metadata,
+                        data: response.data,
+                    }))
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    fetchLoRaGateway() {
+        fetch('https://udsensors.tk/ws/api/LoRaGateway/')
+            .then(response => response.json())
+            .then(responses => {
+                this.setState({
+                    lora: responses.map(response => ({
+                        app_id: response.app_id,
+                        dev_id: response.dev_id,
+                        hardware_serial: response.hardware_serial,
+                        port: response.port,
+                        counter: response.counter,
+                        payload_raw: response.payload_raw,
+                        payload_fields: response.payload_fields,
+                        metadata: response.metadata,
+                        downlink_url: response.downlink_url
+                    }))
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     fetchDarkSkyData() {
         fetch('https://udsensors.tk/ws/darksky/')
@@ -82,13 +123,84 @@ class DashboardPage extends Component {
     }
 
     componentDidMount() {
-        this.fetchDarkSkyData()
+        this.fetchDarkSkyData();
+        this.fetchLoRaGateway();
+        this.fetchFeather();
     }
 
     render() {
         const { classes } = this.props;
 
+        // snapshot of state
         const data = this.state;
+
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+        // lora data
+        const lora_labels = data.lora.map((data) => {
+            return data.counter;
+        });
+        const lora_data = [
+            {
+                data: data.lora.map((data) => {
+                    return parseFloat(data.payload_fields.t1);
+                }),
+                label: 'T1',
+                backgroundColor: 'rgba(75,192,192,0.4)',
+                borderColor: 'rgba(75,192,192,1)',
+                pointBorderColor: 'rgba(75,192,192,1)',
+                pointBackgroundColor: '#fff',
+                pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                pointHoverBorderColor: 'rgba(220,220,220,1)',
+            },
+            {
+                data: data.lora.map((data) => {
+                    return parseFloat(data.payload_fields.t2);
+                }),
+                label: 'T2',
+                backgroundColor: 'rgba(255,100,100,0.4)',
+                pointBorderColor: 'rgba(255,192,192,1)',
+                borderColor: 'rgba(255,100,100,1)',
+                pointBorderColor: 'rgba(255,100,100,1)',
+                pointBackgroundColor: '#fff',
+                pointHoverBackgroundColor: 'rgba(255,100,100,1)',
+                pointHoverBorderColor: 'rgba(220,220,220,1)',
+            }
+        ];
+
+        // feather data
+        const feather_labels = data.feather.map((data) => {
+            const d = new Date(data.metadata.time);
+            return months[d.getMonth()] + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes();
+        });
+        const feather_data = [
+            {
+                data: data.feather.map((data) => {
+                    return parseFloat(data.data[0].sensor_data);
+                }),
+                label: '1',
+                backgroundColor: 'rgba(75,192,192,0.4)',
+                borderColor: 'rgba(75,192,192,1)',
+                pointBorderColor: 'rgba(75,192,192,1)',
+                pointBackgroundColor: '#fff',
+                pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                pointHoverBorderColor: 'rgba(220,220,220,1)',
+            },
+            {
+                data: data.feather.map((data) => {
+                    return parseFloat(data.data[1].sensor_data);
+                }),
+                label: '2',
+                backgroundColor: 'rgba(255,100,100,0.4)',
+                pointBorderColor: 'rgba(255,192,192,1)',
+                borderColor: 'rgba(255,100,100,1)',
+                pointBorderColor: 'rgba(255,100,100,1)',
+                pointBackgroundColor: '#fff',
+                pointHoverBackgroundColor: 'rgba(255,100,100,1)',
+                pointHoverBorderColor: 'rgba(220,220,220,1)',
+            }
+        ];
+
         //// darksky data
         // current
         const darksky_current_labels = data.hourly.data.map((data) => {
@@ -232,18 +344,18 @@ class DashboardPage extends Component {
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.paper}>
                             <GenericChart
-                                title="Current Temperature"
-                                labels={darksky_current_labels}
-                                data={darksky_current_data}
+                                title="LoRa Gateway Temperatures"
+                                labels={lora_labels}
+                                data={lora_data}
                             />
                         </Paper>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.paper}>
                             <GenericChart
-                                title="Daily Temperature High/Low"
-                                labels={darksky_daily_labels}
-                                data={darksky_daily_temp_data}
+                                title="Feather Temperatures"
+                                labels={feather_labels}
+                                data={feather_data}
                             />
                         </Paper>
                     </Grid>
