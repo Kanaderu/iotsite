@@ -4,7 +4,7 @@ import { Chart, Line } from 'react-chartjs-2';
 import Hammer from 'react-hammerjs';
 import zoom from 'chartjs-plugin-zoom';
 
-class LoRaGatewayChart extends Component {
+class FeatherChart extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -12,21 +12,15 @@ class LoRaGatewayChart extends Component {
         };
     }
 
-    fetchLoRaGateway() {
-        fetch('https://udsensors.tk/ws/api/LoRaGateway/')
+    fetchFeather() {
+        fetch('https://udsensors.tk/ws/api/FeatherV2/')
             .then(response => response.json())
             .then(responses => {
                 this.setState({
                     data: responses.map(response => ({
-                        app_id: response.app_id,
                         dev_id: response.dev_id,
-                        hardware_serial: response.hardware_serial,
-                        port: response.port,
-                        counter: response.counter,
-                        payload_raw: response.payload_raw,
-                        payload_fields: response.payload_fields,
                         metadata: response.metadata,
-                        downlink_url: response.downlink_url
+                        data: response.data,
                     }))
                 });
             })
@@ -36,17 +30,21 @@ class LoRaGatewayChart extends Component {
     }
 
     componentDidMount() {
-        this.fetchLoRaGateway();
+        this.fetchFeather();
     }
 
     render(){
+        console.log(this.state);
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
         const dataLine = {
             labels: this.state.data.map((data) => {
-                return data.counter;
+                const d = new Date(data.metadata.time);
+                return months[d.getMonth()] + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes();
             }),
             datasets: [
                 {
-                    label: 'T1',
+                    label: '1',
                     fill: false,
                     lineTension: 0.1,
                     backgroundColor: 'rgba(0,255,154,0.4)',
@@ -65,11 +63,11 @@ class LoRaGatewayChart extends Component {
                     pointRadius: 1,
                     pointHitRadius: 10,
                     data: this.state.data.map((data) => {
-                        return parseFloat(data.payload_fields.t1);
+                        return parseFloat(data.data[0].sensor_data);
                     }),
                 },
                 {
-                    label: 'T2',
+                    label: '2',
                     fill: false,
                     lineTension: 0.1,
                     backgroundColor: 'rgba(255,0,154,0.4)',
@@ -88,7 +86,7 @@ class LoRaGatewayChart extends Component {
                     pointRadius: 1,
                     pointHitRadius: 10,
                     data: this.state.data.map((data) => {
-                        return parseFloat(data.payload_fields.t2);
+                        return parseFloat(data.data[1].sensor_data);
                     }),
                 },
             ]
@@ -100,7 +98,7 @@ class LoRaGatewayChart extends Component {
                     ticks: { display: true },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Counter'
+                        labelString: 'Timestamp'
                     },
                     gridLines: {
                         display: true,
@@ -111,7 +109,7 @@ class LoRaGatewayChart extends Component {
                     ticks: { display: true },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Temperature'
+                        labelString: 'Temperature (C)'
                     },
                     gridLines: {
                         display: true,
@@ -136,7 +134,7 @@ class LoRaGatewayChart extends Component {
         return (
             <MDBCol md="6" className="mb-6">
                 <MDBCard>
-                    <MDBCardHeader>LoRa Gateway Temperatures</MDBCardHeader>
+                    <MDBCardHeader>Feather Sensor Temperatures</MDBCardHeader>
                     <MDBCardBody>
                         <Line data={dataLine} options={opts} />
                     </MDBCardBody>
@@ -146,4 +144,4 @@ class LoRaGatewayChart extends Component {
     }
 }
 
-export default LoRaGatewayChart;
+export default FeatherChart;
