@@ -29,6 +29,7 @@ class DashboardPage extends Component {
         timezone: undefined,
         offset: undefined,
         currently: {
+            time: null,
             data: []
         },
         hourly: {
@@ -296,6 +297,14 @@ class DashboardPage extends Component {
             <div classes={classes.root}>
                 <ThemeProvider theme={this.theme}>
                 <Grid container spacing={2}>
+                    <Grid item xs={12} sm={12}>
+                        <Paper className={classes.paper}>
+                            <DarkSkyCard
+                                data={data.currently}
+                                title="DarkSky"
+                            />
+                        </Paper>
+                    </Grid>
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.paper}>
                             <GenericChart
