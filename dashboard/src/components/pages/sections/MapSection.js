@@ -1,14 +1,24 @@
-import React from 'react';
-import * as ReactDOM from 'react-dom';
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { Card, CardContent, CardHeader, Paper } from '@material-ui/core';
 import { Scene } from '@esri/react-arcgis';
-import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardHeader} from 'mdbreact';
 
-const MapSection = () => {
-    return (
-        <MDBCol md="6" className="mb-6">
-            <MDBCard className="mb-12">
-                <MDBCardHeader>ArcGIS Satellite Elevation Map</MDBCardHeader>
-                <MDBCardBody style={{width: '100%', height: '700px'}} className="text-center">
+const styles = theme => ({
+    card: {
+        height: 600
+    }
+});
+
+class MapSection extends Component {
+    render() {
+        const { classes } = this.props;
+        return (
+            <Card className={classes.card}>
+                <CardHeader
+                    title={this.props.title}
+                    titleTypographyProps={{variant: 'h6'}}
+                />
+                <CardContent>
                     <link rel="stylesheet" href="https://js.arcgis.com/4.10/esri/css/main.css"></link>
                     <Scene
                         mapProperties={{
@@ -26,10 +36,10 @@ const MapSection = () => {
                             }
                         }}
                     />
-                </MDBCardBody>
-            </MDBCard>
-        </MDBCol>
-    )
+                </CardContent>
+            </Card>
+        )
+    }
 }
 
-export default MapSection;
+export default withStyles(styles)(MapSection);

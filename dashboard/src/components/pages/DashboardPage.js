@@ -360,6 +360,20 @@ class DashboardPage extends Component {
                             />
                         </Paper>
                     </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Paper className={classes.paper}>
+                            <MapSection
+                                title="ArcGIS Satellite Elevation Map"
+                            />
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Paper className={classes.paper}>
+                            <MapSection
+                                title="ArcGIS Map Vector"
+                            />
+                        </Paper>
+                    </Grid>
                 </Grid>
                 </ThemeProvider>
             </div>
