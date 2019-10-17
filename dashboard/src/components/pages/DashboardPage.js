@@ -140,8 +140,7 @@ class DashboardPage extends Component {
         const lora_data = [
             {
                 data: data.lora.map((data) => {
-                    const cVal = (data.payload_fields.t1 - 32.0)*5.0/9.0;
-                    return parseFloat(cVal).toFixed(2);
+                    return parseFloat(data.payload_fields.t1).toFixed(2);
                 }),
                 label: 'T1',
                 backgroundColor: 'rgba(75,192,192,0.4)',
@@ -153,8 +152,7 @@ class DashboardPage extends Component {
             },
             {
                 data: data.lora.map((data) => {
-                    const cVal = (data.payload_fields.t2 - 32.0)*5.0/9.0;
-                    return parseFloat(cVal).toFixed(2);
+                    return parseFloat(data.payload_fields.t2).toFixed(2);
                 }),
                 label: 'T2',
                 backgroundColor: 'rgba(255,100,100,0.4)',
