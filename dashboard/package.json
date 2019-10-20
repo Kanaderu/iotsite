@@ -65,5 +65,8 @@
     "webpack-bundle-tracker": "^0.4.2-beta",
     "webpack-cli": "^3.3.9"
   },
-  "dependencies": {}
+  "dependencies": {
+    "mui-layout": "^1.2.9",
+    "react-icons": "^3.7.0"
+  }
 }

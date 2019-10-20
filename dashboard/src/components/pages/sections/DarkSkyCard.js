@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import { lighten, withStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { Grid, Card, CardContent, CardHeader, Paper } from '@material-ui/core';
+import { Grid, Card, CardContent, CardHeader } from '@material-ui/core';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import { MDBIcon } from 'mdbreact';
+import { IconContext } from "react-icons";
+import { WiDaySunny, WiMoonWaxingCrescent4, WiRain, WiSnowflakeCold, WiSleet, WiStrongWind, WiFog, WiCloudy, WiDayCloudy, WiNightAltCloudy, WiWindDeg, WiRaindrop, WiHumidity } from "react-icons/wi";
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+
 import dayton_img from '../../../assets/dayton.jpeg'
 
 const styles = theme => ({
@@ -13,6 +21,10 @@ const styles = theme => ({
     },
     media: {
         height: 140,
+    },
+    list: {
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
     },
 });
 
@@ -33,30 +45,29 @@ class DarkSkyCard extends Component {
     renderWeatherIcon(icon) {
         switch(icon) {
             case 'clear-day':
-                return <MDBIcon icon="sun" size="5x" className="amber-text" />;
+                return <WiDaySunny />;
             case 'clear-night':
-                return <MDBIcon icon="moon" size="5x" className="blue-text" />;
+                return <WiMoonWaxingCrescent4 />;
             case 'rain':
-                return <MDBIcon icon="cloud-rain" size="5x" className="indigo-text" />;
+                return <WiRain />;
             case 'snow':
-                return <MDBIcon icon="snowflake" size="5x" className="blue-grey-text" />;
+                return <WiSnowflakeCold />;
             case 'sleet':
-                return <MDBIcon icon="snowflake" size="5x" className="light-blue-text" />;
+                return <WiSleet />;
             case 'wind':
-                return <MDBIcon icon="wind" size="5x" className="blue-grey-text" />;
+                return <WiStrongWind />;
             case 'fog':
-                return <MDBIcon icon="cloud" size="5x" className="grey-text" />;
+                return <WiFog />;
             case 'cloudy':
-                return <MDBIcon icon="cloud" size="5x" className="blue-grey-text" />;
+                return <WiCloudy />;
             case 'partly-cloudy-day':
-                return <MDBIcon icon="cloud-sun" size="5x" className="orange-text" />;
+                return <WiDayCloudy />;
             case 'partly-cloudy-night':
-                return <MDBIcon icon="cloud-moon" size="5x" className="deep-purple-text" />;
+                return <WiNightAltCloudy />;
             default:
-                return <MDBIcon icon="poo-storm" size="5x" className="brown-text" />;
+                return <WiWindDeg />;
         }
     }
-
     render() {
         const { classes } = this.props;
 
@@ -101,33 +112,48 @@ class DarkSkyCard extends Component {
                         </Grid>
                         <Grid item>
                             <Typography variant="body2" display="inline" align="right" component="p">
+                                <IconContext.Provider value={{ color: "blue", className: "global-class-name", size: 60 }}>
                                     { this.renderWeatherIcon(this.props.data.icon) }
+                                </IconContext.Provider>
                             </Typography>
                             <Typography variant="body2" color="textSecondary" component="p">
                                 {this.props.data.summary}
                             </Typography>
                         </Grid>
                     </Grid>
+                    <List className={classes.list}>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <IconContext.Provider value={{ color: "blue", size: 50 }}>
+                                        <WiRaindrop />
+                                    </IconContext.Provider>
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Precipitation Probability" secondary={ parseFloat(this.props.data.precipProbability * 100.0).toFixed(2) + '%' } />
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <IconContext.Provider value={{ color: "white", size: 50 }}>
+                                        <WiStrongWind />
+                                    </IconContext.Provider>
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Wind Speed" secondary={ parseFloat(this.props.data.windSpeed).toFixed(2) + 'mi/h' } />
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <IconContext.Provider value={{ color: "green", size: 50 }}>
+                                        <WiHumidity />
+                                    </IconContext.Provider>
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Humidity" secondary={ parseFloat(this.props.data.humidity * 100.0).toFixed(2) + '%' } />
+                        </ListItem>
+                    </List>
                     <Grid
                         justify="space-between"
                         container
                         spacing={2}
                     >
-                        <Grid item>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                                <MDBIcon icon="tint" size="lg" className="cyan-text pr-2"/>{ this.props.data.precipProbability * 100.0}% Precipitation
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                                <MDBIcon icon="leaf" size="lg" className="grey-text pr-2"/>{ this.props.data.windSpeed } mi/h Winds
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                                <MDBIcon icon="water" size="lg" className="blue-text pr-2" />{ this.props.data.humidity * 100.0}% Humidity
-                            </Typography>
-                        </Grid>
                         <Grid item xs={12}>
                                 <BorderLinearProgress
                                     className={classes.margin}
@@ -135,13 +161,41 @@ class DarkSkyCard extends Component {
                                     color="secondary"
                                     value={percentTime}
                                 />
-                                <ul className="list-unstyled d-flex justify-content-between font-small text-muted mb-4">
-                                    <li className="pl-4">3AM</li>
-                                    <li>7AM</li>
-                                    <li>11PM</li>
-                                    <li>3PM</li>
-                                    <li className="pr-4">7PM</li>
-                                </ul>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Typography>
+                                12AM
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Typography>
+                                4AM
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Typography>
+                                8AM
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Typography>
+                                12PM
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Typography>
+                                4PM
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={1}>
+                            <Typography>
+                                8PM
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={1}>
+                            <Typography align='right'>
+                                12AM
+                            </Typography>
                         </Grid>
                     </Grid>
                 </CardContent>
