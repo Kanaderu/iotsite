@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Card, CardContent, CardHeader, Paper } from '@material-ui/core';
+import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { Scene } from '@esri/react-arcgis';
 
 const styles = theme => ({
