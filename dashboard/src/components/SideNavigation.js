@@ -18,7 +18,33 @@ const styles = theme => ({
         width: '100%',
         maxWidth: 360,
         backgroundColor: theme.palette.background.paper,
+        MuiSelected: {
+            backgroundColor: "#64dd17",
+        },
     },
+    icon: {
+        color: '#000000',
+        /*
+        '&:hover': {
+            color: '#000000',
+        },
+        */
+    },
+    itemroot: {
+        //color: 'red', // text color
+        '&$selected': {
+            backgroundColor: '#F80228',
+            '&:hover': {
+                backgroundColor: '#0200D1',
+                color: '#FFFFFF',
+            },
+        },
+        '&:hover': {
+            backgroundColor: '#0200D1',
+            color: '#FFFFFF',
+        },
+    },
+    selected: {},
 });
 
 class SideNavigation extends Component {
@@ -44,8 +70,13 @@ class SideNavigation extends Component {
                             button
                             selected={this.state.selectedIndex === 0}
                             onClick={event => handleListItemClick(event, 0)}
+                            //className={classes.listitem}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
                         >
-                            <ListItemIcon>
+                            <ListItemIcon className={classes.icon}>
                                 <HomeRoundedIcon />
                             </ListItemIcon>
                             <ListItemText primary="Home" />
@@ -56,8 +87,12 @@ class SideNavigation extends Component {
                             button
                             selected={this.state.selectedIndex === 1}
                             onClick={event => handleListItemClick(event, 1)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
                         >
-                            <ListItemIcon>
+                            <ListItemIcon className={classes.icon}>
                                 <LandscapeIcon />
                             </ListItemIcon>
                             <ListItemText primary="Sensors" />
@@ -71,8 +106,12 @@ class SideNavigation extends Component {
                             button
                             selected={this.state.selectedIndex === 2}
                             onClick={event => handleListItemClick(event, this.state.selectedIndex)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
                         >
-                            <ListItemIcon>
+                            <ListItemIcon className={classes.icon}>
                                 <GitHubIcon />
                             </ListItemIcon>
                             <ListItemText primary="GitHub Source" />
@@ -83,8 +122,12 @@ class SideNavigation extends Component {
                             button
                             selected={this.state.selectedIndex === 3}
                             onClick={event => handleListItemClick(event, 3)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
                         >
-                            <ListItemIcon>
+                            <ListItemIcon className={classes.icon}>
                                 <InfoRoundedIcon />
                             </ListItemIcon>
                             <ListItemText primary="About" />
