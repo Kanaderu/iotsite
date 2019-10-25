@@ -71,9 +71,9 @@ class DarkSkyCard extends Component {
     render() {
         const { classes } = this.props;
 
-        const currentDay = new Date(this.props.data.time * 1000).toDateString();
-        const currentTime = new Date();
-        const percentTime = 100*(currentTime.getHours()*60.0 + currentTime.getMinutes()) / 1440.0;
+        const currentDate = new Date();
+        const currentDay = currentDate.toDateString();
+        const percentTime = 100*(currentDate.getHours()*60.0 + currentDate.getMinutes()) / 1440.0;
         return (
             <Card className={classes.card}>
                 <CardMedia
