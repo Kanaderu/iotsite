@@ -82,7 +82,7 @@ class SideNavigation extends Component {
                             <ListItemText primary="Home" />
                         </ListItem>
                     </NavLink>
-                    <NavLink exact={true} to="/test2" style={{ textDecoration: 'none' }}>
+                    <NavLink exact={true} to="/sensors" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 1}
