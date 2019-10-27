@@ -21,17 +21,3 @@ class WorldBorder(models.Model):
     # Returns the string representation of the model.
     def __str__(self):
         return self.name
-
-
-class WeatherStation(models.Model):
-
-    wmoid = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=256)
-
-    geom = models.PointField()
-
-    #objects = models.GeoManager() # deprecated as of Django 2.0
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.name
