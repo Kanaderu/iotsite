@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('sensors.urls')),
     path('', include('external_api.urls')),
     path('', include('dashboard.urls')),
+    path('', include('world.urls')),
 ]

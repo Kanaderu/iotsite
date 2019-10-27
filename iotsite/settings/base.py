@@ -209,3 +209,7 @@ SILENCED_SYSTEM_CHECKS = [
 
 # GeoDjango
 GEOIP_PATH = os.path.join(BASE_DIR, 'setup', 'geodjango', 'geoip2', 'GeoLite2'),
+
+# Leaflet
+LEAFLET_CONFIG = {
+}

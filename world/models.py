@@ -1,8 +1,7 @@
 from django.contrib.gis.db import models
 
 class WorldBorder(models.Model):
-    # Regular Django fields corresponding to the attributes in the
-    # world borders shapefile.
+    # Regular Django fields corresponding to the attributes in the world borders shapefile.
     name = models.CharField(max_length=50)
     area = models.IntegerField()
     pop2005 = models.IntegerField('Population 2005')
@@ -14,10 +13,25 @@ class WorldBorder(models.Model):
     subregion = models.IntegerField('Sub-Region Code')
     lon = models.FloatField()
     lat = models.FloatField()
+    lat_lon = models.PointField(geography=True, default='POINT(0.0 0.0)')
 
     # GeoDjango-specific: a geometry field (MultiPolygonField)
     mpoly = models.MultiPolygonField()
 
     # Returns the string representation of the model.
+    def __str__(self):
+        return self.name
+
+
+class WeatherStation(models.Model):
+
+    wmoid = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=256)
+
+    geom = models.PointField()
+
+    #objects = models.GeoManager() # deprecated as of Django 2.0
+    objects = models.Manager()
+
     def __str__(self):
         return self.name
