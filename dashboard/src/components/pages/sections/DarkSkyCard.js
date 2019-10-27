@@ -138,7 +138,7 @@ class DarkSkyCard extends Component {
                                     </IconContext.Provider>
                                 </Avatar>
                             </ListItemAvatar>
-                            <ListItemText primary="Wind Speed" secondary={ parseFloat(this.props.data.windSpeed).toFixed(2) + 'mi/h' } />
+                            <ListItemText primary="Wind Speed" secondary={ parseFloat(this.props.data.windSpeed).toFixed(2) + ' mi/h' } />
                             <ListItemAvatar>
                                 <Avatar>
                                     <IconContext.Provider value={{ color: "green", size: 50 }}>
