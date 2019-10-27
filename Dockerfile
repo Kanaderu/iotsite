@@ -23,10 +23,12 @@ RUN npm install
 COPY dashboard/ ./
 RUN npm run start
 
+# install python packages
 WORKDIR /usr/src/app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+# setup python project
 COPY . .
 
 EXPOSE 8000
