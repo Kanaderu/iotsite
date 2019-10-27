@@ -34,6 +34,8 @@ INSTALLED_APPS = [
 
     'django.contrib.gis',
     'world',
+    'djgeojson',
+    'leaflet',
 
     'webpack_loader',   # react webpack integration
     'rest_framework',   # rest framework library
