@@ -1,4 +1,5 @@
 import os
+from django.contrib.gis.geos import Point
 from django.contrib.gis.utils import LayerMapping
 from .models import WorldBorder, LINKStation, linkstation_mapping
 
@@ -25,6 +26,9 @@ world_shp = os.path.abspath(
 def run_worldborder(verbose=True):
     lm = LayerMapping(WorldBorder, world_shp, world_mapping, transform=False)
     lm.save(strict=True, verbose=verbose)
+    for l in WorldBorder.objects.all():
+        l.lat_lon = Point(x=l.lon, y=l.lat, srid=4326)
+        l.save()
 
 # link station
 link_shp = os.path.abspath(
