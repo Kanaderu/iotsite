@@ -117,7 +117,7 @@ class SideNavigation extends Component {
                             <ListItemText primary="GitHub Source" />
                         </ListItem>
                     </a>
-                    <NavLink exact={true} to="/test2" style={{ textDecoration: 'none' }}>
+                    <NavLink exact={true} to="/about" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 3}
