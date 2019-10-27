@@ -32,6 +32,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django.contrib.gis',
+    'world',
+
     'webpack_loader',   # react webpack integration
     'rest_framework',   # rest framework library
     'thorn.django',     # webhooks library
@@ -88,9 +91,17 @@ WSGI_APPLICATION = 'iotsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+         'ENGINE': 'django.contrib.gis.db.backends.postgis',
+         'NAME': 'geodjango',
+         'USER': 'geo',
+         'PASSWORD': 'qazwsx',
+         'HOST': '127.0.0.1',
+         'PORT': '5432',
     }
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #}
 }
 
 
@@ -193,3 +204,6 @@ else:
 SILENCED_SYSTEM_CHECKS = [
     'django_mysql.E016',
 ]
+
+# GeoDjango
+GEOIP_PATH = os.path.join(BASE_DIR, 'setup', 'geodjango', 'geoip2', 'GeoLite2'),
