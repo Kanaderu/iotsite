@@ -21,3 +21,25 @@ class WorldBorder(models.Model):
     # Returns the string representation of the model.
     def __str__(self):
         return self.name
+
+
+# This is an auto-generated Django model module created by ogrinspect.
+class LINKStation(models.Model):
+    objectid = models.BigIntegerField()
+    name = models.CharField(max_length=80)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    field4 = models.CharField(max_length=80)
+    geom = models.MultiPointField(srid=4326)
+
+
+# Auto-generated `LayerMapping` dictionary for LINKStation model
+linkstation_mapping = {
+    'objectid': 'OBJECTID',
+    'name': 'Name',
+    'latitude': 'Latitude',
+    'longitude': 'Longitude',
+    'field4': 'Field4',
+    'geom': 'MULTIPOINT',
+}
+
