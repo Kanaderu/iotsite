@@ -100,9 +100,9 @@ class LoRaGateway(models.Model):
 
     gtw_id = models.CharField(max_length=128, blank=True, default='')
     gtw_trusted = models.BooleanField(default=False)
-    timestamp = models.PositiveIntegerField(blank=True)
+    timestamp = models.BigIntegerField(blank=True)
     time = models.CharField(max_length=128, blank=True, default='')
-    channel = models.PositiveIntegerField(blank=True)
+    channel = models.BigIntegerField(blank=True)
     rssi = models.DecimalField(max_digits=6, decimal_places=3, blank=True)
     snr = models.DecimalField(max_digits=6, decimal_places=3, blank=True)
     rf_chain = models.DecimalField(max_digits=6, decimal_places=3, blank=True)
