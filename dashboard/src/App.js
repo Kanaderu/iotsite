@@ -31,10 +31,10 @@ class App extends Component {
         return (
             <ThemeProvider theme={theme}>
                 <Root config={presets.createContentBasedLayout()}>
-                    <Header color="primary" renderMenuIcon={open => (open ? <ChevronLeft /> : <MenuIcon />)}>
+                    <Header color="primary" renderMenuIcon={open => (open ? <ChevronLeft color="secondary" /> : <MenuIcon color="secondary" />)}>
                         <Typography variant="h6">UD Sensors</Typography>
                     </Header>
-                    <Nav renderIcon={collapsed => collapsed ? <ChevronRight /> : <ChevronLeft />}>
+                    <Nav renderIcon={collapsed => collapsed ? <ChevronRight color="secondary" /> : <ChevronLeft color="secondary" />}>
                         <SideNavigation />
                     </Nav>
                     <Content>

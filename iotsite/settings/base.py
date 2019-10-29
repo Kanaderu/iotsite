@@ -32,6 +32,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django.contrib.gis',
+    'geo',
+    'djgeojson',
+    'leaflet',
+
     'webpack_loader',   # react webpack integration
     'rest_framework',   # rest framework library
     'thorn.django',     # webhooks library
@@ -181,3 +186,10 @@ else:
 SILENCED_SYSTEM_CHECKS = [
     'django_mysql.E016',
 ]
+
+# GeoDjango
+GEOIP_PATH = os.path.join(BASE_DIR, 'setup', 'geodjango', 'geoip2', 'GeoLite2'),
+
+# Leaflet
+LEAFLET_CONFIG = {
+}

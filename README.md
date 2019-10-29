@@ -4,13 +4,10 @@ The IoT Site repository is used for implementing and testing the use of webhooks
 
 ## Setup Instructions
 
-Installation follows standard python project setups. Webhooks is implemented using [Thorn by Robinhood](https://github.com/robinhood/thorn), however the latest version on pypi is fairly out-of-date. It would be best to install Thorn first, and then the additional required packages using:
+Installation follows standard python project setups. Webhooks is implemented using [Thorn by Robinhood](https://github.com/robinhood/thorn).
 
 ```
-# install the latest version of thorn via git
-pip install git+https://github.com/robinhood/thorn.git
-
-# install the other library requirements
+# install the library requirements
 pip install -r requirements
 ```
 
@@ -27,7 +24,7 @@ React is used to build the frontend dashboard. Using React and Django involves t
 ```
 cd dashboard/
 yarn install
-yarn run
+yarn run start
 ```
 
 Inplace of `yarn`, `npm` can be used instead using the following commands.
