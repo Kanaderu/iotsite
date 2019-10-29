@@ -9,3 +9,5 @@ sudo apt-get install binutils libproj-dev gdal-bin
 sudo add-apt-repository ppa:maxmind/ppa
 sudo apt update
 sudo apt install libmaxminddb0 libmaxminddb-dev mmdb-bin
+
+sudo apt install postgis
