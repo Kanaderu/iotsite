@@ -15,6 +15,7 @@ import roundInfo from '@iconify/icons-ic/round-info';
 import sharpLandscape from '@iconify/icons-ic/sharp-landscape';
 import baselineHome from '@iconify/icons-ic/baseline-home';
 import codefactorIcon from '@iconify/icons-simple-icons/codefactor';
+import bookIcon from '@iconify/icons-icomoon-free/book';
 
 
 const styles = theme => ({
@@ -118,10 +119,26 @@ class SideNavigation extends Component {
                             <ListItemText primary="Sensors API" />
                         </ListItem>
                     </a>
-                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/jupyter">
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/docs">
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 3}
+                            onClick={event => handleListItemClick(event, this.state.selectedIndex)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
+                        >
+                            <ListItemIcon className={classes.icon}>
+                                <Icon height='2em' icon={bookIcon} />
+                            </ListItemIcon>
+                            <ListItemText primary="Documentation" />
+                        </ListItem>
+                    </a>
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/jupyter">
+                        <ListItem
+                            button
+                            selected={this.state.selectedIndex === 4}
                             onClick={event => handleListItemClick(event, this.state.selectedIndex)}
                             classes={{
                                 root: classes.itemroot,
@@ -140,7 +157,7 @@ class SideNavigation extends Component {
                     <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="https://github.com/Kanaderu/iotsite">
                         <ListItem
                             button
-                            selected={this.state.selectedIndex === 4}
+                            selected={this.state.selectedIndex === 5}
                             onClick={event => handleListItemClick(event, this.state.selectedIndex)}
                             classes={{
                                 root: classes.itemroot,
@@ -156,8 +173,8 @@ class SideNavigation extends Component {
                     <NavLink exact={true} to="/about" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
-                            selected={this.state.selectedIndex === 5}
-                            onClick={event => handleListItemClick(event, 5)}
+                            selected={this.state.selectedIndex === 6}
+                            onClick={event => handleListItemClick(event, 6)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
