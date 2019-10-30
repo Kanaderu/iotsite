@@ -32,6 +32,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django.contrib.gis',
+    'geo',
+    'djgeojson',
+    'leaflet',
+
     'webpack_loader',   # react webpack integration
     'rest_framework',   # rest framework library
     'thorn.django',     # webhooks library
@@ -81,18 +86,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'iotsite.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -193,3 +186,10 @@ else:
 SILENCED_SYSTEM_CHECKS = [
     'django_mysql.E016',
 ]
+
+# GeoDjango
+GEOIP_PATH = os.path.join(BASE_DIR, 'setup', 'geodjango', 'geoip2', 'GeoLite2'),
+
+# Leaflet
+LEAFLET_CONFIG = {
+}
