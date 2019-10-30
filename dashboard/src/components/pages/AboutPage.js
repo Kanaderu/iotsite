@@ -82,13 +82,12 @@ class AboutPage extends Component {
                             <Card className={classes.card}>
                                 <CardMedia
                                     className={classes.media}
-                                    image="/static/images/cards/paella.jpg"
-                                    title="Paella dish"
+                                    image="https://cdn.mos.cms.futurecdn.net/otjbibjaAbiifyN9uVaZyL-320-80.jpg"
+                                    title="David Fan"
                                 />
                                 <CardContent>
                                     <Typography variant="body2" color="textSecondary" component="p">
-                                        This impressive paella is a perfect party dish and a fun meal to cook together with your
-                                        guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                                    It a cat.
                                     </Typography>
                                 </CardContent>
                             </Card>

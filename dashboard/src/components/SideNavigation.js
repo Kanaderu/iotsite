@@ -8,10 +8,12 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 
-import LandscapeIcon from '@material-ui/icons/Landscape';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
-import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
+import { Icon, InlineIcon } from '@iconify/react';
+import jupyterIcon from '@iconify/icons-simple-icons/jupyter';
+import githubIcon from '@iconify/icons-simple-icons/github';
+import roundInfo from '@iconify/icons-ic/round-info';
+import sharpLandscape from '@iconify/icons-ic/sharp-landscape';
+import baselineHome from '@iconify/icons-ic/baseline-home';
 
 const styles = theme => ({
     root: {
@@ -77,7 +79,7 @@ class SideNavigation extends Component {
                             }}
                         >
                             <ListItemIcon className={classes.icon}>
-                                <HomeRoundedIcon />
+                                <Icon height='2em' icon={baselineHome} />
                             </ListItemIcon>
                             <ListItemText primary="Home" />
                         </ListItem>
@@ -93,15 +95,12 @@ class SideNavigation extends Component {
                             }}
                         >
                             <ListItemIcon className={classes.icon}>
-                                <LandscapeIcon />
+                                <Icon height='2em' icon={sharpLandscape} />
                             </ListItemIcon>
                             <ListItemText primary="Sensors" />
                         </ListItem>
                     </NavLink>
-                </List>
-                <Divider />
-                <List component="nav" aria-label="secondary mailbox folder">
-                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="https://github.com/Kanaderu/iotsite">
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/jupyter">
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 2}
@@ -112,7 +111,26 @@ class SideNavigation extends Component {
                             }}
                         >
                             <ListItemIcon className={classes.icon}>
-                                <GitHubIcon />
+                                <Icon height='2em' icon={jupyterIcon} />
+                            </ListItemIcon>
+                            <ListItemText primary="JupyterHub" />
+                        </ListItem>
+                    </a>
+                </List>
+                <Divider />
+                <List component="nav" aria-label="secondary mailbox folder">
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="https://github.com/Kanaderu/iotsite">
+                        <ListItem
+                            button
+                            selected={this.state.selectedIndex === 3}
+                            onClick={event => handleListItemClick(event, this.state.selectedIndex)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
+                        >
+                            <ListItemIcon className={classes.icon}>
+                                <Icon height='2em' icon={githubIcon} />
                             </ListItemIcon>
                             <ListItemText primary="GitHub Source" />
                         </ListItem>
@@ -120,15 +138,15 @@ class SideNavigation extends Component {
                     <NavLink exact={true} to="/about" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
-                            selected={this.state.selectedIndex === 3}
-                            onClick={event => handleListItemClick(event, 3)}
+                            selected={this.state.selectedIndex === 4}
+                            onClick={event => handleListItemClick(event, 4)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
                             }}
                         >
                             <ListItemIcon className={classes.icon}>
-                                <InfoRoundedIcon />
+                                <Icon height='2em' icon={roundInfo} />
                             </ListItemIcon>
                             <ListItemText primary="About" />
                         </ListItem>
