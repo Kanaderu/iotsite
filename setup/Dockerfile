@@ -15,16 +15,13 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 # install node packages
-WORKDIR /usr/src/app
-COPY dashboard/package.json .
 WORKDIR /usr/src/app/dashboard
-RUN yarn install
+COPY dashboard/package.json .
+RUN npm install
 
 # build react project
-WORKDIR /usr/src/app
-COPY dashboard .
-WORKDIR /usr/src/app/dashboard
-RUN yarn run start
+COPY dashboard/ ./
+RUN npm run start
 
 WORKDIR /usr/src/app
 COPY requirements.txt .
