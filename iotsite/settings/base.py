@@ -181,12 +181,6 @@ else:
     DARKSKY_LON = 'NONE'
     DARKSKY_THRESH = 'NONE'
 
-# ignore system checks to support JSONField()
-# https://github.com/adamchainz/django-mysql/issues/342
-SILENCED_SYSTEM_CHECKS = [
-    'django_mysql.E016',
-]
-
 # GeoDjango
 GEOIP_PATH = os.path.join(BASE_DIR, 'setup', 'geodjango', 'geoip2', 'GeoLite2'),
 
