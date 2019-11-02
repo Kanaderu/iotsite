@@ -69,7 +69,6 @@ class DashboardPage extends Component {
             .then(this.checkStatus)
             .then(response => response.json())
             .then(responses => {
-                console.log(responses);
                 this.setState({
                     feather: responses.results.map(response => ({
                         dev_id: response.dev_id,

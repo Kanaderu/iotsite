@@ -1,4 +1,5 @@
 from django.conf.urls import include, url
+from django.conf import settings
 from django.views.generic import TemplateView
 from rest_framework import routers
 from rest_framework.schemas import get_schema_view
@@ -30,3 +31,9 @@ urlpatterns = [
         extra_context={'schema_url': 'openapi-schema'}
     ), name='redoc'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^ws/hooks/', include(('thorn.django.rest_framework.urls', 'thorn'))),
+        url(r'^ws/api/', include(router.urls)),
+    ]
