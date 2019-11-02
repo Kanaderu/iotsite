@@ -29,3 +29,9 @@ DATABASES = {
     }
 }
 
+# setup sql explorer
+INSTALLED_APPS += [
+    'explorer',
+]
+EXPLORER_CONNECTIONS = { 'Default': 'default' }
+EXPLORER_DEFAULT_CONNECTION = 'default'
