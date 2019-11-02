@@ -63,6 +63,7 @@ class LoRaGatewayData(models.Model):
     class Meta:
         verbose_name = 'LoRa Gateway Data'
         verbose_name_plural = 'LoRa Gateway Data'
+        ordering = ['metadata']
 
 
 class LoRaGatewayPayloadFields(models.Model):
@@ -93,6 +94,7 @@ class LoRaGatewayMetadata(models.Model):
     class Meta:
         verbose_name = 'LoRa Gateway Metadata'
         verbose_name_plural = 'LoRa Gateway Metadata'
+        ordering = ['-time']
 
 
 class LoRaGateway(models.Model):
@@ -155,6 +157,9 @@ class FeatherSensorTemperature(models.Model):
 class FeatherDataV2(models.Model):
     dev_id = models.PositiveIntegerField(blank=True)
 
+    class Meta:
+        ordering = ['metadata']
+
 
 class FeatherMetadataV2(models.Model):
     feather_data = models.OneToOneField('FeatherDataV2', related_name='metadata', null=True, on_delete=models.CASCADE)
@@ -162,6 +167,9 @@ class FeatherMetadataV2(models.Model):
     latitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     longitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     time = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-time']
 
 
 class FeatherSensorDataV2(models.Model):

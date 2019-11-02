@@ -115,8 +115,8 @@ USE_L10N = True
 USE_TZ = True
 
 REST_FRAMEWORK = {
-    #'PAGE_SIZE': 20,
-    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 50,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
@@ -176,16 +176,10 @@ if 'DARKSKY_KEY' in os.environ:
     DARKSKY_THRESH = float(os.environ['DARKSKY_THRESH'])
 else:
     eprint('DARKSKY_KEY Environment Variable is NOT set! Ignoring...')
-    DARKSKY_KEY = 'NONE'
-    DARKSKY_LAT = 'NONE'
-    DARKSKY_LON = 'NONE'
-    DARKSKY_THRESH = 'NONE'
-
-# ignore system checks to support JSONField()
-# https://github.com/adamchainz/django-mysql/issues/342
-SILENCED_SYSTEM_CHECKS = [
-    'django_mysql.E016',
-]
+    DARKSKY_KEY = None
+    DARKSKY_LAT = None
+    DARKSKY_LON = None
+    DARKSKY_THRESH = None
 
 # GeoDjango
 GEOIP_PATH = os.path.join(BASE_DIR, 'setup', 'geodjango', 'geoip2', 'GeoLite2'),

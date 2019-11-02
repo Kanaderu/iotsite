@@ -54,12 +54,24 @@ class DashboardPage extends Component {
         }
     });
 
+    checkStatus(response) {
+        if (response.status >= 200 && response.status < 300) {
+            return response
+        } else {
+            var error = new Error(response.statusText)
+            error.response = response
+            throw error
+        }
+    }
+
     fetchFeather() {
-        fetch('https://udsensors.tk/ws/api/FeatherV2/')
+        fetch('/api/FeatherV2/')
+            .then(this.checkStatus)
             .then(response => response.json())
             .then(responses => {
+                console.log(responses);
                 this.setState({
-                    feather: responses.map(response => ({
+                    feather: responses.results.map(response => ({
                         dev_id: response.dev_id,
                         metadata: response.metadata,
                         data: response.data,
@@ -72,11 +84,12 @@ class DashboardPage extends Component {
     }
 
     fetchLoRaGateway() {
-        fetch('https://udsensors.tk/ws/api/LoRaGateway/')
+        fetch('/api/LoRaGateway/')
+            .then(this.checkStatus)
             .then(response => response.json())
             .then(responses => {
                 this.setState({
-                    lora: responses.map(response => ({
+                    lora: responses.results.map(response => ({
                         app_id: response.app_id,
                         dev_id: response.dev_id,
                         hardware_serial: response.hardware_serial,
@@ -95,7 +108,8 @@ class DashboardPage extends Component {
     }
 
     fetchDarkSkyData() {
-        fetch('https://udsensors.tk/ws/darksky/')
+        fetch('/darksky/')
+            .then(this.checkStatus)
             .then(response => response.json())
             .then((data) => {
                 this.setState({
