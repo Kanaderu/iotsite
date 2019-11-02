@@ -70,7 +70,7 @@ class DashboardPage extends Component {
             .then(response => response.json())
             .then(responses => {
                 this.setState({
-                    feather: responses.results.map(response => ({
+                    feather: responses.results.reverse().map(response => ({
                         dev_id: response.dev_id,
                         metadata: response.metadata,
                         data: response.data,
@@ -88,7 +88,7 @@ class DashboardPage extends Component {
             .then(response => response.json())
             .then(responses => {
                 this.setState({
-                    lora: responses.results.map(response => ({
+                    lora: responses.results.reverse().map(response => ({
                         app_id: response.app_id,
                         dev_id: response.dev_id,
                         hardware_serial: response.hardware_serial,
