@@ -65,7 +65,7 @@ class DashboardPage extends Component {
     }
 
     fetchFeather() {
-        fetch('/api/FeatherV2/')
+        fetch('/ws/api/FeatherV2/')
             .then(this.checkStatus)
             .then(response => response.json())
             .then(responses => {
@@ -84,7 +84,7 @@ class DashboardPage extends Component {
     }
 
     fetchLoRaGateway() {
-        fetch('/api/LoRaGateway/')
+        fetch('/ws/api/LoRaGateway/')
             .then(this.checkStatus)
             .then(response => response.json())
             .then(responses => {
@@ -108,7 +108,7 @@ class DashboardPage extends Component {
     }
 
     fetchDarkSkyData() {
-        fetch('/darksky/')
+        fetch('/ws/darksky/')
             .then(this.checkStatus)
             .then(response => response.json())
             .then((data) => {
