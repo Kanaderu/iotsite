@@ -176,10 +176,10 @@ if 'DARKSKY_KEY' in os.environ:
     DARKSKY_THRESH = float(os.environ['DARKSKY_THRESH'])
 else:
     eprint('DARKSKY_KEY Environment Variable is NOT set! Ignoring...')
-    DARKSKY_KEY = 'NONE'
-    DARKSKY_LAT = 'NONE'
-    DARKSKY_LON = 'NONE'
-    DARKSKY_THRESH = 'NONE'
+    DARKSKY_KEY = None
+    DARKSKY_LAT = None
+    DARKSKY_LON = None
+    DARKSKY_THRESH = None
 
 # GeoDjango
 GEOIP_PATH = os.path.join(BASE_DIR, 'setup', 'geodjango', 'geoip2', 'GeoLite2'),

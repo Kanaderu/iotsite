@@ -2,7 +2,7 @@ import json
 from urllib.request import urlopen
 from rest_framework.views import APIView
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.utils.timezone import utc
 import datetime
 from .models import DarkSky
@@ -16,6 +16,7 @@ class DarkSkyView(APIView):
         longitude = settings.DARKSKY_LON
         #time = '' # TODO
 
+        self.enabled = key is not None
         self.update_th = settings.DARKSKY_THRESH
 
         self.darksky_forcast_url = "https://api.darksky.net/forecast/{}/{},{}".format(key, latitude, longitude)
@@ -23,6 +24,8 @@ class DarkSkyView(APIView):
         super(DarkSkyView, self)
 
     def get(self, request):
+        if not self.enabled:
+            raise Http404('DarkSky is not configured.')
         fetch_update = False
         response = None
 
