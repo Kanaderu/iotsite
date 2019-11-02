@@ -61,35 +61,6 @@ class LoRaGatewayDataSerializer(serializers.ModelSerializer):
         return instance
 
 
-class SensorIDListingField(serializers.StringRelatedField):
-    def to_internal_value(self, value):
-        sensor_id = FeatherSensorID.objects.create(sensor_id=value)
-        return sensor_id
-
-    def to_representation(self, value):
-        return value.sensor_id
-
-
-class SensorTemperatureListingField(serializers.StringRelatedField):
-    def to_internal_value(self, value):
-        temperature = FeatherSensorTemperature.objects.create(temperature=value)
-        return temperature
-
-    def to_representation(self, value):
-        return value.temperature
-
-
-class FeatherDataSerializer(serializers.ModelSerializer):
-
-    SensorID = SensorIDListingField(many=True, required=False)
-    Temperature = SensorTemperatureListingField(many=True, required=False)
-
-    class Meta:
-        model = FeatherData
-        fields = ['TimeStamp', 'TimeFormat', 'Date', 'SensorID', 'Temperature',
-                  'TempFormat', 'DeviceID', 'Location', 'Latitude', 'Longitude']
-
-
 class FeatherMetadataV2Serializer(serializers.ModelSerializer):
 
     class Meta:
