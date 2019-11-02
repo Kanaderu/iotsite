@@ -116,44 +116,6 @@ class LoRaGateway(models.Model):
         verbose_name_plural = 'LoRa Gateway'
 
 
-class FeatherData(models.Model):
-    TimeStamp = models.CharField(max_length=128, blank=True, default='')
-    #timestamp = models.PositiveIntegerField(blank=True)
-    TimeFormat = models.CharField(max_length=128, blank=True, default='')
-    Date = models.CharField(max_length=128, blank=True, default='')
-    #date = models.DateTimeField(blank=True, null=True)
-    TempFormat = models.CharField(max_length=8, blank=True, default='')
-    DeviceID = models.CharField(max_length=32, blank=True, default='')
-    Location = models.CharField(max_length=64, blank=True, default='')
-    Latitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
-    Longitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
-
-    class Meta:
-        verbose_name = 'Feather Data'
-        verbose_name_plural = 'Feather Data'
-
-
-class FeatherSensorID(models.Model):
-    feather_data = models.ForeignKey('FeatherData', related_name='SensorID', null=True, on_delete=models.CASCADE)
-    sensor_id = models.CharField(max_length=32, blank=True, default='')
-
-    class Meta:
-        verbose_name = 'Feather Sensor ID'
-        verbose_name_plural = 'Feather Sensor IDs'
-
-
-class FeatherSensorTemperature(models.Model):
-    feather_data = models.ForeignKey('FeatherData', related_name='Temperature', null=True, on_delete=models.CASCADE)
-    temperature = models.CharField(max_length=32, blank=True, default='')
-
-    class Meta:
-        verbose_name = 'Feather Sensor Temperature'
-        verbose_name_plural = 'Feather Sensor Temperatures'
-
-    def __str__(self):
-        return self.temperature
-
-
 class FeatherDataV2(models.Model):
     dev_id = models.PositiveIntegerField(blank=True)
 
