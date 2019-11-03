@@ -31,19 +31,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',   # geodjango
 
-    'django.contrib.gis',
-    'geo',
+    'webpack_loader',       # react webpack integration
+    'rest_framework',       # rest framework library
+    'thorn.django',         # webhooks library
+    'django_mysql',         # mysql support for API proxy
+    'django_filters',       # field filtering for REST
+    'drf_extra_fields',     # drf add-ons
+
+    'rest_framework_gis',
     'djgeojson',
     'leaflet',
 
-    'webpack_loader',   # react webpack integration
-    'rest_framework',   # rest framework library
-    'thorn.django',     # webhooks library
-    'django_mysql',     # mysql support for API proxy
-    'django_filters',   # field filtering for REST
-
     # custom apps
+    'geo',
     'sensors',
     'external_api',
     'dashboard',
