@@ -21,7 +21,8 @@ WEBPACK_LOADER = {
 DATABASES = {
     'default': {
          'ENGINE': 'django.contrib.gis.db.backends.postgis',
-         'NAME': 'geodjango',
+         'NAME': 'geodjangoclean',
+         #'NAME': 'geodjango',
          'USER': 'geo',
          'PASSWORD': 'qazwsx',
          'HOST': '127.0.0.1',

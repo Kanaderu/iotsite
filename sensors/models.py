@@ -1,4 +1,6 @@
-from django.db import models
+#from django.db import models
+from django.contrib.gis.db import models
+from django.contrib.postgres.fields import JSONField
 from django.urls import reverse
 from thorn import ModelEvent, webhook_model
 
@@ -7,7 +9,7 @@ from thorn import ModelEvent, webhook_model
 #    sender_field='author.account.user',
 #)
 @webhook_model
-class SensorData(models.Model):
+class SensorDataLtBigSense(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     timestamp = models.DateTimeField(blank=True, null=True)
@@ -19,6 +21,7 @@ class SensorData(models.Model):
     longitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     latitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     altitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
+    #point = models.PointField(geography=True, default='POINT(0.0 0.0)')
     speed = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
     climb = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
 
@@ -110,6 +113,7 @@ class LoRaGateway(models.Model):
     rf_chain = models.DecimalField(max_digits=6, decimal_places=3, blank=True)
     latitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     longitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
+    point = models.PointField(geography=True, default='POINT(0.0 0.0)')
 
     class Meta:
         verbose_name = 'LoRa Gateway'
@@ -128,6 +132,7 @@ class FeatherMetadataV2(models.Model):
     location = models.CharField(max_length=64, blank=True, default='')
     latitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     longitude = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
+    point = models.PointField(geography=True, default='POINT(0.0 0.0)')
     time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
@@ -140,3 +145,51 @@ class FeatherSensorDataV2(models.Model):
     sensor_type = models.CharField(max_length=64, blank=True, default='')
     sensor_data = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     sensor_units = models.CharField(max_length=8, blank=True, default='')
+
+
+class Sensor(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    # add owner
+
+    SENSOR_CHOICES = (
+        ('LG', 'LoRa Gateway'),
+        ('F', 'Feather'),
+    )
+    sensor = models.CharField(max_length=2, choices=SENSOR_CHOICES)
+    sensor_id = models.CharField(max_length=64, blank=True)
+
+    class Meta:
+        verbose_name = 'Sensor'
+        verbose_name_plural = 'Sensor'
+        ordering = ['created']
+
+
+class SensorMetadata(models.Model):
+    sensor = models.OneToOneField('Sensor', related_name='metadata', null=True, on_delete=models.CASCADE)
+    coordinates = models.PointField(geography=True, default='POINT(0.0 0.0)')
+    timestamp = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Sensor Metadata'
+        verbose_name_plural = 'Sensor Metadata'
+
+
+class SensorData(models.Model):
+    sensor = models.ForeignKey('Sensor', related_name='data', null=True, on_delete=models.CASCADE)
+    data_id = models.CharField(max_length=64, blank=True)
+    type = models.CharField(max_length=64, blank=True, default='')
+    data = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
+    units = models.CharField(max_length=8, blank=True, default='')
+
+    class Meta:
+        verbose_name = 'Sensor Data'
+        verbose_name_plural = 'Sensor Data'
+
+
+class SensorRawData(models.Model):
+    sensor = models.OneToOneField('Sensor', related_name='raw_data', null=True, on_delete=models.CASCADE)
+    data = JSONField()
+
+    class Meta:
+        verbose_name = 'Raw Sensor Data'
+        verbose_name_plural = 'Raw Sensor Data'

@@ -6,9 +6,9 @@ from rest_framework.schemas import get_schema_view
 from sensors import views
 
 router = routers.DefaultRouter()
-router.register(r'sensors', views.SensorDataViewSet)
-router.register(r'LoRaGateway', views.LoRaGatewayDataView)
-router.register(r'FeatherV2', views.FeatherDataV2View)
+#router.register(r'sensors', views.SensorDataViewSet)
+#router.register(r'LoRaGateway', views.LoRaGatewayDataView)
+#router.register(r'FeatherV2', views.FeatherDataV2View)
 
 urlpatterns = [
     url(r'^hooks/', include(('thorn.django.rest_framework.urls', 'thorn'), namespace='webhook')),
