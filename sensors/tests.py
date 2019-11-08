@@ -7,6 +7,41 @@ from rest_framework.parsers import JSONParser
 from .serializers import *
 
 
+def test_FeatherSerializer():
+    json = b"""
+    {
+        "dev_id": 1,
+        "metadata": {
+              "location": "Apartment",
+              "latitude": 39.77710000,
+              "longitude": -83.99720000,
+              "time": "2019-10-02T19:17:10.067889-04:00"
+        },
+        "data": [
+         {
+             "sensor_id": 1,
+             "sensor_type": "Temperature",
+             "sensor_data": 19.813,
+             "sensor_units": "C"
+         },
+         {
+             "sensor_id": 2,
+             "sensor_type": "Temperature",
+             "sensor_data": 16.188,
+             "sensor_units": "C"
+         }
+         ]
+    }
+    """
+    stream = io.BytesIO(json)
+    data = JSONParser().parse(stream)
+    print(data)
+
+    serializer = FeatherSensorSerializer(data=data)
+    print('VALID' if serializer.is_valid() else 'NOT VALID')
+    print(serializer.validated_data)
+
+
 def test_LoRaSerializer():
     json = b"""
     {
@@ -61,6 +96,7 @@ def test_LoRaSerializer():
     print('VALID' if serializer.is_valid() else 'NOT VALID')
     print(serializer.validated_data)
 
+    '''
     metadata_serializer = LoRaGatewayMetadataSerializer(data=metadata_data)
     print('VALID' if metadata_serializer.is_valid() else 'NOT VALID')
     print(metadata_serializer.validated_data)
@@ -77,7 +113,7 @@ def test_LoRaSerializer():
 
     print(payload_fields_serializer.validated_data['b'])
     #Sensor.objects.create(sensor='LG', sensor_id=)
-
+    '''
 
 def save_LoRaSerializer():
     json = b"""

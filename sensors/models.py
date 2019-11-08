@@ -51,7 +51,7 @@ class SensorDataLtBigSense(models.Model):
     def get_absolute_url(self):
         return reverse('sensordata-detail', args=[str(self.id)])
 
-
+'''
 class LoRaGatewayData(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
@@ -145,6 +145,7 @@ class FeatherSensorDataV2(models.Model):
     sensor_type = models.CharField(max_length=64, blank=True, default='')
     sensor_data = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     sensor_units = models.CharField(max_length=8, blank=True, default='')
+'''
 
 
 class Sensor(models.Model):

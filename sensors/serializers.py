@@ -27,31 +27,11 @@ class SensorSerializer(serializers.ModelSerializer):
         fields = ['sensor', 'sensor_id', 'metadata', 'data']
 
 
-class LoRaGatewayPayloadFieldsSerializer(serializers.BaseSerializer):
-    b = serializers.DecimalField(max_digits=5, decimal_places=2, required=True, source='b')
-    sm1 = serializers.DecimalField(max_digits=5, decimal_places=2, required=True, source='sm1')
-    sm2 = serializers.DecimalField(max_digits=5, decimal_places=2, required=True, source='sm2')
-    sm3 = serializers.DecimalField(max_digits=5, decimal_places=2, required=True, source='sm3')
-    sm4 = serializers.DecimalField(max_digits=5, decimal_places=2, required=True, source='sm4')
-    t1 = serializers.DecimalField(max_digits=5, decimal_places=2, required=True, source='t1')
-    t2 = serializers.DecimalField(max_digits=5, decimal_places=2, required=True, source='t2')
-
-
-class LoRaGatewaySerializer(serializers.BaseSerializer):
-    latitude = serializers.DecimalField(max_digits=11, decimal_places=8, required=True, source='latitude')
-    longitude = serializers.DecimalField(max_digits=11, decimal_places=8, required=True, source='longitude')
-
-
-class LoRaGatewayMetadataSerializer(serializers.BaseSerializer):
-    gateways = LoRaGatewaySerializer(many=True)
-    timestamp = serializers.DateTimeField(source='time')
-
-
 class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
     sensor_id = serializers.IntegerField(required=True)
 
-    payload_fields = LoRaGatewayPayloadFieldsSerializer(required=True)
-    metadata = LoRaGatewayMetadataSerializer(required=True)
+    def to_representation(self, obj):
+        return SensorSerializer().to_representation(obj)
 
     def to_internal_value(self, data):
         sensor_id = data.get('dev_id')
@@ -137,8 +117,6 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
         }
 
     def create(self, validated_data):
-        print(validated_data)
-
         instance = Sensor.objects.create(sensor='LG', sensor_id=validated_data['sensor_id'])
         SensorMetadata.objects.create(sensor=instance,
                                       coordinates=Point(x=validated_data['longitude'], y=validated_data['latitude'], srid=4326),
@@ -153,38 +131,77 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
 
         return instance
 
-    '''
-    def to_internal_value(self, data):
-        dev_id = data.get('dev_id')
-        player_name = data.get('player_name')
 
-        # Perform the data validation.
+class FeatherSensorSerializer(serializers.BaseSerializer):
+    sensor_id = serializers.IntegerField(required=True)
+
+    def to_representation(self, obj):
+        return SensorSerializer().to_representation(obj)
+
+    def to_internal_value(self, data):
+        dev_id = data['dev_id']
+        metadata = data['metadata']
+        latitude = metadata['latitude']
+        longitude = metadata['longitude']
+        timestamp = metadata['time']
+
+        data_list = data['data']
+        if not isinstance(data_list, list):
+            raise serializers.ValidationError({
+                'data': 'This field is required.'
+            })
+
+        sensor_data = []
+        for item in data_list:
+            if item['sensor_id'] is None:
+                raise serializers.ValidationError('sensor_id is required')
+            if item['sensor_type'] is None:
+                raise serializers.ValidationError('sensor_type is required')
+            if item['sensor_data'] is None:
+                raise serializers.ValidationError('sensor_data is required')
+            if item['sensor_units'] is None:
+                raise serializers.ValidationError('sensor_units is required')
+            sensor_data.insert(0, {'data_id': item['sensor_id'],
+                                 'type': item['sensor_type'],
+                                 'data': item['sensor_data'],
+                                 'units': item['sensor_units'],})
+
         if not dev_id:
             raise serializers.ValidationError({
                 'dev_id': 'This field is required.'
             })
-        if not player_name:
+        if not timestamp:
             raise serializers.ValidationError({
-                'player_name': 'This field is required.'
+                'timestamp': 'This field is required.'
             })
-        if len(player_name) > 10:
+        if not latitude:
             raise serializers.ValidationError({
-                'player_name': 'May not be more than 10 characters.'
+                'latitude': 'This field is required.'
+            })
+        if not longitude:
+            raise serializers.ValidationError({
+                'longitude': 'This field is required.'
             })
 
-        # Return the validated values. This will be available as
-        # the `.validated_data` property.
         return {
-            'score': int(score),
-            'player_name': player_name
+            'sensor_id': dev_id,
+            'timestamp': timestamp,
+            'latitude': latitude,
+            'longitude': longitude,
+            'data': sensor_data,
         }
 
-    def to_representation(self, obj):
-        return {
-            'score': obj.score,
-            'player_name': obj.player_name
-        }
-    '''
+    def create(self, validated_data):
+        instance = Sensor.objects.create(sensor='F', sensor_id=validated_data['sensor_id'])
+        SensorMetadata.objects.create(sensor=instance,
+                                      coordinates=Point(x=validated_data['longitude'], y=validated_data['latitude'], srid=4326),
+                                      timestamp=validated_data['timestamp'])
+        for item in validated_data['data']:
+            SensorData.objects.create(sensor=instance, data_id=item['data_id'], type=item['type'],
+                                      data=item['data'], units=item['units'])
+
+        return instance
+
 '''
 class SensorDataSerializer(serializers.ModelSerializer):
 

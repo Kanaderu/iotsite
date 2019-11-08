@@ -6,6 +6,9 @@ from rest_framework.schemas import get_schema_view
 from sensors import views
 
 router = routers.DefaultRouter()
+router.register(r'sensors', views.SensorViewSet)
+router.register(r'LoRaGateway', views.LoRaGatewaySensorViewSet, base_name='LoRaGateway')
+router.register(r'Feather', views.FeatherSensorViewSet, base_name='Feather')
 #router.register(r'sensors', views.SensorDataViewSet)
 #router.register(r'LoRaGateway', views.LoRaGatewayDataView)
 #router.register(r'FeatherV2', views.FeatherDataV2View)
