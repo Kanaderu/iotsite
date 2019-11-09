@@ -1,9 +1,7 @@
-#from django.db import models
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 from django.urls import reverse
 from thorn import ModelEvent, webhook_model
-from django.forms.models import model_to_dict
 
 #@webhook_model(
 #    sender_field='author.account.user',
@@ -161,7 +159,7 @@ class Sensor(models.Model):
 
     @property
     def sensor_data(self):
-        return [model_to_dict(model) for model in SensorData.objects.filter(sensor=self)]
+        return [model.to_dict for model in SensorData.objects.filter(sensor=self)]
 
     class Meta:
         verbose_name = 'Sensor'
@@ -197,6 +195,13 @@ class SensorData(models.Model):
     type = models.CharField(max_length=64, blank=True, default='')
     data = models.DecimalField(max_digits=11, decimal_places=8, blank=True, null=True)
     units = models.CharField(max_length=8, blank=True, default='')
+
+    @property
+    def to_dict(self):
+        return { 'data_id': self.data_id,
+                 'type': self.type,
+                 'data': float(self.data),
+                 'units': self.units}
 
     class Meta:
         verbose_name = 'Sensor Data'
