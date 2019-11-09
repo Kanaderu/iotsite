@@ -17,7 +17,7 @@
             var dataurl = '{% url "sensor_geojson" %}'
             window.addEventListener("map:init", function (event) {
                 var map = event.detail.map;
-                map.setView([39.7393, -84.1800], 14);
+                map.setView([39.7393, -84.10], 13);
                 // Download GeoJSON data with Ajax
                 fetch(dataurl)
                 .then(function(resp) {
