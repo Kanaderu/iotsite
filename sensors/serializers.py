@@ -28,7 +28,6 @@ class SensorSerializer(serializers.ModelSerializer):
 
 
 class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
-    sensor_id = serializers.IntegerField(required=True)
 
     def to_representation(self, obj):
         return SensorSerializer().to_representation(obj)
@@ -133,7 +132,6 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
 
 
 class FeatherSensorSerializer(serializers.BaseSerializer):
-    sensor_id = serializers.IntegerField(required=True)
 
     def to_representation(self, obj):
         return SensorSerializer().to_representation(obj)

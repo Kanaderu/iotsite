@@ -1,19 +1,22 @@
-from sensors.models import *
 from sensors.serializers import *
-from rest_framework.pagination import PageNumberPagination
-from rest_framework import viewsets, mixins, status
-from django.shortcuts import get_object_or_404
-from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
-from rest_framework_csv.renderers import CSVRenderer
+from rest_framework import viewsets#, mixins, status
+#from django.shortcuts import get_object_or_404
+#from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
+#from rest_framework_csv.renderers import CSVRenderer
 
 #from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 #from rest_framework_csv.parsers import CSVParser
-from django.urls import reverse
-from rest_framework.response import Response
-from rest_framework.decorators import action
+#from django.urls import reverse
+#from rest_framework.response import Response
+#from rest_framework.decorators import action
+#from rest_framework import generics
+#from django.http import Http404
 
 
 class SensorViewSet(viewsets.ModelViewSet):
+    """
+    Sensor API
+    """
     queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
     filterset_fields = '__all__'
@@ -21,79 +24,12 @@ class SensorViewSet(viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class LoRaGatewaySensorViewSet(mixins.CreateModelMixin,
-                               mixins.ListModelMixin,
-                               mixins.RetrieveModelMixin,
-                               viewsets.ViewSet):
+class LoRaGatewaySensorViewSet(SensorViewSet):
     serializer_class = LoRaGatewaySensorSerializer
-    pagination_class = PageNumberPagination
-
-    def list(self, request):
-        queryset = Sensor.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None):
-        queryset = Sensor.objects.all()
-        sensor = get_object_or_404(queryset, pk=pk)
-        serializer = self.serializer_class(sensor)
-        return Response(serializer.data)
-
-    def get_serializer(self, *args, **kwargs):
-        serializer_class = self.get_serializer_class()
-        kwargs['context'] = self.get_serializer_context()
-        return serializer_class(*args, **kwargs)
-
-    def get_serializer_class(self):
-        return self.serializer_class
-
-    def get_serializer_context(self):
-        return {'request': self.request}
 
 
-class FeatherSensorViewSet(mixins.CreateModelMixin,
-                           mixins.ListModelMixin,
-                           mixins.RetrieveModelMixin,
-                           viewsets.ViewSet):
+class FeatherSensorViewSet(SensorViewSet):
     serializer_class = FeatherSensorSerializer
-    pagination_class = PageNumberPagination
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-
-        page = self.pagination_class().paginate_queryset(queryset, request)
-        '''
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        '''
-        '''
-        queryset = Sensor.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
-        '''
-        serializer = self.get_serializer(page, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None):
-        queryset = Sensor.objects.all()
-        sensor = get_object_or_404(queryset, pk=pk)
-        serializer = self.serializer_class(sensor)
-        return Response(serializer.data)
-
-    def get_serializer(self, *args, **kwargs):
-        serializer_class = self.get_serializer_class()
-        kwargs['context'] = self.get_serializer_context()
-        return serializer_class(*args, **kwargs)
-
-    def get_serializer_class(self):
-        return self.serializer_class
-
-    def get_serializer_context(self):
-        return {'request': self.request}
-
-    def get_queryset(self):
-        return Sensor.objects.all()
 
 
 '''
@@ -143,7 +79,7 @@ class LoRaGatewayDataView(viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
 
-class FeatherDataV2View(viewsets.ModelViewSet):
+class FeatherDataView(viewsets.ModelViewSet):
     queryset = FeatherDataV2.objects.all()
     serializer_class = FeatherDataV2Serializer
     filterset_fields = '__all__'

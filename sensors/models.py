@@ -3,7 +3,7 @@ from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 from django.urls import reverse
 from thorn import ModelEvent, webhook_model
-
+from django.forms.models import model_to_dict
 
 #@webhook_model(
 #    sender_field='author.account.user',
@@ -26,8 +26,8 @@ class SensorDataLtBigSense(models.Model):
     climb = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
 
     class Meta:
-        verbose_name = 'Sensor Data'
-        verbose_name_plural = 'Sensor Data'
+        verbose_name = 'Lt Sensor Data'
+        verbose_name_plural = 'Lt Sensor Data'
         ordering = ['created']
 
     class webhooks:
@@ -159,16 +159,32 @@ class Sensor(models.Model):
     sensor = models.CharField(max_length=2, choices=SENSOR_CHOICES)
     sensor_id = models.CharField(max_length=64, blank=True)
 
+    @property
+    def sensor_data(self):
+        return [model_to_dict(model) for model in SensorData.objects.filter(sensor=self)]
+
     class Meta:
         verbose_name = 'Sensor'
         verbose_name_plural = 'Sensor'
-        ordering = ['created']
+        ordering = ['-created']
 
 
 class SensorMetadata(models.Model):
     sensor = models.OneToOneField('Sensor', related_name='metadata', null=True, on_delete=models.CASCADE)
     coordinates = models.PointField(geography=True, default='POINT(0.0 0.0)')
     timestamp = models.DateTimeField(blank=True, null=True)
+
+    @property
+    def sensor_type(self):
+        return self.sensor.sensor
+
+    @property
+    def sensor_ID(self):
+        return self.sensor.sensor_id
+
+    @property
+    def data(self):
+        return self.sensor.sensor_data
 
     class Meta:
         verbose_name = 'Sensor Metadata'
