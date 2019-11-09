@@ -43,16 +43,17 @@ class SensorsPage extends Component {
         }
     }
 
-    fetchFeather() {
-        fetch('/ws/api/FeatherV2/')
+    fetchFeather(url) {
+        fetch(url)
             .then(this.checkStatus)
             .then(response => response.json())
             .then(responses => {
                 this.setState({
                     feather: responses.results.reverse().map(response => ({
-                        dev_id: response.dev_id,
+                        sensor_id: response.sensor_id,
+                        sensor: response.sensor,
                         metadata: response.metadata,
-                        data: response.data,
+                        data: response.data
                     }))
                 });
             })
@@ -61,22 +62,17 @@ class SensorsPage extends Component {
             });
     }
 
-    fetchLoRaGateway() {
-        fetch('/ws/api/LoRaGateway/')
+    fetchLoRaGateway(url) {
+        fetch(url)
             .then(this.checkStatus)
             .then(response => response.json())
             .then(responses => {
                 this.setState({
                     lora: responses.results.reverse().map(response => ({
-                        app_id: response.app_id,
-                        dev_id: response.dev_id,
-                        hardware_serial: response.hardware_serial,
-                        port: response.port,
-                        counter: response.counter,
-                        payload_raw: response.payload_raw,
-                        payload_fields: response.payload_fields,
+                        sensor_id: response.sensor_id,
+                        sensor: response.sensor,
                         metadata: response.metadata,
-                        downlink_url: response.downlink_url
+                        data: response.data
                     }))
                 });
             })
@@ -86,8 +82,8 @@ class SensorsPage extends Component {
     }
 
     componentDidMount() {
-        this.fetchLoRaGateway();
-        this.fetchFeather();
+        this.fetchLoRaGateway('/ws/api/sensors/?sensor=LG');
+        this.fetchFeather('/ws/api/sensors/?sensor=F');
     }
 
     render() {
@@ -100,13 +96,13 @@ class SensorsPage extends Component {
                         "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
         // lora data
         const lora_labels = data.lora.map((data) => {
-            const d = new Date(data.metadata.time);
+            const d = new Date(data.metadata.timestamp);
             return months[d.getMonth()] + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
         });
         const lora_data = [
             {
                 data: data.lora.map((data) => {
-                    return parseFloat(data.payload_fields.t1).toFixed(2);
+                    return parseFloat(data.data[5].data).toFixed(2);
                 }),
                 label: 'T1',
                 backgroundColor: 'rgba(75,192,192,0.4)',
@@ -118,7 +114,7 @@ class SensorsPage extends Component {
             },
             {
                 data: data.lora.map((data) => {
-                    return parseFloat(data.payload_fields.t2).toFixed(2);
+                    return parseFloat(data.data[6].data).toFixed(2);
                 }),
                 label: 'T2',
                 backgroundColor: 'rgba(255,100,100,0.4)',
@@ -132,13 +128,13 @@ class SensorsPage extends Component {
 
         // feather data
         const feather_labels = data.feather.map((data) => {
-            const d = new Date(data.metadata.time);
+            const d = new Date(data.metadata.timestamp);
             return months[d.getMonth()] + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
         });
         const feather_data = [
             {
                 data: data.feather.map((data) => {
-                    return parseFloat(data.data[0].sensor_data).toFixed(2);
+                    return parseFloat(data.data[0].data).toFixed(2);
                 }),
                 label: '1',
                 backgroundColor: 'rgba(75,192,192,0.4)',
@@ -150,7 +146,7 @@ class SensorsPage extends Component {
             },
             {
                 data: data.feather.map((data) => {
-                    return parseFloat(data.data[1].sensor_data).toFixed(2);
+                    return parseFloat(data.data[1].data).toFixed(2);
                 }),
                 label: '2',
                 backgroundColor: 'rgba(255,100,100,0.4)',
