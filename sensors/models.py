@@ -62,6 +62,14 @@ class Sensor(models.Model):
     sensor_id = models.CharField(max_length=64, blank=True)
 
     @property
+    def coordinates(self):
+        return self.metadata.coordinates
+
+    @property
+    def timestamp(self):
+        return self.metadata.timestamp
+
+    @property
     def sensor_data(self):
         return [model.to_dict for model in SensorData.objects.filter(sensor=self)]
 

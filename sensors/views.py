@@ -12,6 +12,21 @@ from rest_framework import viewsets#, mixins, status
 #from rest_framework import generics
 #from django.http import Http404
 
+from djgeojson.views import GeoJSONLayerView
+
+
+# modify queryset for the most recent data across all sensors
+class LatestSensorGeoJSONLayerView(GeoJSONLayerView):
+    def get_queryset(self):
+        items = set()
+        for sensor_type in Sensor.SENSOR_CHOICES:
+            latest_item = Sensor.objects.filter(sensor=sensor_type[0]).order_by('-created').first()
+            if latest_item is not None:
+                items.add(latest_item.pk)
+
+        context = Sensor.objects.filter(pk__in=items)
+        return context
+
 
 class SensorViewSet(viewsets.ModelViewSet):
     """
