@@ -186,6 +186,22 @@ class SideNavigation extends Component {
                             <ListItemText primary="About" />
                         </ListItem>
                     </NavLink>
+                    <NavLink exact={true} to="/login" style={{ textDecoration: 'none' }}>
+                        <ListItem
+                            button
+                            selected={this.state.selectedIndex === 6}
+                            onClick={event => handleListItemClick(event, 6)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
+                        >
+                            <ListItemIcon className={classes.icon}>
+                                <Icon height='2em' icon={roundInfo} />
+                            </ListItemIcon>
+                            <ListItemText primary="Login" />
+                        </ListItem>
+                    </NavLink>
                 </List>
             </div>
         )

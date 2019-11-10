@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('external_api.urls')),
     path('', include('dashboard.urls')),
     path('', include('geo.urls')),
+    path('', include('users.urls')),
 ]
 
 if settings.DEBUG:
