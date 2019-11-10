@@ -5,7 +5,7 @@ import { Scene } from '@esri/react-arcgis';
 
 const styles = theme => ({
     card: {
-        height: 600
+        height: 700
     }
 });
 
@@ -19,8 +19,8 @@ class MapSection extends Component {
                     titleTypographyProps={{variant: 'h6'}}
                 />
                 <CardContent>
-                    <link rel="stylesheet" href="https://js.arcgis.com/4.10/esri/css/main.css"></link>
                     <Scene
+                        style={{ width: '100%', height: '100vh' }}
                         mapProperties={{
                             basemap: 'satellite',
                             ground: 'world-elevation'
