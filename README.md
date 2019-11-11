@@ -91,14 +91,14 @@ To run the frontend react with hot-reloading, run the following commands.
 
 ```
 cd dashboard/
-yarn start      # build the production setup
+yarn start      # start the react frontend with hotreloading
 ```
 
 Inplace of `yarn`, `npm` can be used instead using the following commands.
 
 ```
 cd dashboard/
-npm run start   # build the production setup
+npm run start      # start the react frontend with hotreloading
 ```
 
 ### Running the server in development mode
