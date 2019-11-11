@@ -5,6 +5,9 @@ import { Link, Redirect } from "react-router-dom";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 import { auth } from "./actions";
 
@@ -26,6 +29,13 @@ class Login extends Component {
             <div>
             <Card>
                 <CardContent>
+                    {this.props.errors.length > 0 && (
+                        <ul>
+                            {this.props.errors.map(error => (
+                                <li key={error.field}>{error.message}</li>
+                            ))}
+                        </ul>
+                    )}
                     <TextField
                         required
                         id="standard-required"
@@ -40,6 +50,13 @@ class Login extends Component {
                         autoComplete="current-password"
                         margin="normal"
                     />
+                    <br />
+                    <Button variant="contained" color="primary">
+                        Submit
+                    </Button>
+                    <Button variant="contained" color="secondary">
+                        Register
+                    </Button>
                 </CardContent>
             </Card>
             <form onSubmit={this.onSubmit}>
