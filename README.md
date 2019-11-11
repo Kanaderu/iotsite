@@ -22,7 +22,7 @@ yarn build                                          # build the react/javascript
 sudo apt install postgresql postgresql-contrib
 sudo -u postgres psql -c "CREATE USER geo WITH ENCRYPTED PASSWORD 'geo';"
 sudo -u postgres psql -c "CREATE DATABASE geodjango with OWNER geo;"
-sudo -u postgres psql -d geodjango -c "GRANT ALL PRIVILEGES ON DATABASE geodjango TO geo;"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE geodjango TO geo;"
 sudo -u postgres psql -d geodjango -c "CREATE EXTENSION postgis;"
 
 # build database
