@@ -18,8 +18,19 @@ cd dashboard/                                       # change into frontend react
 yarn                                                # install node libraries
 yarn build                                          # build the react/javascript frontend
 
-# install postgres database with user 'geo' with password 'geo' and database 'geodjango'
+# install postgres database
 sudo apt install postgresql postgresql-contrib
+
+# refer to https://postgis.net/install/ to install postgis for other distributions
+sudo apt-get install python-software-properties
+sudo add-apt-repository ppa:ubuntugis/ppa
+sudo apt-get update
+sudo apt install postgis
+
+# install geospatial libraries
+sudo apt install binutils libproj-dev gdal-bin
+
+# setup postgres with user 'geo' with password 'geo' and database 'geodjango'
 sudo -u postgres psql -c "CREATE USER geo WITH ENCRYPTED PASSWORD 'geo';"
 sudo -u postgres psql -c "CREATE DATABASE geodjango with OWNER geo;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE geodjango TO geo;"
