@@ -2,13 +2,44 @@
 
 The IoT Site repository is used for implementing and testing the use of webhooks for use of publishing and distributing sensor data.
 
+## Quick Start
+
+Commands to get the server quickly up and running locally.
+
+```
+pip install -r requirements.txt
+```
+
 ## Setup Instructions
 
 Installation follows standard python project setups. Webhooks is implemented using [Thorn by Robinhood](https://github.com/robinhood/thorn).
 
 ```
-# install the library requirements
-pip install -r requirements
+git clone git@github.com:Kanaderu/iotsite.git       # clone the repo
+
+# setup python
+cd iotsite/                                         # change directory into repo
+pip install -r requirements                         # install python libraries
+
+# setup react
+cd dashboard/                                       # change into frontend react repo
+yarn                                                # install node libraries
+yarn build                                          # build the react/javascript frontend
+
+# install postgres database with user 'geo' with password 'geo' and database 'geodjango'
+sudo apt install postgresql postgresql-contrib
+sudo -u postgres psql -c "CREATE USER geo WITH ENCRYPTED PASSWORD 'geo';"
+sudo -u postgres psql -c "CREATE DATABASE geodjango with OWNER geo;"
+sudo -u postgres psql -d geodjango -c "GRANT ALL PRIVILEGES ON DATABASE geodjango TO geo;"
+sudo -u postgres psql -d geodjango -c "CREATE EXTENSION postgis;"
+
+# build database
+cd ../
+python manage.py makemigrations                     # prepare database commands and check Django ORM
+python manage.py migrate                            # build and commit database tables
+
+# run server
+python manage.py runserver                          # run the server locally
 ```
 
 Serving the project in production mode is avaliable but not fully implemented as it varies on the server configuration. uWSGI is setup for this project but is not required. To run the server in uWSGI use the `start_server.sh` script to load the server in production mode. The parameters in `iotsite/uwsgi.ini` and `iotsite/wsgi.py` may need to be configured properly. Running the server in debug mode should run fine without having use uWSGI. Debug mode is the default mode and should be run using regular Django development commands.
@@ -19,21 +50,20 @@ Private parameters that are not to be shared publicly are generally loaded in th
 
 ### Building Frontend React
 
-React is used to build the frontend dashboard. Using React and Django involves the integration of two separate web development frameworks. Integration is being peformed with the used of webpack and node/yarn. The react app is stored into the `dashboard` folder. To build the `dashboard` app, `npm` is need to be installed. Run the following commands to build the `dashboard` react project using `yarn`.
+React is used to build the frontend dashboard. Using React and Django involves the integration of two separate web development frameworks. Integration is being peformed with the used of webpack and node/yarn. The react app is stored into the `dashboard` folder. To build the `dashboard` app, `npm` and/or `yarn` needs to be installed. Run the following commands to build the `dashboard` react project.
 
 ```
 cd dashboard/
-yarn install
-yarn run start
+yarn            # install node_modules/ packages
+yarn build      # build the production setup
 ```
 
 Inplace of `yarn`, `npm` can be used instead using the following commands.
 
 ```
 cd dashboard/
-npm install
-npm run start
-npm run watch # persist updates
+npm install     # install node_modules/ packages
+npm run build   # build the production setup
 ```
 
 ## Running Development Mode
@@ -48,6 +78,22 @@ python manage.py migrate
 ```
 
 Note that any changes made to the expected database structure requires the previous commands to be executed again to adapt the database to the new changes.
+
+### Running the frontend with hot-reloading (for development mode)
+
+To run the frontend react with hot-reloading, run the following commands.
+
+```
+cd dashboard/
+yarn start      # build the production setup
+```
+
+Inplace of `yarn`, `npm` can be used instead using the following commands.
+
+```
+cd dashboard/
+npm run start   # build the production setup
+```
 
 ### Running the server in development mode
 
