@@ -183,15 +183,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # DarkSky API CONF
 if 'DARKSKY_KEY' in os.environ:
     DARKSKY_KEY = os.environ['DARKSKY_KEY']
-    DARKSKY_LAT = os.environ['DARKSKY_LAT']
-    DARKSKY_LON = os.environ['DARKSKY_LON']
-    DARKSKY_THRESH = float(os.environ['DARKSKY_THRESH'])
 else:
     eprint('DARKSKY_KEY Environment Variable is NOT set! Ignoring...')
     DARKSKY_KEY = None
-    DARKSKY_LAT = None
-    DARKSKY_LON = None
-    DARKSKY_THRESH = None
+
+DARKSKY_LAT = 39.758949
+DARKSKY_LON = -84.191605
+DARKSKY_THRESH = 96.0 # seconds before fetching new darksky data
 
 # GeoDjango
 GEOIP_PATH = os.path.join(BASE_DIR, 'setup', 'geodjango', 'geoip2', 'GeoLite2'),
