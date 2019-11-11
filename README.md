@@ -7,14 +7,6 @@ The IoT Site repository is used for implementing and testing the use of webhooks
 Commands to get the server quickly up and running locally.
 
 ```
-pip install -r requirements.txt
-```
-
-## Setup Instructions
-
-Installation follows standard python project setups. Webhooks is implemented using [Thorn by Robinhood](https://github.com/robinhood/thorn).
-
-```
 git clone git@github.com:Kanaderu/iotsite.git       # clone the repo
 
 # setup python
@@ -40,6 +32,20 @@ python manage.py migrate                            # build and commit database 
 
 # run server
 python manage.py runserver                          # run the server locally
+```
+
+## Setup Instructions
+
+Installation follows standard python project setups. Webhooks is implemented using [Thorn by Robinhood](https://github.com/robinhood/thorn).
+
+```
+# install python dependencies
+pip install -r requirements.txt
+
+cd dashboard/
+
+# install node dependencies
+yarn
 ```
 
 Serving the project in production mode is avaliable but not fully implemented as it varies on the server configuration. uWSGI is setup for this project but is not required. To run the server in uWSGI use the `start_server.sh` script to load the server in production mode. The parameters in `iotsite/uwsgi.ini` and `iotsite/wsgi.py` may need to be configured properly. Running the server in debug mode should run fine without having use uWSGI. Debug mode is the default mode and should be run using regular Django development commands.
