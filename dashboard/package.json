@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./node_modules/.bin/webpack --config webpack.config.js",
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server --config webpack.config.dev.js",
+    "starthot": "node server.js",
     "watch": "npm run start -- --watch"
   },
   "repository": {
@@ -22,6 +24,7 @@
     "@babel/cli": "^7.6.3",
     "@babel/core": "^7.6.3",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-decorators": "^7.7.0",
     "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.6.3",
     "@babel/register": "^7.6.2",
@@ -63,6 +66,7 @@
     "react-chartjs-2": "^2.8.0",
     "react-dom": "^16.9.0",
     "react-hammerjs": "^1.0.1",
+    "react-hot-loader": "^4.12.16",
     "react-materialize": "^3.4.1",
     "react-router-dom": "^5.0.1",
     "sass": "^1.23.0",
@@ -71,7 +75,9 @@
     "url-loader": "^2.1.0",
     "webpack": "^4.40.2",
     "webpack-bundle-tracker": "^0.4.2-beta",
-    "webpack-cli": "^3.3.9"
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0",
+    "write-file-webpack-plugin": "^4.5.1"
   },
   "dependencies": {
     "mui-layout": "^1.2.9",
