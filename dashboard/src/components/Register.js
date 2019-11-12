@@ -1,79 +1,105 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
 
-import {Link, Redirect} from "react-router-dom";
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 
-import {auth} from "./actions";
+import { auth } from "./actions";
 
-class Login extends Component {
-
-  state = {
-    username: "",
-    password: "",
-  }
-
-  onSubmit = e => {
-    e.preventDefault();
-    this.props.register(this.state.username, this.state.password);
-  }
-
-  render() {
-    if (this.props.isAuthenticated) {
-      return <Redirect to="/" />
+const styles = theme => ({
+    button: {
+        margin: theme.spacing(1),
+    },
+    card: {
+        width: 400
     }
-    return (
-      <form onSubmit={this.onSubmit}>
-        <fieldset>
-          <legend>Register</legend>
-          {this.props.errors.length > 0 && (
-            <ul>
-              {this.props.errors.map(error => (
-                <li key={error.field}>{error.message}</li>
-              ))}
-            </ul>
-          )}
-          <p>
-            <label htmlFor="username">Username</label>
-            <input
-              type="text" id="username"
-              onChange={e => this.setState({username: e.target.value})} />
-          </p>
-          <p>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password" id="password"
-              onChange={e => this.setState({password: e.target.value})} />
-          </p>
-          <p>
-            <button type="submit">Register</button>
-          </p>
+});
 
-          <p>
-            Already have an account? <Link to="/login">Login</Link>
-          </p>
-        </fieldset>
-      </form>
-    )
-  }
+class Register extends Component {
+
+    state = {
+        username: "",
+        password: "",
+    }
+
+    onSubmit = e => {
+        e.preventDefault();
+        this.props.register(this.state.username, this.state.password);
+    };
+
+    render() {
+        const { classes } = this.props;
+
+        if (this.props.isAuthenticated) {
+            return <Redirect to="/" />
+        }
+
+        return (
+            <Card>
+                <CardContent>
+                    <form onSubmit={this.onSubmit}>
+                        {this.props.errors.length > 0 && (
+                            <ul>
+                                {this.props.errors.map(error => (
+                                    <li key={error.field}>{error.message}</li>
+                                ))}
+                            </ul>
+                        )}
+                        <TextField
+                            required
+                            id="username"
+                            label="Username"
+                            margin="normal"
+                            onChange={e => this.setState({username: e.target.value})}
+                        />
+                        <br />
+                        <TextField
+                            id="password"
+                            label="Password"
+                            type="password"
+                            autoComplete="current-password"
+                            margin="normal"
+                            onChange={e => this.setState({password: e.target.value})}
+                        />
+                        <br />
+                        <Button type="submit" variant="contained" color="primary" className={classes.button}>
+                            Register
+                        </Button>
+                        <Link to="/login">
+                            <Button variant="contained" color="secondary" className={classes.button}>
+                                Login Existing Account
+                            </Button>
+                        </Link>
+                    </form>
+                </CardContent>
+            </Card>
+        )
+    }
 }
 
 const mapStateToProps = state => {
-  let errors = [];
-  if (state.auth.errors) {
-    errors = Object.keys(state.auth.errors).map(field => {
-      return {field, message: state.auth.errors[field]};
-    });
-  }
-  return {
-    errors,
-    isAuthenticated: state.auth.isAuthenticated
-  };
+    let errors = [];
+    if (state.auth.errors) {
+        errors = Object.keys(state.auth.errors).map(field => {
+            return {field, message: state.auth.errors[field]};
+        });
+    }
+    return {
+        errors,
+        isAuthenticated: state.auth.isAuthenticated
+    };
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-    register: (username, password) => dispatch(auth.register(username, password)),
-  };
+    return {
+        register: (username, password) => dispatch(auth.register(username, password)),
+    };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Register));

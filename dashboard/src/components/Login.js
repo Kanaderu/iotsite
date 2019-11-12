@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 
+import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
@@ -11,7 +12,21 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 import { auth } from "./actions";
 
+const styles = theme => ({
+    button: {
+        margin: theme.spacing(1),
+    },
+    card: {
+        width: 400
+    }
+});
+
 class Login extends Component {
+
+    state = {
+        username: "",
+        password: "",
+    }
 
     onSubmit = e => {
         e.preventDefault();
@@ -26,7 +41,6 @@ class Login extends Component {
         }
 
         return (
-            <div>
             <Card>
                 <CardContent>
                     <form onSubmit={this.onSubmit}>
@@ -54,51 +68,17 @@ class Login extends Component {
                             onChange={e => this.setState({password: e.target.value})}
                         />
                         <br />
-                        <Button type="submit" variant="contained" color="primary">
-                            Submit
+                        <Button type="submit" variant="contained" color="primary" className={classes.button}>
+                            Login
                         </Button>
                         <Link to="/register">
-                            <Button variant="contained" color="secondary">
+                            <Button variant="contained" color="secondary" className={classes.button}>
                                 Register
                             </Button>
                         </Link>
                     </form>
                 </CardContent>
-            </Card>{/*
-            <form onSubmit={this.onSubmit}>
-                <fieldset>
-                    <legend>Login</legend>
-
-                    {this.props.errors.length > 0 && (
-                        <ul>
-                            {this.props.errors.map(error => (
-                                <li key={error.field}>{error.message}</li>
-                            ))}
-                        </ul>
-                    )}
-
-                    <p>
-                        <label htmlFor="username">Username:</label>
-                        <input
-                            type="text" id="username"
-                            onChange={e => this.setState({username: e.target.value})} />
-                    </p>
-                    <p>
-                      <label htmlFor="password">Password</label>
-                      <input
-                            type="password" id="password"
-                            onChange={e => this.setState({password: e.target.value})} />
-                    </p>
-                    <p>
-                        <button type="submit">Login</button>
-                    </p>
-
-                    <p>
-                        Don't have an account? <Link to="/register">Register</Link>
-                    </p>
-                </fieldset>
-            </form>*/}
-            </div>
+            </Card>
         )
     }
 }
@@ -118,10 +98,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        login: (username, password) => {
-            return dispatch(auth.login(username, password));
-        }
+        login: (username, password) => dispatch(auth.login(username, password)),
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login));
