@@ -9,6 +9,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 
 import { Icon, InlineIcon } from '@iconify/react';
+import paperPlane from '@iconify/icons-fe/paper-plane';
+import loginIcon from '@iconify/icons-ls/login';
 import jupyterIcon from '@iconify/icons-simple-icons/jupyter';
 import githubIcon from '@iconify/icons-simple-icons/github';
 import roundInfo from '@iconify/icons-ic/round-info';
@@ -186,20 +188,39 @@ class SideNavigation extends Component {
                             <ListItemText primary="About" />
                         </ListItem>
                     </NavLink>
+                </List>
+                <Divider />
+                <List component="nav" aria-label="secondary mailbox folder">
                     <NavLink exact={true} to="/login" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
-                            selected={this.state.selectedIndex === 6}
-                            onClick={event => handleListItemClick(event, 6)}
+                            selected={this.state.selectedIndex === 7}
+                            onClick={event => handleListItemClick(event, 7)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
                             }}
                         >
                             <ListItemIcon className={classes.icon}>
-                                <Icon height='2em' icon={roundInfo} />
+                                <Icon height='2em' icon={loginIcon} />
                             </ListItemIcon>
                             <ListItemText primary="Login" />
+                        </ListItem>
+                    </NavLink>
+                    <NavLink exact={true} to="/register" style={{ textDecoration: 'none' }}>
+                        <ListItem
+                            button
+                            selected={this.state.selectedIndex === 8}
+                            onClick={event => handleListItemClick(event, 8)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
+                        >
+                            <ListItemIcon className={classes.icon}>
+                                <Icon height='2em' icon={paperPlane} />
+                            </ListItemIcon>
+                            <ListItemText primary="Register" />
                         </ListItem>
                     </NavLink>
                 </List>
