@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var BundleTracker = require('webpack-bundle-tracker');
 var ExtractText = require('extract-text-webpack-plugin');
 var WriteFilePlugin = require('write-file-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode:           'development',
@@ -10,17 +11,22 @@ module.exports = {
     entry: [
         'react-hot-loader/patch',
         'webpack-dev-server/client?http://localhost:3000',
-        'webpack/hot/only-dev-server',
+        'webpack/hot/dev-server',
         './src/index',
     ],
     output: {
         path:       path.resolve('./static/js'),
+        pathinfo:   true,
         filename:   '[name]-[hash].js',
         //publicPath: '/static/js/',
-        publicPath: 'http://localhost:3000/static/js/'
+        publicPath: 'http://localhost:3000/',
     },
     plugins: [
         new WriteFilePlugin(),
+        new HtmlWebpackPlugin({
+            inject: true,
+            template: 'public/index.html',
+        }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(), // don't reload if there is an error
         new BundleTracker({
