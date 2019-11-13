@@ -87,7 +87,7 @@ const mapStateToProps = state => {
     let errors = [];
       if (state.auth.errors) {
             errors = Object.keys(state.auth.errors).map(field => {
-                return {field, message: state.auth.errors[field]};
+                return { field, message: state.auth.errors[field] };
             });
       }
       return {
