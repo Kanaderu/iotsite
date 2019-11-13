@@ -4,15 +4,13 @@ import { createMuiTheme, withStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
 import Paper from '@material-ui/core/Paper';
-
-import GenericChart from './sections/GenericChart';
-
-
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
+
+import GenericChart from './sections/GenericChart';
 
 const styles = theme => ({
     root: {

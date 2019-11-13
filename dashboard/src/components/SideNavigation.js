@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { NavLink } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -58,7 +59,7 @@ class SideNavigation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedIndex: 0
+            selectedIndex: 0,
         }
     }
 
@@ -190,6 +191,7 @@ class SideNavigation extends Component {
                     </NavLink>
                 </List>
                 <Divider />
+                { this.props.isAuthenticated ||
                 <List component="nav" aria-label="secondary mailbox folder">
                     <NavLink exact={true} to="/login" style={{ textDecoration: 'none' }}>
                         <ListItem
@@ -224,9 +226,23 @@ class SideNavigation extends Component {
                         </ListItem>
                     </NavLink>
                 </List>
+                }
             </div>
         )
     }
 }
 
-export default withStyles(styles)(SideNavigation);
+const mapStateToProps = state => {
+    let errors = [];
+    if (state.auth.errors) {
+        errors = Object.keys(state.auth.errors).map(field => {
+            return { field, message: state.auth.errors[field] };
+        });
+    }
+    return {
+        errors,
+        isAuthenticated: state.auth.isAuthenticated
+    };
+}
+
+export default connect(mapStateToProps, null)(withStyles(styles)(SideNavigation));
