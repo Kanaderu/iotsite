@@ -66,6 +66,11 @@ export const logout = () => {
     let headers = { "Content-Type": "application/json" };
 
     return fetch("/api/auth/logout/", { headers, body: "", method: "POST" })
+    .then(res => {
+          dispatch({ type: 'LOGOUT_SUCCESSFUL' });
+          return res.json().then(data => data);
+    })
+    /*
       .then(res => {
         if (res.status === 204) {
           return {status: res.status, data: {}};
@@ -87,5 +92,60 @@ export const logout = () => {
           throw res.data;
         }
       })
+      */
   }
+}
+
+export const getAccountFetch = () => {
+    return dispatch => {
+        const token = localStorage.token;
+        let body = JSON.stringify({ token });
+        if (token) {
+            return fetch("/ws/api/api-token-verify/", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                  "Authorization": `Bearer ${ token }`
+                },
+                body
+            })
+            .then(res => {
+                if (res.status == 200) {
+                    return res.json().then(data => {
+                        return { status: res.status, data };
+                    })
+                } else {
+                    console.log("Server Error!");
+                }
+            })
+            .then(res => {
+                if (res.status === 200) {
+                    dispatch({
+                        type: 'LOGIN_SUCCESSFUL',
+                        data: res.data
+                    });
+                    return res.data;
+                } else {
+                    dispatch({
+                        type: 'LOGIN_FAILED',
+                        data: res.data
+                    });
+                    throw res.data;
+                }
+            })
+            /*
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.message) {
+                    // An error will occur if the token is invalid.
+                    // If this happens, you may want to remove the invalid token.
+                    localStorage.removeItem("token")
+                } else {
+                    dispatch(loginUser(data.user))
+                }
+            })
+            */
+        }
+    }
 }

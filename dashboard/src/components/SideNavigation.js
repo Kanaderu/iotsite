@@ -12,6 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import { Icon, InlineIcon } from '@iconify/react';
 import paperPlane from '@iconify/icons-fe/paper-plane';
 import loginIcon from '@iconify/icons-ls/login';
+import logoutIcon from '@iconify/icons-ls/logout';
 import jupyterIcon from '@iconify/icons-simple-icons/jupyter';
 import githubIcon from '@iconify/icons-simple-icons/github';
 import roundInfo from '@iconify/icons-ic/round-info';
@@ -20,6 +21,7 @@ import baselineHome from '@iconify/icons-ic/baseline-home';
 import codefactorIcon from '@iconify/icons-simple-icons/codefactor';
 import bookIcon from '@iconify/icons-icomoon-free/book';
 
+import { auth } from './actions';
 
 const styles = theme => ({
     root: {
@@ -63,11 +65,20 @@ class SideNavigation extends Component {
         }
     }
 
+    componentDidMount = () => {
+        this.props.getAccountFetch()
+    }
+
     render() {
         const { classes } = this.props;
 
         const handleListItemClick = (event, index) => {
             this.setState({selectedIndex: index});
+        };
+
+        const handleLogout = (event, index) => {
+            this.setState({selectedIndex: index});
+            this.props.logout();
         };
 
         return (
@@ -191,6 +202,26 @@ class SideNavigation extends Component {
                     </NavLink>
                 </List>
                 <Divider />
+                { this.props.isAuthenticated &&
+                <List component="nav" aria-label="secondary mailbox folder">
+                    <NavLink exact={true} to="/" style={{ textDecoration: 'none' }}>
+                        <ListItem
+                            button
+                            selected={this.state.selectedIndex === 7}
+                            onClick={event => handleLogout(event, 0)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
+                        >
+                            <ListItemIcon className={classes.icon}>
+                                <Icon height='2em' icon={logoutIcon} />
+                            </ListItemIcon>
+                            <ListItemText primary="Logout" />
+                        </ListItem>
+                    </NavLink>
+                </List>
+                }
                 { this.props.isAuthenticated ||
                 <List component="nav" aria-label="secondary mailbox folder">
                     <NavLink exact={true} to="/login" style={{ textDecoration: 'none' }}>
@@ -245,4 +276,9 @@ const mapStateToProps = state => {
     };
 }
 
-export default connect(mapStateToProps, null)(withStyles(styles)(SideNavigation));
+const mapDispatchToProps = dispatch => ({
+    getAccountFetch: () => dispatch(auth.getAccountFetch()),
+    logout: () => dispatch(auth.logout()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SideNavigation));
