@@ -1,5 +1,6 @@
 const initialState = {
-    token: localStorage.getItem("token"),
+    access: localStorage.getItem("access"),
+    refresh: localStorage.getItem("refresh"),
     isAuthenticated: null,
     isLoading: true,
     user: null,
@@ -9,26 +10,35 @@ const initialState = {
 
 export default function auth(state=initialState, action) {
 
+    let ret = {}
     switch (action.type) {
 
         case 'USER_LOADING':
-            return {...state, isLoading: true};
+            ret = {...state, isLoading: true};
+            return ret;
         case 'USER_LOADED':
-            return {...state, isAuthenticated: true, isLoading: false, user: action.user};
+            ret = {...state, isAuthenticated: true, isLoading: false, user: action.user};
+            return ret;
 
         case 'LOGIN_SUCCESSFUL':
-            localStorage.setItem("token", action.data.token);
-            return {...state, ...action.data, isAuthenticated: true, isLoading: false, errors: null};
+            localStorage.setItem("access", action.data.access);
+            localStorage.setItem("refresh", action.data.refresh);
+            ret = {...state, ...action.data, isAuthenticated: true, isLoading: false, errors: null};
+            return ret;
         case 'LOGIN_FAILED':
 
         case 'LOGOUT_SUCCESSFUL':
-            localStorage.removeItem("token");
-            return {...state, errors: action.data, token: null, user: null,
+            localStorage.removeItem("access");
+            localStorage.removeItem("refresh");
+            ret = {...state, errors: action.data, access: null, refresh: null, user: null,
                 isAuthenticated: false, isLoading: false};
+            return ret;
 
         case 'REGISTRATION_SUCCESSFUL':
-            localStorage.setItem("token", action.data.token);
-            return {...state, ...action.data, isAuthenticated: true, isLoading: false, errors: null};
+            localStorage.setItem("access", action.data.access);
+            localStorage.setItem("refresh", action.data.refresh);
+            ret = {...state, ...action.data, isAuthenticated: true, isLoading: false, errors: null};
+            return ret;
         case 'REGISTRATION_FAILED':
 
         case 'AUTHENTICATION_ERROR':

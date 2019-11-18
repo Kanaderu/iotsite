@@ -3,7 +3,7 @@ export const login = (username, password) => {
         let headers = { "Content-Type": "application/json" };
         let body = JSON.stringify({ username, password });
 
-        return fetch("/ws/api/api-token-auth/", { headers, body, method: "POST" })
+        return fetch("/ws/api/token/", { headers, body, method: "POST" })
             .then(res => {
                 if (res.status < 500) {
                     return res.json().then(data => {
@@ -98,15 +98,15 @@ export const logout = () => {
 
 export const getAccountFetch = () => {
     return dispatch => {
-        const token = localStorage.token;
+        const token = localStorage.access;
         let body = JSON.stringify({ token });
         if (token) {
-            return fetch("/ws/api/api-token-verify/", {
+            return fetch("/ws/api/verify/", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                   Accept: "application/json",
-                  "Authorization": `Bearer ${ token }`
+                  //"Authorization": `Bearer ${ token }`
                 },
                 body
             })
@@ -116,17 +116,24 @@ export const getAccountFetch = () => {
                         return { status: res.status, data };
                     })
                 } else {
+                    throw res;
                     console.log("Server Error!");
                 }
             })
             .then(res => {
                 if (res.status === 200) {
                     dispatch({
-                        type: 'LOGIN_SUCCESSFUL',
+                        type: 'USER_LOADED',
                         data: res.data
                     });
+                    {/* TODO: set user info */}
                     return res.data;
+                } else if (res.status === 401) {
+                    {/* TODO: refresh login */}
+                    console.log("401!")
+                    console.log(res.data)
                 } else {
+                    console.log("LOGIN FAILED");
                     dispatch({
                         type: 'LOGIN_FAILED',
                         data: res.data
