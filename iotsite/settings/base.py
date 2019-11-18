@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'sensors',
     'external_api',
     'dashboard',
-    #'users',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +136,16 @@ REST_FRAMEWORK = {
         'rest_framework_csv.parsers.CSVParser'
     ],
     'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+
     'ORDERING_PARAM': 'sort',
 
     #'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
@@ -187,3 +197,10 @@ GEOIP_PATH = os.path.join(BASE_DIR, 'setup', 'geodjango', 'geoip2', 'GeoLite2'),
 # Leaflet
 LEAFLET_CONFIG = {
 }
+
+# Accounts
+AUTH_USER_MODEL = 'users.Account'
+
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'

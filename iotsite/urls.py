@@ -21,8 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sensors.urls')),
     path('', include('external_api.urls')),
-    path('', include('dashboard.urls')),
     path('', include('geo.urls')),
+    path('', include('users.urls')),
+    path('', include('dashboard.urls')),
 ]
 
 if settings.DEBUG:

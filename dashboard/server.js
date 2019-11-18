@@ -4,6 +4,8 @@ var config = require('./webpack.config.dev')
 
 new WebpackDevServer(webpack(config), {
     publicPath: config.output.publicPath,
+    clientLogLevel: 'none',
+    compress: true,
     hot: true,
     inline: true,
     historyApiFallback: true,
@@ -12,8 +14,8 @@ new WebpackDevServer(webpack(config), {
     },
 }).listen(3000, '0.0.0.0', function (err, result) {
     if (err) {
-        console.log(err)
+        console.log(err);
     }
 
-    console.log('Listening at 0.0.0.0:3000')
+    console.log('Listening at 0.0.0.0:3000');
 })
