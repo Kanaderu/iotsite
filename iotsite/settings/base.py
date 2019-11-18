@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django_mysql',         # mysql support for API proxy
     'django_filters',       # field filtering for REST
     'drf_extra_fields',     # drf add-ons
+    'graphene_django',      # GraphQL support
 
     'rest_framework_gis',
     'djgeojson',
