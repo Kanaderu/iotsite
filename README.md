@@ -123,7 +123,9 @@ python manage.py runserver
 
 Node that any changes made to django will invoke the server to be refreshed to encompass the new changes.
 
-### Adding Users
+## Adding Users
+
+### Super Users
 
 Currently `superuser`s can be added by using the command:
 
@@ -131,13 +133,119 @@ Currently `superuser`s can be added by using the command:
 python manage.py createsuperuser
 ```
 
-Basic users have not been impemented yet.
+### Basic Users
 
-## TODOs:
+Basic users can be added via the registration page from the frontend. Users can also be registered using REST (which is what the frontend uses).
 
-- [ ] Add documentation for running in Production Mode
-- [ ] User authentication
-- [ ] Basic user backend setup/configuration
-- [ ] Override rest\_framework template
-- [ ] Validate sensor model logic
-- [ ] Add default landing page (React?)
+#### Authentication
+
+JSON Web Tokens (JWT) is used for authentication and can be accessed at the following actions and urls:
+
+##### Registration
+
+To register users, send data to `/api/register/` or `/ws/api/register`.
+
+The following POST format is used to register users:
+
+```json
+{
+    "username": "user1",
+    "password": "password1"
+}
+```
+
+##### Login
+
+Located at `/api/token/` or `/ws/api/token` which will return an `access` token and a `refresh` token if the user login is valid.
+
+The following POST format is used to obtain a JWT token:
+
+```json
+{
+    "username": "user1",
+    "password": "password1"
+}
+```
+
+A valid response will appear as:
+
+```json
+{
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU3NDEyNDg0NywianRpIjoiMDhiYjQxYTQ4ZWVhNDE4YWEzOTEwZWU1YWMxYjY2ZjciLCJ1c2VyX2lkIjoyfQ.cg7NQ8YwVbuX2mVEGg6AFkNVQc7PEs72ohDiOnr2ZPg",
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTc0MDM4NzQ3LCJqdGkiOiIxYzk4NTM2MGQ3NDA0OWFiYmZkNDQzMDliYjAyMzhkMCIsInVzZXJfaWQiOjJ9.Uz_X2sECClBkfT7p1GyCI8L9buJNVvJ2gxq0VJOBqaM"
+}
+```
+ 
+ 
+##### Verification
+
+Located at `/api/verify/` or `/ws/api/verify` which will return a `200` reponse if the provided token is valid.
+
+The following POST format is used for token verification:
+
+```json
+{
+    "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTczODg2ODQ0LCJqdGkiOiI5ZjI3MzQxZDIyNGQ0YWIwODRmM2YwYTZmYmNlNWQ4YSIsInVzZXJfaWQiOjJ9.wq9C-a1wJDojXUDGo73fhxQylWVgtmOYNhtEl0Up052"
+}
+```
+
+##### Refresh
+
+To refresh and obtain a new `access` token, a valid `refresh` token must be used. An `access` token with be provided in response to a valid `refresh` token.
+
+The following POST format is used for refreshing an `access` token:
+
+```json
+{
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU3NDEyNDg0NywianRpIjoiMDhiYjQxYTQ4ZWVhNDE4YWEzOTEwZWU1YWMxYjY2ZjciLCJ1c2VyX2lkIjoyfQ.cg7NQ8YwVbuX2mVEGg6AFkNVQc7PEs72ohDiOnr2ZPg"
+}
+```
+
+A valid response will appear as:
+
+```json
+{
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTc0MDM4NzY2LCJqdGkiOiJiNTZjYjJjNmZjMzc0OWRlYTZiYmJjYjJhZTM0ZjBjMCIsInVzZXJfaWQiOjJ9.9kKnf0QY1mM41mA-D0Ixl30yofOC78qU-fePWB6WnMM"
+}
+```
+
+#### Adding Data as a Valid User
+
+Adding/Viewing data which requires a user to be authenticated requires a valid token. To add data as a authenticated user, the header in the POST payload must be defined with the user's token. The header must contain the `access` token in the following format:
+
+```
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTc0MDM4NzY2LCJqdGkiOiJiNTZjYjJjNmZjMzc0OWRlYTZiYmJjYjJhZTM0ZjBjMCIsInVzZXJfaWQiOjJ9.9kKnf0QY1mM41mA-D0Ixl30yofOC78qU-fePWB6WnMM
+```
+
+
+An example curl command to POST feather data is shown below:
+
+```
+curl -X POST \
+-H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTc0MDM4NzY2LCJqdGkiOiJiNTZjYjJjNmZjMzc0OWRlYTZiYmJjYjJhZTM0ZjBjMCIsInVzZXJfaWQiOjJ9.9kKnf0QY1mM41mA-D0Ixl30yofOC78qU-fePWB6WnMM" \
+-H "Content-Type: application/json" \
+-d '{
+        "dev_id": 1,
+        "metadata": {
+              "location": "Apartment",
+              "latitude": 39.77710000,
+              "longitude": -83.99720000,
+              "time": "2019-10-02T19:17:10.067889-04:00"
+        },
+        "data": [
+         {
+             "sensor_id": 1,
+             "sensor_type": "Temperature",
+             "sensor_data": 19.813,
+             "sensor_units": "C"
+         },
+         {
+             "sensor_id": 2,
+             "sensor_type": "Temperature",
+             "sensor_data": 16.188,
+             "sensor_units": "C"
+         }
+         ]
+    }' \
+http://localhost/ws/api/Feather/
+```
