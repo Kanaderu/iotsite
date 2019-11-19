@@ -23,9 +23,15 @@ DATABASES = {
          'ENGINE': 'django.contrib.gis.db.backends.postgis',
          'NAME': 'geodjango',
          'USER': 'geo',
-         'PASSWORD': 'qazwsx',
+         'PASSWORD': 'geo',
          'HOST': '127.0.0.1',
          'PORT': '5432',
     }
 }
 
+# setup sql explorer
+INSTALLED_APPS += [
+    'explorer',
+]
+EXPLORER_CONNECTIONS = { 'Default': 'default' }
+EXPLORER_DEFAULT_CONNECTION = 'default'

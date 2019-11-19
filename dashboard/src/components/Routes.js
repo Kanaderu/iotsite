@@ -3,6 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 import DashboardPage from './pages/DashboardPage';
 import SensorsPage from './pages/SensorsPage';
 import AboutPage from './pages/AboutPage';
+import Login from './Login';
+import Register from './Register';
 
 class Routes extends React.Component {
     render() {
@@ -13,6 +15,8 @@ class Routes extends React.Component {
                 <Route path='/dashboard' exact component={DashboardPage} />
                 <Route path='/sensors' exact component={SensorsPage} />
                 <Route path='/about' exact component={AboutPage} />
+                <Route path="/login" exact component={Login} />
+                <Route path="/register" exact component={Register} />
             </Switch>
         );
     }
