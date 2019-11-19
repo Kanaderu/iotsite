@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'webpack_loader',       # react webpack integration
     'rest_framework',       # rest framework library
     'thorn.django',         # webhooks library
-    'django_mysql',         # mysql support for API proxy
     'django_filters',       # field filtering for REST
     'drf_extra_fields',     # drf add-ons
     'graphene_django',      # GraphQL support
