@@ -27,8 +27,8 @@ urlpatterns = [
     path('', include('geo.urls')),
     path('', include('users.urls')),
     path('graphql', GraphQLView.as_view(graphiql=True, schema=schema)),
-    path('', include('dashboard.urls')),
     path('', include('geo.urls')),
+    path('', include('dashboard.urls')),
 ]
 
 if settings.DEBUG:

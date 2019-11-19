@@ -42,6 +42,8 @@ export default function auth(state=initialState, action) {
         case 'REGISTRATION_FAILED':
 
         case 'AUTHENTICATION_ERROR':
+            ret = {...state, ...action.data, isAuthenticated: false, errors: action.data}
+            return ret;
 
         default:
             return state;

@@ -1,7 +1,8 @@
 from rest_framework.views import APIView, status
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from rest_framework import permissions
-from users.serializers import AccountSerializerWithToken
+from rest_framework import permissions, status
+from .serializers import AccountSerializerWithToken, RefreshTokenSerializer
 
 
 class CreateAccountView(APIView):
@@ -24,3 +25,14 @@ class CreateAccountView(APIView):
 
         #return Response({"response" : "success", "message" : "Account created succesfully"})
         return Response({"message": "Account Created Successfully"}, status=status.HTTP_201_CREATED)
+
+
+class LogoutView(GenericAPIView):
+    serializer_class = RefreshTokenSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request, *args):
+        sz = self.get_serializer(data=request.data)
+        sz.is_valid(raise_exception=True)
+        sz.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)

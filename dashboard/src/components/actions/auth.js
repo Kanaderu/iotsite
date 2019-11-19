@@ -3,7 +3,7 @@ export const login = (username, password) => {
         let headers = { "Content-Type": "application/json" };
         let body = JSON.stringify({ username, password });
 
-        return fetch("/ws/api/token/", { headers, body, method: "POST" })
+        return fetch("/ws/api/login/", { headers, body, method: "POST" })
             .then(res => {
                 if (res.status < 500) {
                     return res.json().then(data => {
@@ -63,26 +63,32 @@ export const register = (username, password) => {
 
 export const logout = () => {
   return (dispatch, getState) => {
-    let headers = { "Content-Type": "application/json" };
+    const access = localStorage.access;
+    let headers = { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${ access }`
+                    };
 
-    return fetch("/api/auth/logout/", { headers, body: "", method: "POST" })
+    const refresh = localStorage.refresh;
+    let body = JSON.stringify({ refresh });
+
+    return fetch("/ws/api/logout/", { headers, body, method: "POST" })
     .then(res => {
           dispatch({ type: 'LOGOUT_SUCCESSFUL' });
           return res.json().then(data => data);
     })
-    /*
-      .then(res => {
+    .then(res => {
         if (res.status === 204) {
-          return {status: res.status, data: {}};
+            return {status: res.status, data: {}};
         } else if (res.status < 500) {
-          return res.json().then(data => {
-            return {status: res.status, data};
-          })
+            return res.json().then(data => {
+                return {status: res.status, data};
+            })
         } else {
-          console.log("Server Error!");
-          throw res;
+            console.log("Server Error!");
+            throw res;
         }
-      })
+    })
+    /*
       .then(res => {
         if (res.status === 204) {
           dispatch({ type: 'LOGOUT_SUCCESSFUL' });

@@ -36,3 +36,6 @@ INSTALLED_APPS += [
 ]
 EXPLORER_CONNECTIONS = { 'Default': 'default' }
 EXPLORER_DEFAULT_CONNECTION = 'default'
+
+# Simple JWT Signing Key
+SIMPLE_JWT['SIGNING_KEY'] = SECRET_KEY

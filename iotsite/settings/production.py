@@ -28,3 +28,6 @@ DATABASES = {
          'PORT': os.environ['POSTGRES_PORT'],
     }
 }
+
+# Simple JWT Signing Key
+SIMPLE_JWT['SIGNING_KEY'] = SECRET_KEY
