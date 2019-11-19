@@ -10,6 +10,9 @@ import MapSection from './sections/MapSection';
 import MapVectorSection from './sections/MapVectorSection';
 import GenericChart from './sections/GenericChart';
 
+import { setDefaultOptions } from 'esri-loader';
+setDefaultOptions({ css: true });
+
 const styles = theme => ({
     root: {
         flexGrow: 1,

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { NavLink } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -9,6 +10,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 
 import { Icon, InlineIcon } from '@iconify/react';
+import paperPlane from '@iconify/icons-fe/paper-plane';
+import loginIcon from '@iconify/icons-ls/login';
+import logoutIcon from '@iconify/icons-ls/logout';
 import jupyterIcon from '@iconify/icons-simple-icons/jupyter';
 import githubIcon from '@iconify/icons-simple-icons/github';
 import roundInfo from '@iconify/icons-ic/round-info';
@@ -17,6 +21,7 @@ import baselineHome from '@iconify/icons-ic/baseline-home';
 import codefactorIcon from '@iconify/icons-simple-icons/codefactor';
 import bookIcon from '@iconify/icons-icomoon-free/book';
 
+import { auth } from './actions';
 
 const styles = theme => ({
     root: {
@@ -56,8 +61,12 @@ class SideNavigation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedIndex: 0
+            selectedIndex: 0,
         }
+    }
+
+    componentDidMount = () => {
+        this.props.getAccountFetch()
     }
 
     render() {
@@ -65,6 +74,11 @@ class SideNavigation extends Component {
 
         const handleListItemClick = (event, index) => {
             this.setState({selectedIndex: index});
+        };
+
+        const handleLogout = (event, index) => {
+            this.setState({selectedIndex: index});
+            this.props.logout();
         };
 
         return (
@@ -187,9 +201,84 @@ class SideNavigation extends Component {
                         </ListItem>
                     </NavLink>
                 </List>
+                <Divider />
+                { this.props.isAuthenticated &&
+                <List component="nav" aria-label="secondary mailbox folder">
+                    <NavLink exact={true} to="/" style={{ textDecoration: 'none' }}>
+                        <ListItem
+                            button
+                            selected={this.state.selectedIndex === 7}
+                            onClick={event => handleLogout(event, 0)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
+                        >
+                            <ListItemIcon className={classes.icon}>
+                                <Icon height='2em' icon={logoutIcon} />
+                            </ListItemIcon>
+                            <ListItemText primary="Logout" />
+                        </ListItem>
+                    </NavLink>
+                </List>
+                }
+                { this.props.isAuthenticated ||
+                <List component="nav" aria-label="secondary mailbox folder">
+                    <NavLink exact={true} to="/login" style={{ textDecoration: 'none' }}>
+                        <ListItem
+                            button
+                            selected={this.state.selectedIndex === 7}
+                            onClick={event => handleListItemClick(event, 7)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
+                        >
+                            <ListItemIcon className={classes.icon}>
+                                <Icon height='2em' icon={loginIcon} />
+                            </ListItemIcon>
+                            <ListItemText primary="Login" />
+                        </ListItem>
+                    </NavLink>
+                    <NavLink exact={true} to="/register" style={{ textDecoration: 'none' }}>
+                        <ListItem
+                            button
+                            selected={this.state.selectedIndex === 8}
+                            onClick={event => handleListItemClick(event, 8)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
+                        >
+                            <ListItemIcon className={classes.icon}>
+                                <Icon height='2em' icon={paperPlane} />
+                            </ListItemIcon>
+                            <ListItemText primary="Register" />
+                        </ListItem>
+                    </NavLink>
+                </List>
+                }
             </div>
         )
     }
 }
 
-export default withStyles(styles)(SideNavigation);
+const mapStateToProps = state => {
+    let errors = [];
+    if (state.auth.errors) {
+        errors = Object.keys(state.auth.errors).map(field => {
+            return { field, message: state.auth.errors[field] };
+        });
+    }
+    return {
+        errors,
+        isAuthenticated: state.auth.isAuthenticated
+    };
+}
+
+const mapDispatchToProps = dispatch => ({
+    getAccountFetch: () => dispatch(auth.getAccountFetch()),
+    logout: () => dispatch(auth.logout()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SideNavigation));

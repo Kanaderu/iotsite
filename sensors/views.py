@@ -1,5 +1,5 @@
 from sensors.serializers import *
-from rest_framework import viewsets#, mixins, status
+from rest_framework import viewsets, permissions#, mixins, status
 #from django.shortcuts import get_object_or_404
 #from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 #from rest_framework_csv.renderers import CSVRenderer
@@ -37,14 +37,17 @@ class SensorViewSet(viewsets.ModelViewSet):
     filterset_fields = '__all__'
     search_fields = ['sensor', 'sensor_id']
     ordering_fields = '__all__'
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
 
 
 class LoRaGatewaySensorViewSet(SensorViewSet):
     serializer_class = LoRaGatewaySensorSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
 
 
 class FeatherSensorViewSet(SensorViewSet):
     serializer_class = FeatherSensorSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
 
 
 '''

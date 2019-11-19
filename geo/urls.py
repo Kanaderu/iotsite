@@ -4,7 +4,6 @@ from djgeojson.views import GeoJSONLayerView
 from .models import WorldBorder, LINKStation
 from sensors.views import LatestSensorGeoJSONLayerView
 
-#from sensors.models import LoRaGateway, FeatherDataV2
 from sensors.models import Sensor, SensorMetadata
 
 urlpatterns = [

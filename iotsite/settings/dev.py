@@ -24,7 +24,7 @@ DATABASES = {
          'NAME': 'geodjangoclean',
          #'NAME': 'geodjango',
          'USER': 'geo',
-         'PASSWORD': 'qazwsx',
+         'PASSWORD': 'geo',
          'HOST': '127.0.0.1',
          'PORT': '5432',
     }
