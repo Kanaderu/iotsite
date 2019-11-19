@@ -17,12 +17,16 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 
+from graphene_django.views import GraphQLView
+from iotsite.schema import schema
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sensors.urls')),
     path('', include('external_api.urls')),
     path('', include('geo.urls')),
     path('', include('users.urls')),
+    path('graphql', GraphQLView.as_view(graphiql=True, schema=schema)),
     path('', include('dashboard.urls')),
 ]
 

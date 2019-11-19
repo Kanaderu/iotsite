@@ -205,3 +205,8 @@ AUTH_USER_MODEL = 'users.Account'
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
+
+# GraphQL
+GRAPHENE = {
+    'SCHEMA': 'iotsite.schema.schema'
+}
