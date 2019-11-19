@@ -5,7 +5,7 @@ import { Scene } from '@esri/react-arcgis';
 
 const styles = theme => ({
     card: {
-        height: 600
+        height: 700
     }
 });
 
@@ -19,17 +19,17 @@ class MapVectorSection extends Component {
                     titleTypographyProps={{variant: 'h6'}}
                 />
                 <CardContent>
-                        <link rel="stylesheet" href="https://js.arcgis.com/4.10/esri/css/main.css"></link>
-                        <Scene
-                            mapProperties={{
-                                basemap: 'streets-navigation-vector',
-                                ground: 'world-elevation'
-                            }}
-                            viewProperties={{
-                                center: [-84.1935444, 39.7316451 ],
-                                zoom: 16.5
-                            }}
-                        />
+                    <Scene
+                        style={{ width: '100%', height: '100vh' }}
+                        mapProperties={{
+                            basemap: 'streets-navigation-vector',
+                            ground: 'world-elevation'
+                        }}
+                        viewProperties={{
+                            center: [-84.1935444, 39.7316451 ],
+                            zoom: 16.5
+                        }}
+                    />
                 </CardContent>
             </Card>
         )

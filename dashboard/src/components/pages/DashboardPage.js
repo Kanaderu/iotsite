@@ -10,6 +10,9 @@ import MapSection from './sections/MapSection';
 import MapVectorSection from './sections/MapVectorSection';
 import GenericChart from './sections/GenericChart';
 
+import { setDefaultOptions } from 'esri-loader';
+setDefaultOptions({ css: true });
+
 const styles = theme => ({
     root: {
         flexGrow: 1,
@@ -54,15 +57,27 @@ class DashboardPage extends Component {
         }
     });
 
-    fetchFeather() {
-        fetch('https://udsensors.tk/ws/api/FeatherV2/')
+    checkStatus(response) {
+        if (response.status >= 200 && response.status < 300) {
+            return response
+        } else {
+            var error = new Error(response.statusText)
+            error.response = response
+            throw error
+        }
+    }
+
+    fetchFeather(url) {
+        fetch(url)
+            .then(this.checkStatus)
             .then(response => response.json())
             .then(responses => {
                 this.setState({
-                    feather: responses.map(response => ({
-                        dev_id: response.dev_id,
+                    feather: responses.results.reverse().map(response => ({
+                        sensor_id: response.sensor_id,
+                        sensor: response.sensor,
                         metadata: response.metadata,
-                        data: response.data,
+                        data: response.data
                     }))
                 });
             })
@@ -71,21 +86,17 @@ class DashboardPage extends Component {
             });
     }
 
-    fetchLoRaGateway() {
-        fetch('https://udsensors.tk/ws/api/LoRaGateway/')
+    fetchLoRaGateway(url) {
+        fetch(url)
+            .then(this.checkStatus)
             .then(response => response.json())
             .then(responses => {
                 this.setState({
-                    lora: responses.map(response => ({
-                        app_id: response.app_id,
-                        dev_id: response.dev_id,
-                        hardware_serial: response.hardware_serial,
-                        port: response.port,
-                        counter: response.counter,
-                        payload_raw: response.payload_raw,
-                        payload_fields: response.payload_fields,
+                    lora: responses.results.reverse().map(response => ({
+                        sensor_id: response.sensor_id,
+                        sensor: response.sensor,
                         metadata: response.metadata,
-                        downlink_url: response.downlink_url
+                        data: response.data
                     }))
                 });
             })
@@ -95,7 +106,8 @@ class DashboardPage extends Component {
     }
 
     fetchDarkSkyData() {
-        fetch('https://udsensors.tk/ws/darksky/')
+        fetch('/ws/darksky/')
+            .then(this.checkStatus)
             .then(response => response.json())
             .then((data) => {
                 this.setState({
@@ -117,8 +129,8 @@ class DashboardPage extends Component {
 
     componentDidMount() {
         this.fetchDarkSkyData();
-        this.fetchLoRaGateway();
-        this.fetchFeather();
+        this.fetchLoRaGateway('/ws/api/sensors/?sensor=LG');
+        this.fetchFeather('/ws/api/sensors/?sensor=F');
     }
 
     render() {
@@ -131,13 +143,13 @@ class DashboardPage extends Component {
                         "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
         // lora data
         const lora_labels = data.lora.map((data) => {
-            const d = new Date(data.metadata.time);
+            const d = new Date(data.metadata.timestamp);
             return months[d.getMonth()] + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
         });
         const lora_data = [
             {
                 data: data.lora.map((data) => {
-                    return parseFloat(data.payload_fields.t1).toFixed(2);
+                    return parseFloat(data.data[5].data).toFixed(2);
                 }),
                 label: 'T1',
                 backgroundColor: 'rgba(75,192,192,0.4)',
@@ -149,7 +161,7 @@ class DashboardPage extends Component {
             },
             {
                 data: data.lora.map((data) => {
-                    return parseFloat(data.payload_fields.t2).toFixed(2);
+                    return parseFloat(data.data[6].data).toFixed(2);
                 }),
                 label: 'T2',
                 backgroundColor: 'rgba(255,100,100,0.4)',
@@ -163,13 +175,13 @@ class DashboardPage extends Component {
 
         // feather data
         const feather_labels = data.feather.map((data) => {
-            const d = new Date(data.metadata.time);
+            const d = new Date(data.metadata.timestamp);
             return months[d.getMonth()] + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
         });
         const feather_data = [
             {
                 data: data.feather.map((data) => {
-                    return parseFloat(data.data[0].sensor_data).toFixed(2);
+                    return parseFloat(data.data[0].data).toFixed(2);
                 }),
                 label: '1',
                 backgroundColor: 'rgba(75,192,192,0.4)',
@@ -181,7 +193,7 @@ class DashboardPage extends Component {
             },
             {
                 data: data.feather.map((data) => {
-                    return parseFloat(data.data[1].sensor_data).toFixed(2);
+                    return parseFloat(data.data[1].data).toFixed(2);
                 }),
                 label: '2',
                 backgroundColor: 'rgba(255,100,100,0.4)',

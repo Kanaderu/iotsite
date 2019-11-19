@@ -31,23 +31,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',   # geodjango
 
-    'django.contrib.gis',
-    'geo',
+    'webpack_loader',       # react webpack integration
+    'rest_framework',       # rest framework library
+    'thorn.django',         # webhooks library
+    'django_filters',       # field filtering for REST
+    'drf_extra_fields',     # drf add-ons
+    'graphene_django',      # GraphQL support
+
+    'rest_framework_gis',
     'djgeojson',
     'leaflet',
 
-    'webpack_loader',   # react webpack integration
-    'rest_framework',   # rest framework library
-    'thorn.django',     # webhooks library
-    'django_mysql',     # mysql support for API proxy
-    'django_filters',   # field filtering for REST
-
     # custom apps
+    'geo',
     'sensors',
     'external_api',
     'dashboard',
-    #'users',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -115,8 +117,8 @@ USE_L10N = True
 USE_TZ = True
 
 REST_FRAMEWORK = {
-    #'PAGE_SIZE': 20,
-    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 50,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
@@ -134,6 +136,16 @@ REST_FRAMEWORK = {
         'rest_framework_csv.parsers.CSVParser'
     ],
     'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+
     'ORDERING_PARAM': 'sort',
 
     #'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
@@ -171,25 +183,29 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # DarkSky API CONF
 if 'DARKSKY_KEY' in os.environ:
     DARKSKY_KEY = os.environ['DARKSKY_KEY']
-    DARKSKY_LAT = os.environ['DARKSKY_LAT']
-    DARKSKY_LON = os.environ['DARKSKY_LON']
-    DARKSKY_THRESH = float(os.environ['DARKSKY_THRESH'])
 else:
     eprint('DARKSKY_KEY Environment Variable is NOT set! Ignoring...')
-    DARKSKY_KEY = 'NONE'
-    DARKSKY_LAT = 'NONE'
-    DARKSKY_LON = 'NONE'
-    DARKSKY_THRESH = 'NONE'
+    DARKSKY_KEY = None
 
-# ignore system checks to support JSONField()
-# https://github.com/adamchainz/django-mysql/issues/342
-SILENCED_SYSTEM_CHECKS = [
-    'django_mysql.E016',
-]
+DARKSKY_LAT = 39.758949
+DARKSKY_LON = -84.191605
+DARKSKY_THRESH = 96.0 # seconds before fetching new darksky data
 
 # GeoDjango
 GEOIP_PATH = os.path.join(BASE_DIR, 'setup', 'geodjango', 'geoip2', 'GeoLite2'),
 
 # Leaflet
 LEAFLET_CONFIG = {
+}
+
+# Accounts
+AUTH_USER_MODEL = 'users.Account'
+
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+
+# GraphQL
+GRAPHENE = {
+    'SCHEMA': 'iotsite.schema.schema'
 }
