@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'drf_extra_fields',     # drf add-ons
     'graphene_django',      # GraphQL support
     'rest_framework_simplejwt.token_blacklist', # JWT Blacklist
+    'channels',             # channels
 
     'rest_framework_gis',
     'djgeojson',
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'external_api',
     'dashboard',
     'users',
+    'vehicles',
 ]
 
 MIDDLEWARE = [
@@ -212,6 +214,7 @@ GRAPHENE = {
     'SCHEMA': 'iotsite.schema.schema'
 }
 
+# JSON Web Tokens
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -236,4 +239,15 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+
+# Channels
+ASGI_APPLICATION = 'iotsite.routing.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
 }

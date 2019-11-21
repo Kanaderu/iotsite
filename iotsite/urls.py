@@ -28,6 +28,7 @@ urlpatterns = [
     path('', include('users.urls')),
     path('graphql', GraphQLView.as_view(graphiql=True, schema=schema)),
     path('', include('geo.urls')),
+    path('vehicle/', include('vehicles.urls')),
     path('', include('dashboard.urls')),
 ]
 
