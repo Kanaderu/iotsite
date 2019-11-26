@@ -40,7 +40,7 @@ class LogoutView(GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class ListSlidingTokenView(GenericAPIView):
+class GetSlidingTokenView(GenericAPIView):
     serializer_class = TokenObtainSlidingSerializer
     permission_classes = (permissions.IsAuthenticated,)
 

@@ -20,6 +20,7 @@ import sharpLandscape from '@iconify/icons-ic/sharp-landscape';
 import baselineHome from '@iconify/icons-ic/baseline-home';
 import codefactorIcon from '@iconify/icons-simple-icons/codefactor';
 import bookIcon from '@iconify/icons-icomoon-free/book';
+import keyIcon from '@iconify/icons-fa-solid/key';
 
 import { auth } from './actions';
 
@@ -204,10 +205,30 @@ class SideNavigation extends Component {
                 <Divider />
                 { this.props.isAuthenticated &&
                 <List component="nav" aria-label="secondary mailbox folder">
-                    <NavLink exact={true} to="/" style={{ textDecoration: 'none' }}>
+                    <NavLink exact={true} to="/token" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 7}
+                            onClick={event => handleListItemClick(event, 7)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
+                        >
+                            <ListItemIcon className={classes.icon}>
+                                <Icon height='2em' icon={keyIcon} />
+                            </ListItemIcon>
+                            <ListItemText primary="API Tokens" />
+                        </ListItem>
+                    </NavLink>
+                </List>
+                }
+                { this.props.isAuthenticated &&
+                <List component="nav" aria-label="secondary mailbox folder">
+                    <NavLink exact={true} to="/" style={{ textDecoration: 'none' }}>
+                        <ListItem
+                            button
+                            selected={this.state.selectedIndex === 8}
                             onClick={event => handleLogout(event, 0)}
                             classes={{
                                 root: classes.itemroot,
