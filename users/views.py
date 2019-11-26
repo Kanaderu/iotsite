@@ -3,6 +3,8 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from .serializers import AccountSerializerWithToken, RefreshTokenSerializer
+from rest_framework_simplejwt.serializers import TokenObtainSlidingSerializer
+from rest_framework_simplejwt.tokens import SlidingToken
 
 
 class CreateAccountView(APIView):
@@ -36,3 +38,16 @@ class LogoutView(GenericAPIView):
         sz.is_valid(raise_exception=True)
         sz.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class GetSlidingTokenView(GenericAPIView):
+    serializer_class = TokenObtainSlidingSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        #print(dir(request))
+        #Token.for_user(request.user)
+        #print(self.serializer_class.get_token(request.user))
+        #print(SlidingToken.for_user(request.user))
+
+        return Response({'token': str(SlidingToken.for_user(request.user))})

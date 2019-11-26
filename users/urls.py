@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.views import TokenObtainSlidingView, TokenObtainPairView, TokenRefreshSlidingView, TokenRefreshView, TokenVerifyView
 from django.urls import include, path
-from .views import CreateAccountView, LogoutView
+from .views import CreateAccountView, LogoutView, GetSlidingTokenView
 from django.conf import settings
 
 
@@ -9,9 +9,10 @@ urlpatterns = [
     path('api/logout/', LogoutView.as_view(), name='token_logout'),
     path('api/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('api/register/', CreateAccountView.as_view())
+    path('api/register/', CreateAccountView.as_view()),
     #path('api/token/', TokenObtainSlidingView.as_view(), name='token_obtain_pair'),
-    #path('api/refresh/', TokenRefreshSlidingView.as_view(), name='token_refresh'),
+    #path('api/refresh-token/', TokenRefreshSlidingView.as_view(), name='token_refresh'),
+    path('api/token/', GetSlidingTokenView.as_view(), name='list_token'),
     #path('', include('django.contrib.auth.urls')),
 ]
 
@@ -21,7 +22,8 @@ if settings.DEBUG:
         path('ws/api/logout/', LogoutView.as_view(), name='db_token_logout'),
         path('ws/api/refresh/', TokenRefreshView.as_view(), name='db_token_refresh'),
         path('ws/api/verify/', TokenVerifyView.as_view(), name='db_token_verify'),
-        path('ws/api/register/', CreateAccountView.as_view())
+        path('ws/api/register/', CreateAccountView.as_view()),
         #path('ws/api/token/', TokenObtainSlidingView.as_view(), name='db_token_obtain_pair'),
-        #path('ws/api/refresh/', TokenRefreshSlidingView.as_view(), name='db_token_refresh'),
+        #path('ws/api/refresh-token/', TokenRefreshSlidingView.as_view(), name='db_token_refresh'),
+        path('ws/api/token/', GetSlidingTokenView.as_view(), name='db_list_token'),
     ]
