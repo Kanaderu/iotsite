@@ -26,7 +26,7 @@ urlpatterns = [
     path('', include('external_api.urls')),
     path('', include('geo.urls')),
     path('', include('users.urls')),
-    path('graphql', GraphQLView.as_view(graphiql=True, schema=schema)),
+    path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
     path('', include('geo.urls')),
     path('', include('dashboard.urls')),
 ]

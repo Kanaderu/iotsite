@@ -136,7 +136,7 @@ class SideNavigation extends Component {
                             <ListItemText primary="Sensors API" />
                         </ListItem>
                     </a>
-                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/docs">
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/docs/">
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 3}
@@ -168,7 +168,7 @@ class SideNavigation extends Component {
                             <ListItemText primary="JupyterHub" />
                         </ListItem>
                     </a>
-                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/graphql">
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/graphql/">
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 5}
