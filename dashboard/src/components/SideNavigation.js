@@ -124,7 +124,7 @@ class SideNavigation extends Component {
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 2}
-                            onClick={event => handleListItemClick(event, this.state.selectedIndex)}
+                            onClick={event => handleListItemClick(event, 2)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
@@ -207,7 +207,7 @@ class SideNavigation extends Component {
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 7}
-                            onClick={event => handleListItemClick(event, this.state.selectedIndex)}
+                            onClick={event => handleListItemClick(event, 5)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
@@ -227,7 +227,7 @@ class SideNavigation extends Component {
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 8}
-                            onClick={event => handleListItemClick(event, this.state.selectedIndex)}
+                            onClick={event => handleListItemClick(event, 8)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
@@ -247,7 +247,7 @@ class SideNavigation extends Component {
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 9}
-                            onClick={event => handleLogout(event, 0)}
+                            onClick={event => handleLogout(event, 9)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
@@ -267,7 +267,7 @@ class SideNavigation extends Component {
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 8}
-                            onClick={event => handleListItemClick(event, this.state.selectedIndex)}
+                            onClick={event => handleListItemClick(event, 8)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
@@ -283,7 +283,7 @@ class SideNavigation extends Component {
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 9}
-                            onClick={event => handleListItemClick(event, this.state.selectedIndex)}
+                            onClick={event => handleListItemClick(event, 9)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
