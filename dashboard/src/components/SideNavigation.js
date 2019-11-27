@@ -120,11 +120,11 @@ class SideNavigation extends Component {
                             <ListItemText primary="Sensors" />
                         </ListItem>
                     </NavLink>
-                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/api">
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/api/sensors/">
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 2}
-                            onClick={event => handleListItemClick(event, 2)}
+                            onClick={event => handleListItemClick(event, this.state.selectedIndex)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
