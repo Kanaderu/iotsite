@@ -1,5 +1,6 @@
 import json
 from urllib.request import urlopen
+from rest_framework import permissions
 from rest_framework.views import APIView
 from django.conf import settings
 from django.http import JsonResponse, Http404
@@ -9,6 +10,7 @@ from .models import DarkSky
 
 
 class DarkSkyView(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
 
     def __init__(self):
         key = settings.DARKSKY_KEY
