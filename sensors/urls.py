@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 from django.conf import settings
 from django.views.generic import TemplateView
-from rest_framework import routers
+from rest_framework import routers, permissions
 from rest_framework.schemas import get_schema_view
 from sensors import views
 
@@ -22,6 +22,7 @@ urlpatterns = [
     url('openapi', get_schema_view(
         title="UD Sensors API",
         description="An API to interact with UD based Sensors",
+        permission_classes=(permissions.IsAuthenticatedOrReadOnly,)
     ), name='openapi-schema'),
 
     # Route TemplateView to serve the ReDoc template.

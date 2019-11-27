@@ -21,6 +21,8 @@ import baselineHome from '@iconify/icons-ic/baseline-home';
 import codefactorIcon from '@iconify/icons-simple-icons/codefactor';
 import bookIcon from '@iconify/icons-icomoon-free/book';
 import keyIcon from '@iconify/icons-fa-solid/key';
+import graphqlIcon from '@iconify/icons-simple-icons/graphql';
+
 
 import { auth } from './actions';
 
@@ -118,7 +120,7 @@ class SideNavigation extends Component {
                             <ListItemText primary="Sensors" />
                         </ListItem>
                     </NavLink>
-                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/api">
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/api/sensors/">
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 2}
@@ -134,7 +136,7 @@ class SideNavigation extends Component {
                             <ListItemText primary="Sensors API" />
                         </ListItem>
                     </a>
-                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/docs">
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/docs/">
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 3}
@@ -166,13 +168,29 @@ class SideNavigation extends Component {
                             <ListItemText primary="JupyterHub" />
                         </ListItem>
                     </a>
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/graphql/">
+                        <ListItem
+                            button
+                            selected={this.state.selectedIndex === 5}
+                            onClick={event => handleListItemClick(event, this.state.selectedIndex)}
+                            classes={{
+                                root: classes.itemroot,
+                                selected: classes.selected,
+                            }}
+                        >
+                            <ListItemIcon className={classes.icon}>
+                                <Icon height='2em' icon={graphqlIcon} />
+                            </ListItemIcon>
+                            <ListItemText primary="GraphQL" />
+                        </ListItem>
+                    </a>
                 </List>
                 <Divider />
                 <List component="nav" aria-label="secondary mailbox folder">
                     <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="https://github.com/Kanaderu/iotsite">
                         <ListItem
                             button
-                            selected={this.state.selectedIndex === 5}
+                            selected={this.state.selectedIndex === 6}
                             onClick={event => handleListItemClick(event, this.state.selectedIndex)}
                             classes={{
                                 root: classes.itemroot,
@@ -188,8 +206,8 @@ class SideNavigation extends Component {
                     <NavLink exact={true} to="/about" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
-                            selected={this.state.selectedIndex === 6}
-                            onClick={event => handleListItemClick(event, 6)}
+                            selected={this.state.selectedIndex === 7}
+                            onClick={event => handleListItemClick(event, 7)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
@@ -208,8 +226,8 @@ class SideNavigation extends Component {
                     <NavLink exact={true} to="/token" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
-                            selected={this.state.selectedIndex === 7}
-                            onClick={event => handleListItemClick(event, 7)}
+                            selected={this.state.selectedIndex === 8}
+                            onClick={event => handleListItemClick(event, 8)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
@@ -228,7 +246,7 @@ class SideNavigation extends Component {
                     <NavLink exact={true} to="/" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
-                            selected={this.state.selectedIndex === 8}
+                            selected={this.state.selectedIndex === 9}
                             onClick={event => handleLogout(event, 0)}
                             classes={{
                                 root: classes.itemroot,
@@ -248,8 +266,8 @@ class SideNavigation extends Component {
                     <NavLink exact={true} to="/login" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
-                            selected={this.state.selectedIndex === 7}
-                            onClick={event => handleListItemClick(event, 7)}
+                            selected={this.state.selectedIndex === 8}
+                            onClick={event => handleListItemClick(event, 8)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
@@ -264,8 +282,8 @@ class SideNavigation extends Component {
                     <NavLink exact={true} to="/register" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
-                            selected={this.state.selectedIndex === 8}
-                            onClick={event => handleListItemClick(event, 8)}
+                            selected={this.state.selectedIndex === 9}
+                            onClick={event => handleListItemClick(event, 9)}
                             classes={{
                                 root: classes.itemroot,
                                 selected: classes.selected,
