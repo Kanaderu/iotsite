@@ -6,6 +6,7 @@ import AboutPage from './pages/AboutPage';
 import TokenPage from './pages/TokenPage';
 import Login from './Login';
 import Register from './Register';
+import MapPage from "./pages/MapPage";
 
 class Routes extends React.Component {
     render() {
@@ -19,6 +20,7 @@ class Routes extends React.Component {
                 <Route path="/login" exact component={Login} />
                 <Route path="/register" exact component={Register} />
                 <Route path="/token" exact component={TokenPage} />
+                <Route path="/live" exact component={MapPage} />
             </Switch>
         );
     }
