@@ -1,6 +1,8 @@
 from sensors.serializers import *
 from rest_framework import viewsets, permissions#, mixins, status
-#from django.shortcuts import get_object_or_404
+from django.shortcuts import render#, get_object_or_404
+from django.utils.safestring import mark_safe
+import json
 #from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 #from rest_framework_csv.renderers import CSVRenderer
 
@@ -48,6 +50,16 @@ class LoRaGatewaySensorViewSet(SensorViewSet):
 class FeatherSensorViewSet(SensorViewSet):
     serializer_class = FeatherSensorSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
+
+
+def live_index(request):
+    return render(request, 'sensors/index.html', {})
+
+
+def live_room(request, sensors):
+    return render(request, 'sensors/room.html', {
+        'sensors_json': mark_safe(json.dumps(sensors))
+    })
 
 
 '''

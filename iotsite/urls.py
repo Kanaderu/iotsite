@@ -28,10 +28,15 @@ urlpatterns = [
     path('', include('users.urls')),
     path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
     path('', include('geo.urls')),
-    path('', include('dashboard.urls')),
 ]
 
 if settings.DEBUG:
     urlpatterns += [
         path('explorer/', include('explorer.urls')),
+        path('ws/graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
     ]
+
+# direct all remaining routes to frontend
+urlpatterns += [
+    path('', include('dashboard.urls')),
+]
