@@ -20,7 +20,7 @@ urlpatterns = [
     # Use the `get_schema_view()` helper to add a `SchemaView` to project URLs.
     #   * `title` and `description` parameters are passed to `SchemaGenerator`.
     #   * Provide view name for use with `reverse()`.
-    url('openapi', get_schema_view(
+    path('[w][s]/openapi', get_schema_view(
         title="UD Sensors API",
         description="An API to interact with UD based Sensors",
         permission_classes=(permissions.IsAuthenticatedOrReadOnly,)
