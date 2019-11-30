@@ -63,7 +63,7 @@ class MapPage extends Component {
     onSubmit = e => {
         e.preventDefault();
 
-        const address = 'ws://' + host + '/ws/live/' + this.state.roomName + '/';
+        const address = 'wss://' + host + '/ws/live/' + this.state.roomName + '/';
         this.client = new W3CWebSocket(address);
 
         this.client.onopen = () => {
