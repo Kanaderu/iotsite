@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import { Grid } from '@material-ui/core';
 import { createMuiTheme, withStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
 
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import { Map } from '@esri/react-arcgis';
@@ -19,6 +15,7 @@ const styles = theme => ({
         flexGrow: 1,
     },
     paper: {
+        padding: theme.spacing(3, 2),
         //height: 200,
     },
 });
@@ -38,14 +35,17 @@ const Point = (props) => {
     return null;
 };
 
+const host = window.location.host;
+
 class MapPage extends Component {
     constructor(props) {
         super(props);
-        const group_name = 'test';
-        this.client = new W3CWebSocket('ws://127.0.0.1:8088/ws/live/' + group_name + '/');
         this.state = {
             locations: {},
-        }
+            roomName: null,
+            validRoomName: false,
+        };
+        this.client = null;
     }
 
     theme = createMuiTheme({
@@ -60,20 +60,25 @@ class MapPage extends Component {
     });
 
 
-    UNSAFE_componentWillMount() {
+    onSubmit = e => {
+        e.preventDefault();
+
+        const address = 'ws://' + host + '/ws/live/' + this.state.roomName + '/';
+        this.client = new W3CWebSocket(address);
+
         this.client.onopen = () => {
             console.log('Websocket Client Connected');
         };
 
         this.client.onclose = () => {
             console.log('Websocket closed unexpectedly');
+            this.setState({validRoomName: false})
         };
 
         this.client.onmessage = (message) => {
             const data = JSON.parse(message.data);
 
             loadModules(['esri/Graphic']).then(([Graphic]) => {
-                // create a point
                 const point = {
                     type: "point", // autocasts as new Point()
                     x: data.lon,
@@ -101,8 +106,10 @@ class MapPage extends Component {
                     return newState;
                 });
             }).catch((err) => console.error(err));
-        }
-    }
+        };
+
+        this.setState({validRoomName: true})
+    };
 
     render() {
         const { classes } = this.props;
@@ -110,25 +117,59 @@ class MapPage extends Component {
         // snapshot of state
         const data = this.state;
 
-        return (
-            <div classes={classes.root}>
-                <ThemeProvider theme={this.theme}>
-                    <Map
-                        class="full-screen-map"
-                        style={{ width: '100%', height: '85.5vh' }}
-                        mapProperties={{
-                            basemap: 'streets-navigation-vector'
-                        }}
-                        viewProperties={{
-                            center: [-84.1745444, 39.7346451],
-                            zoom: 14
-                        }}
-                    >
-                        <Point locations={data.locations} />
-                    </Map>
-                </ThemeProvider>
-            </div>
-        )
+        if(!data.validRoomName) {
+            return (
+                <div className={classes.root}>
+                    <ThemeProvider theme={this.theme}>
+                        <Paper className={classes.paper} style={{ minWidth: '100vw', minHeight: '85.5vh' }}>
+                            <form noValidate autoComplete="off" onSubmit={this.onSubmit}>
+                                <Grid
+                                    container
+                                    spacing={2}
+                                    direction="column"
+                                    alignItems="center"
+                                    justify="center"
+                                    style={{ minHeight: '50vh' }}
+                                >
+                                    <Grid item xs={3}>
+                                        <TextField
+                                            id="standard-required"
+                                            label="Room Name"
+                                            onChange={e => this.setState({roomName: e.target.value})}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <Button type="submit" variant="contained" color="primary">
+                                            Submit
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </form>
+                        </Paper>
+                    </ThemeProvider>
+                </div>
+            )
+        } else {
+            return (
+                <div classes={classes.root}>
+                    <ThemeProvider theme={this.theme}>
+                        <Map
+                            class="full-screen-map"
+                            style={{width: '100%', height: '85.5vh'}}
+                            mapProperties={{
+                                basemap: 'streets-navigation-vector'
+                            }}
+                            viewProperties={{
+                                center: [-84.1745444, 39.7346451],
+                                zoom: 14
+                            }}
+                        >
+                            <Point locations={data.locations}/>
+                        </Map>
+                    </ThemeProvider>
+                </div>
+            )
+        }
     }
 }
 
