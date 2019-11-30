@@ -42,7 +42,7 @@ class MapPage extends Component {
     constructor(props) {
         super(props);
         const group_name = 'test';
-        this.client = new W3CWebSocket('ws://127.0.0.1:8088/ws/vehicles/' + group_name + '/');
+        this.client = new W3CWebSocket('ws://127.0.0.1:8088/ws/live/' + group_name + '/');
         this.state = {
             locations: {},
         }

@@ -1,14 +1,15 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
-class VehicleConsumer(AsyncWebsocketConsumer):
+
+class SensorConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.vehicles = self.scope['url_route']['kwargs']['vehicles']
-        self.vehicles_group_name = 'vehicle_%s' % self.vehicles
+        self.sensors = self.scope['url_route']['kwargs']['sensors']
+        self.sensors_group_name = 'sensor_%s' % self.sensors
 
         # Join room group
         await self.channel_layer.group_add(
-            self.vehicles_group_name,
+            self.sensors_group_name,
             self.channel_name
         )
 
@@ -17,7 +18,7 @@ class VehicleConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         # Leave room group
         await self.channel_layer.group_discard(
-            self.vehicles_group_name,
+            self.sensors_group_name,
             self.channel_name
         )
 
@@ -30,9 +31,9 @@ class VehicleConsumer(AsyncWebsocketConsumer):
 
         # Send message to room group
         await self.channel_layer.group_send(
-            self.vehicles_group_name,
+            self.sensors_group_name,
             {
-                'type': 'chat_message',
+                'type': 'sensor_message',
                 'message': message,
                 'lat': lat,
                 'lon': lon,
@@ -40,7 +41,7 @@ class VehicleConsumer(AsyncWebsocketConsumer):
         )
 
     # Receive message from room group
-    async def chat_message(self, event):
+    async def sensor_message(self, event):
         message = event['message']
         lat = event['lat']
         lon = event['lon']
