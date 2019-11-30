@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'external_api',
     'dashboard',
     'users',
-    'vehicles',
 ]
 
 MIDDLEWARE = [
