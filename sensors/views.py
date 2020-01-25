@@ -16,6 +16,7 @@ import json
 
 from djgeojson.views import GeoJSONLayerView
 
+from .filters import *
 
 # modify queryset for the most recent data across all sensors
 class LatestSensorGeoJSONLayerView(GeoJSONLayerView):
@@ -32,7 +33,7 @@ class LatestSensorGeoJSONLayerView(GeoJSONLayerView):
 
 class SensorViewSet(viewsets.ModelViewSet):
     """
-    Sensor API
+    The sensor list contains data received from  all the sensor data. Filters can be applied to search through the data.
     """
     queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
@@ -40,6 +41,7 @@ class SensorViewSet(viewsets.ModelViewSet):
     search_fields = ['sensor', 'sensor_id']
     ordering_fields = '__all__'
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
+    #filter_backends = (NameFilterBackend,)
 
 
 class LoRaGatewaySensorViewSet(SensorViewSet):
