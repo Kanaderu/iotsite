@@ -35,7 +35,10 @@ const Point = (props) => {
     return null;
 };
 
+const protocol = window.location.protocol;
 const host = window.location.host;
+
+const wsStart = protocol == "https:" ? "wss://" : "ws://";
 
 class MapPage extends Component {
     constructor(props) {
@@ -63,7 +66,7 @@ class MapPage extends Component {
     onSubmit = e => {
         e.preventDefault();
 
-        const address = 'wss://' + host + '/ws/live/' + this.state.roomName + '/';
+        const address = wsStart + host + '/ws/live/' + this.state.roomName + '/';
         this.client = new W3CWebSocket(address);
 
         this.client.onopen = () => {
