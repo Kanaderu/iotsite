@@ -35,6 +35,7 @@ urlpatterns = [
 
     path('live/', views.live_index, name='live'),
     path('live/<str:sensors>/', views.live_room, name='live-sensors'),
+    path('darksky/', views.DarkSkyView.as_view())
 ]
 
 if settings.DEBUG:

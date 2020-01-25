@@ -23,7 +23,6 @@ from iotsite.schema import schema
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sensors.urls')),
-    path('', include('external_api.urls')),
     path('', include('geo.urls')),
     path('', include('users.urls')),
     path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),

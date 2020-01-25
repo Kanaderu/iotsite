@@ -127,3 +127,8 @@ class SensorRawData(models.Model):
     class Meta:
         verbose_name = 'Raw Sensor Data'
         verbose_name_plural = 'Raw Sensor Data'
+
+
+class DarkSky(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    data = JSONField()

@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     # custom apps
     'geo',
     'sensors',
-    'external_api',
     'dashboard',
     'users',
 ]
