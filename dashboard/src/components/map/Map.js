@@ -47,9 +47,9 @@ class WebMapView extends React.Component {
 
       const geojsonLayer = new GeoJSONLayer({
           url: url,
-          copyright: "USGS Earthquakes",
+          //copyright: "None",
           popupTemplate: template,
-          renderer: renderer //optional
+          renderer: renderer
       });
 
 
