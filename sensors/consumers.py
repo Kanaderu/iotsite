@@ -1,5 +1,10 @@
+from django.urls import reverse
+
 from channels.generic.websocket import AsyncWebsocketConsumer
+from djgeojson.serializers import Serializer as GeoJSONSerializer
 import json
+
+#from geo.models import LINKStation
 
 
 class SensorConsumer(AsyncWebsocketConsumer):
@@ -13,7 +18,20 @@ class SensorConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
+        # accept websocket
         await self.accept()
+
+        #linkstations = GeoJSONSerializer().serialize(LINKStation.objects.all(), use_natural_keys=True, with_modelname=False)
+        linkstations = reverse('linkstations')
+        # Send message to room group
+        await self.channel_layer.group_send(
+            self.sensors_group_name,
+            {
+                'type': 'sensor_initialize',
+                'message': "CONNECTED!!!",
+                'linkstations': linkstations
+            }
+        )
 
     async def disconnect(self, close_code):
         # Leave room group
@@ -48,7 +66,21 @@ class SensorConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
+            'type': 'sensor_message',
             'message': message,
             'lat': lat,
             'lon': lon
+        }))
+
+    # Receive message from room group
+    async def sensor_initialize(self, event):
+        message = event['message']
+        linkstations = event['linkstations']
+
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'type': 'sensor_initialize',
+            'message': message,
+            'linkstations': linkstations
+            #'linkstations': json.loads(linkstations)
         }))
