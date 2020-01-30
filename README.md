@@ -156,7 +156,7 @@ The following POST format is used to register users:
 
 ##### Login
 
-Located at `/api/token/` or `/ws/api/token` which will return an `access` token and a `refresh` token if the user login is valid.
+Located at `/api/login/` or `/ws/api/login` which will return an `access` token and a `refresh` token if the user login is valid.
 
 The following POST format is used to obtain a JWT token:
 
