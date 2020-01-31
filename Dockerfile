@@ -14,6 +14,14 @@ RUN \
   npm i -g npm@^6 && \
   rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update -qq; \
+    apt-get -qq remove postgis; \
+    apt-get install -y --fix-missing --no-install-recommends \
+        software-properties-common \
+        apt-transport-https ca-certificates gnupg software-properties-common wget
+
+RUN apt-get install binutils libproj-dev gdal-bin -y
+
 # install node packages
 WORKDIR /usr/src/app/dashboard
 COPY dashboard/package.json .
@@ -21,7 +29,7 @@ RUN npm install
 
 # build react project
 COPY dashboard/ ./
-RUN npm run start
+RUN yarn build
 
 # install python packages
 WORKDIR /usr/src/app
@@ -33,8 +41,8 @@ COPY . .
 
 EXPOSE 8000
 
-RUN python manage.py collectstatic --no-input
-RUN python manage.py makemigrations
-RUN python manage.py migrate
+#RUN python manage.py collectstatic --no-input
+#RUN python manage.py makemigrations
+#RUN python manage.py migrate
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
