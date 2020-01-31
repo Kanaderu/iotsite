@@ -32,7 +32,6 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += [
         path('explorer/', include('explorer.urls')),
-        path('ws/graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
     ]
 
 # direct all remaining routes to frontend

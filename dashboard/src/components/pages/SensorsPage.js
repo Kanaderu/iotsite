@@ -82,8 +82,8 @@ class SensorsPage extends Component {
     }
 
     componentDidMount() {
-        this.fetchLoRaGateway('/ws/api/sensors/?sensor=LG');
-        this.fetchFeather('/ws/api/sensors/?sensor=F');
+        this.fetchLoRaGateway('/api/sensors/?sensor=LG');
+        this.fetchFeather('/api/sensors/?sensor=F');
     }
 
     render() {
