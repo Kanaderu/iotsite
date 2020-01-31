@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
-import { Map } from '@esri/react-arcgis';
+import WebMapView from '../map/Map';
 import { loadModules } from 'esri-loader';
 
 const styles = theme => ({
@@ -19,21 +19,6 @@ const styles = theme => ({
         //height: 200,
     },
 });
-
-const Point = (props) => {
-    Object.keys(props.locations).map((location, id) => {
-        // remove old graphic if it exists
-        props.locations[`${location}`].oldGraphic &&
-        props.view.graphics.remove(props.locations[`${location}`].oldGraphic);
-
-        // add new graphic
-        props.locations[`${location}`].graphic &&
-        props.view.graphics.add(props.locations[`${location}`].graphic);
-
-        return null;
-    });
-    return null;
-};
 
 const protocol = window.location.protocol;
 const host = window.location.host;
@@ -47,6 +32,8 @@ class MapPage extends Component {
             locations: {},
             roomName: null,
             validRoomName: false,
+            geojsonLayer: null,
+            initialized: false,
         };
         this.client = null;
     }
@@ -61,7 +48,6 @@ class MapPage extends Component {
             }
         }
     });
-
 
     onSubmit = e => {
         e.preventDefault();
@@ -81,34 +67,60 @@ class MapPage extends Component {
         this.client.onmessage = (message) => {
             const data = JSON.parse(message.data);
 
-            loadModules(['esri/Graphic']).then(([Graphic]) => {
-                const point = {
-                    type: "point", // autocasts as new Point()
-                    x: data.lon,
-                    y: data.lat,
-                };
-
-                // Add the geometry and symbol to a new graphic
-                const graphic = Graphic({
-                    geometry: point,
-                    //symbol: fillSymbol
-                });
-
-                this.setState((prevState, props) => {
-                    // update oldGraphic if `graphic` in the previous state exists
-                    const prevLoc = prevState.locations[`${data.message}`];
-                    const oldGraphic = (prevLoc && prevLoc.graphic) ? prevLoc.graphic : null;
-
-                    const newState = { ...prevState };
-                    newState.locations[`${data.message}`] = {
-                        lat: data.lat,
-                        lon: data.lon,
-                        oldGraphic: oldGraphic,
-                        graphic: graphic
+            switch(data.type) {
+              case 'sensor_initialize':
+                break;
+              case 'sensor_message':
+                loadModules(['esri/Graphic']).then(([Graphic]) => {
+                    const point = {
+                        type: "point", // autocasts as new Point()
+                        x: data.lon,
+                        y: data.lat,
                     };
-                    return newState;
-                });
-            }).catch((err) => console.error(err));
+
+                    // Add the geometry and symbol to a new graphic
+                    const graphic = Graphic({
+                        geometry: point,
+                        //symbol: fillSymbol
+                        attributes: {
+                          Name: data.message
+                        },
+                        popupTemplate: {
+                          title: "{Name}",
+                          content: [{
+                            type: "fields",
+                            fieldInfos: [
+                              {
+                                fieldName: "Name"
+                              },
+                              {
+                                fieldName: "Owner"
+                              },
+                              {
+                                fieldName: "Length"
+                              }
+                            ]
+                          }]
+                        }
+                    });
+
+                    this.setState((prevState, props) => {
+                        // update oldGraphic if `graphic` in the previous state exists
+                        const prevLoc = prevState.locations[`${data.message}`];
+                        const oldGraphic = (prevLoc && prevLoc.graphic) ? prevLoc.graphic : null;
+
+                        const newState = { ...prevState };
+                        newState.locations[`${data.message}`] = {
+                            lat: data.lat,
+                            lon: data.lon,
+                            oldGraphic: oldGraphic,
+                            graphic: graphic
+                        };
+                        return newState;
+                    });
+                }).catch((err) => console.error(err));
+                break;
+            }
         };
 
         this.setState({validRoomName: true})
@@ -120,7 +132,7 @@ class MapPage extends Component {
         // snapshot of state
         const data = this.state;
 
-        if(!data.validRoomName) {
+        if(!data.validRoomName && !data.initialized) {
             return (
                 <div className={classes.root}>
                     <ThemeProvider theme={this.theme}>
@@ -156,19 +168,7 @@ class MapPage extends Component {
             return (
                 <div classes={classes.root}>
                     <ThemeProvider theme={this.theme}>
-                        <Map
-                            class="full-screen-map"
-                            style={{width: '100%', height: '85.5vh'}}
-                            mapProperties={{
-                                basemap: 'streets-navigation-vector'
-                            }}
-                            viewProperties={{
-                                center: [-84.1745444, 39.7346451],
-                                zoom: 14
-                            }}
-                        >
-                            <Point locations={data.locations}/>
-                        </Map>
+                      <WebMapView locations={data.locations} />
                     </ThemeProvider>
                 </div>
             )

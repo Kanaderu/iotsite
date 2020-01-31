@@ -6,10 +6,13 @@ from sensors.views import LatestSensorGeoJSONLayerView
 
 from sensors.models import Sensor, SensorMetadata
 
+from .views import GeoJSONLinkStations
+
 urlpatterns = [
+    url(r'^linkstations.geojson$', GeoJSONLinkStations, name='linkstations'),
     url(r'^worldpoints.geojson$', GeoJSONLayerView.as_view(model=WorldBorder, geometry_field='lat_lon', properties=('name',)), name='worldpoints'),
     url(r'^worldborders.geojson$', GeoJSONLayerView.as_view(model=WorldBorder, geometry_field='mpoly', properties=('name',)), name='worldborders'),
-    url(r'^linkstations.geojson$', GeoJSONLayerView.as_view(model=LINKStation, properties=('name',)), name='linkstations'),
+    #url(r'^linkstations.geojson$', GeoJSONLayerView.as_view(model=LINKStation, properties=('name',)), name='linkstations'),
 
     url(r'^sensor.geojson$', GeoJSONLayerView.as_view(model=SensorMetadata, geometry_field='coordinates',
                                                       properties={'sensor_type': 'sensor_type',
