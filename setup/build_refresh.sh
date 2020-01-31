@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source source.env
+
 pip install -r requirements.txt
 
 cd dashboard
