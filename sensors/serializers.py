@@ -200,6 +200,78 @@ class FeatherSensorSerializer(serializers.BaseSerializer):
 
         return instance
 
+
+'''
+class MobileAppSensorSerializer(serializers.BaseSerializer):
+
+    def to_representation(self, obj):
+        return SensorSerializer().to_representation(obj)
+
+    def to_internal_value(self, data):
+        dev_id = data['dev_id']
+        metadata = data['metadata']
+        latitude = metadata['latitude']
+        longitude = metadata['longitude']
+        timestamp = metadata['time']
+
+        data_list = data['data']
+        if not isinstance(data_list, list):
+            raise serializers.ValidationError({
+                'data': 'This field is required.'
+            })
+
+        sensor_data = []
+        for item in data_list:
+            if item['sensor_id'] is None:
+                raise serializers.ValidationError('sensor_id is required')
+            if item['sensor_type'] is None:
+                raise serializers.ValidationError('sensor_type is required')
+            if item['sensor_data'] is None:
+                raise serializers.ValidationError('sensor_data is required')
+            if item['sensor_units'] is None:
+                raise serializers.ValidationError('sensor_units is required')
+            sensor_data.insert(0, {'data_id': item['sensor_id'],
+                                 'type': item['sensor_type'],
+                                 'data': item['sensor_data'],
+                                 'units': item['sensor_units'],})
+
+        if not dev_id:
+            raise serializers.ValidationError({
+                'dev_id': 'This field is required.'
+            })
+        if not timestamp:
+            raise serializers.ValidationError({
+                'timestamp': 'This field is required.'
+            })
+        if not latitude:
+            raise serializers.ValidationError({
+                'latitude': 'This field is required.'
+            })
+        if not longitude:
+            raise serializers.ValidationError({
+                'longitude': 'This field is required.'
+            })
+
+        return {
+            'sensor_id': dev_id,
+            'timestamp': timestamp,
+            'latitude': latitude,
+            'longitude': longitude,
+            'data': sensor_data,
+        }
+
+    def create(self, validated_data):
+        instance = Sensor.objects.create(sensor='M', sensor_id=validated_data['sensor_id'])
+        SensorMetadata.objects.create(sensor=instance,
+                                      coordinates=Point(x=validated_data['longitude'], y=validated_data['latitude'], srid=4326),
+                                      timestamp=validated_data['timestamp'])
+        for item in validated_data['data']:
+            SensorData.objects.create(sensor=instance, data_id=item['data_id'], type=item['type'],
+                                      data=item['data'], units=item['units'])
+
+        return instance
+'''
+
 '''
 class SensorDataSerializer(serializers.ModelSerializer):
 

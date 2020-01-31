@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.views.generic import TemplateView
 from django.urls import include, path, re_path
 from rest_framework import routers, permissions
@@ -44,20 +43,3 @@ urlpatterns = [
     re_path('live/<str:sensors>/', views.live_room, name='live-sensors'),
     re_path('darksky/', views.DarkSkyView.as_view())
 ]
-
-if settings.DEBUG:
-    urlpatterns += [
-        re_path('ws/docs/', TemplateView.as_view(
-            template_name='sensors/redoc.html',
-            extra_context={'schema_url': 'openapi-schema'}
-        ), name='ws-redoc'),
-        re_path('ws/openapi', get_schema_view(
-            title="UD Sensors API",
-            description="An API to interact with UD based Sensors",
-            permission_classes=(permissions.IsAuthenticatedOrReadOnly,)
-        ), name='ws-openapi-schema'),
-        re_path(r'^ws/hooks/', include(('thorn.django.rest_framework.urls', 'thorn'))),
-        re_path(r'^ws/api/', include(router.urls)),
-        re_path('ws/live/', views.live_index, name='ws-live'),
-        re_path('ws/live/<str:sensors>/', views.live_room, name='ws-live-sensors'),
-    ]

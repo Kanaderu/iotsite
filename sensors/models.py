@@ -57,6 +57,7 @@ class Sensor(models.Model):
     SENSOR_CHOICES = (
         ('LG', 'LoRa Gateway'),
         ('F', 'Feather'),
+        #('M', 'Mobile App'),
     )
     sensor = models.CharField(max_length=2, choices=SENSOR_CHOICES)
     sensor_id = models.CharField(max_length=64, blank=True)
