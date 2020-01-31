@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.urls import path
 from django.views.generic import TemplateView
 from djgeojson.views import GeoJSONLayerView
@@ -32,3 +33,23 @@ urlpatterns = [
     path('sensor', TemplateView.as_view(template_name='geo/sensor.html'), name='sensor_leaf'),
     path('latestsensor', TemplateView.as_view(template_name='geo/latestsensor.html'), name='latestsensor_leaf'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path('ws/linkstations.geojson', GeoJSONLinkStations, name='linkstations'),
+        path('ws/worldpoints.geojson', GeoJSONLayerView.as_view(model=WorldBorder, geometry_field='lat_lon', properties=('name',)), name='worldpoints'),
+        path('ws/worldborders.geojson', GeoJSONLayerView.as_view(model=WorldBorder, geometry_field='mpoly', properties=('name',)), name='worldborders'),
+        #path('ws/linkstations.geojson', GeoJSONLayerView.as_view(model=LINKStation, properties=('name',)), name='linkstations'),
+    
+        path('ws/sensor.geojson', GeoJSONLayerView.as_view(model=SensorMetadata, geometry_field='coordinates',
+                                                          properties={'sensor_type': 'sensor_type',
+                                                                      'timestamp': 'timestamp',
+                                                                      'sensor_ID': 'sensor_id',
+                                                                      'data': 'data'}), name='sensor_geojson'),
+    
+        path('ws/latest_sensor.geojson', LatestSensorGeoJSONLayerView.as_view(model=Sensor, geometry_field='coordinates',
+                                                          properties={'sensor': 'sensor_type',
+                                                                      'timestamp': 'timestamp',
+                                                                      'sensor_id': 'sensor_id',
+                                                                      'sensor_data': 'data'}), name='latest_sensor_geojson'),
+    ]
