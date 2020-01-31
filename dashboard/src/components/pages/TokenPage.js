@@ -58,7 +58,7 @@ class TokenPage extends Component {
 
     generateToken = () => {
         const access = localStorage.access;
-        fetch('/ws/api/token/', {
+        fetch('/api/token/', {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",

@@ -106,7 +106,7 @@ class DashboardPage extends Component {
     }
 
     fetchDarkSkyData() {
-        fetch('/ws/darksky/')
+        fetch('/darksky/')
             .then(this.checkStatus)
             .then(response => response.json())
             .then((data) => {
@@ -129,8 +129,8 @@ class DashboardPage extends Component {
 
     componentDidMount() {
         this.fetchDarkSkyData();
-        this.fetchLoRaGateway('/ws/api/sensors/?sensor=LG');
-        this.fetchFeather('/ws/api/sensors/?sensor=F');
+        this.fetchLoRaGateway('/api/sensors/?sensor=LG');
+        this.fetchFeather('/api/sensors/?sensor=F');
     }
 
     render() {

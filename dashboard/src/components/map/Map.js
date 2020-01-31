@@ -29,7 +29,7 @@ class WebMapView extends React.Component {
     loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/GeoJSONLayer'], { css: true })
     .then(([ArcGISMap, MapView, GeoJSONLayer]) => {
       // TODO: change hardcoding of url location
-      const url = "/ws/linkstations.geojson";
+      const url = "/linkstations.geojson";
       const renderer = {
           type: "simple",
           symbol: {
