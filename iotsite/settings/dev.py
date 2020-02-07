@@ -24,7 +24,7 @@ DATABASES = {
          'NAME': 'geodjango',
          'USER': 'geo',
          'PASSWORD': 'geo',
-         'HOST': '127.0.0.1',
+         'HOST': 'postgis',
          'PORT': '5432',
     }
 }
