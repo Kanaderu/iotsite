@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'sensors',
     'dashboard',
     'users',
+    'setup',
 ]
 
 MIDDLEWARE = [

@@ -1,4 +1,5 @@
 from .base import *
+import os
 
 DEBUG = True
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', '10.0.2.2']
@@ -21,11 +22,11 @@ WEBPACK_LOADER = {
 DATABASES = {
     'default': {
          'ENGINE': 'django.contrib.gis.db.backends.postgis',
-         'NAME': 'geodjango',
-         'USER': 'geo',
-         'PASSWORD': 'geo',
-         'HOST': '127.0.0.1',
-         'PORT': '5432',
+         'NAME': os.getenv('POSTGRES_NAME', 'geodjango'),
+         'USER': os.getenv('POSTGRES_USER', 'geo'),
+         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'geo'),
+         'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
 
