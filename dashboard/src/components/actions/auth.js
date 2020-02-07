@@ -3,7 +3,7 @@ export const login = (username, password) => {
         let headers = { "Content-Type": "application/json" };
         let body = JSON.stringify({ username, password });
 
-        return fetch("/ws/api/login/", { headers, body, method: "POST" })
+        return fetch("/api/login/", { headers, body, method: "POST" })
             .then(res => {
                 if (res.status < 500) {
                     return res.json().then(data => {
@@ -34,7 +34,7 @@ export const register = (username, password) => {
         let headers = { "Content-Type": "application/json" };
         let body = JSON.stringify({ username, password });
 
-        return fetch("/ws/api/register/", { headers, body, method: "POST" })
+        return fetch("/api/register/", { headers, body, method: "POST" })
             .then(res => {
                 if (res.status < 500) {
                     return res.json().then(data => {
@@ -71,7 +71,7 @@ export const logout = () => {
     const refresh = localStorage.refresh;
     let body = JSON.stringify({ refresh });
 
-    return fetch("/ws/api/logout/", { headers, body, method: "POST" })
+    return fetch("/api/logout/", { headers, body, method: "POST" })
     .then(res => {
           dispatch({ type: 'LOGOUT_SUCCESSFUL' });
           return res.json().then(data => data);
@@ -107,7 +107,7 @@ export const getAccountFetch = () => {
         const token = localStorage.access;
         let body = JSON.stringify({ token });
         if (token) {
-            return fetch("/ws/api/verify/", {
+            return fetch("/api/verify/", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

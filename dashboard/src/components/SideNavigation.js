@@ -88,7 +88,7 @@ class SideNavigation extends Component {
         return (
             <div className={classes.root}>
                 <List component="nav" aria-label="main mailbox folders">
-                    <NavLink exact={true} to="/ws" style={{ textDecoration: 'none' }}>
+                    <NavLink exact={true} to="/home" style={{ textDecoration: 'none' }}>
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 0}
@@ -121,7 +121,7 @@ class SideNavigation extends Component {
                             <ListItemText primary="Sensors" />
                         </ListItem>
                     </NavLink>
-                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/api/sensors/">
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/api/sensors/">
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 2}
@@ -137,7 +137,7 @@ class SideNavigation extends Component {
                             <ListItemText primary="Sensors API" />
                         </ListItem>
                     </a>
-                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/docs/">
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/docs/">
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 3}
@@ -169,7 +169,7 @@ class SideNavigation extends Component {
                             <ListItemText primary="JupyterHub" />
                         </ListItem>
                     </a>
-                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/ws/graphql/">
+                    <a style={{ textDecoration: 'none' }} rel="noopener noreferrer" target="_blank" href="/graphql/">
                         <ListItem
                             button
                             selected={this.state.selectedIndex === 5}
