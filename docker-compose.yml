@@ -7,30 +7,32 @@ services:
             - POSTGRES_USER=geo
             - POSTGRES_PASS=geo
             - ALLOW_IP_RANGE=0.0.0.0/0
+        volumes:
+            - ./volumes/db/var/lib/postgresql/data:/var/lib/postgresql/data
+            - /etc/localtime:/etc/localtime:ro
         restart: unless-stopped
-#        networks:
-#            - backend
-#        ports:
-#            - 5432:5432
-#            - 1234:1234
+
     iotsite:
         build: .
         depends_on:
             - postgis
-        working_dir: /app
         command: bash -c "./manage.py install_frontend_dependencies &&
                           ./manage.py build_frontend &&
                           ./manage.py wait_for_db 2> /dev/null &&
                           ./manage.py makemigrations &&
                           ./manage.py migrate &&
                           ./manage.py runserver 0.0.0.0:8000"
-        volumes:
-            - ./:/app
+        environment:
+            - DARKSKY_KEY=12345
+            - SECRET_KEY=${SECRET_KEY}
+            - POSTGRES_NAME=geodjango
+            - POSTGRES_USER=geo
+            - POSTGRES_PASSWORD=geo
+            - POSTGRES_HOST=postgis
+            - POSTGRES_PORT=5432
         ports:
             - 8080:8000
+        volumes:
+            - ./:/app
+        working_dir: /app
         restart: unless-stopped
-
-#        networks:
-#            - backend
-#networks:
-#    backend:
