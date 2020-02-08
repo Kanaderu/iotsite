@@ -184,7 +184,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # DarkSky API CONF
-if 'DARKSKY_KEY' in os.environ:
+if 'DARKSKY_KEY' in os.environ and os.environ['DARKSKY_KEY']:
     DARKSKY_KEY = os.environ['DARKSKY_KEY']
 else:
     eprint('DARKSKY_KEY Environment Variable is NOT set! Ignoring...')
@@ -195,7 +195,7 @@ DARKSKY_LON = -84.191605
 DARKSKY_THRESH = 96.0 # seconds before fetching new darksky data
 
 # GeoDjango
-GEOIP_PATH = os.path.join(BASE_DIR, 'setup', 'geodjango', 'geoip2', 'GeoLite2'),
+GEOIP_PATH = os.path.join(BASE_DIR, 'utils', 'geodjango', 'geoip2', 'GeoLite2'),
 
 # Leaflet
 LEAFLET_CONFIG = {

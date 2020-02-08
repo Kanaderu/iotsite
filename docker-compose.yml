@@ -25,7 +25,7 @@ services:
                           ./manage.py migrate &&
                           ./manage.py runserver 0.0.0.0:8000"
         environment:
-            - DARKSKY_KEY=12345
+            - DARKSKY_KEY=${DARKSKY_KEY}
             - SECRET_KEY=${SECRET_KEY}
             - POSTGRES_NAME=geodjango
             - POSTGRES_USER=geo
