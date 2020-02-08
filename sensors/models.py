@@ -86,7 +86,7 @@ class Sensor(models.Model):
 class SensorMetadata(models.Model):
     sensor = models.OneToOneField('Sensor', related_name='metadata', null=True, on_delete=models.CASCADE)
     coordinates = models.PointField(geography=True, default='POINT(0.0 0.0)')
-    timestamp = models.DateTimeField(blank=True, null=True)
+    timestamp = models.DateTimeField()
 
     @property
     def sensor_type(self):

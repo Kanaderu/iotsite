@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',   # geodjango
 
+    'django_extensions',    # django extension utilities
     'webpack_loader',       # react webpack integration
     'rest_framework',       # rest framework library
     'thorn.django',         # webhooks library
