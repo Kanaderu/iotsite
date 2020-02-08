@@ -3,6 +3,8 @@ from django.contrib.postgres.fields import JSONField
 from django.urls import reverse
 from thorn import ModelEvent, webhook_model
 
+
+'''
 #@webhook_model(
 #    sender_field='author.account.user',
 #)
@@ -48,6 +50,7 @@ class SensorDataLtBigSense(models.Model):
 
     def get_absolute_url(self):
         return reverse('sensordata-detail', args=[str(self.id)])
+'''
 
 
 class Sensor(models.Model):
@@ -68,7 +71,7 @@ class Sensor(models.Model):
 
     @property
     def timestamp(self):
-        return self.metadata.timestamp
+        return self.created if self.metadata.timestamp is None else self.metadata.timestamp
 
     @property
     def sensor_data(self):
@@ -77,7 +80,7 @@ class Sensor(models.Model):
     class Meta:
         verbose_name = 'Sensor'
         verbose_name_plural = 'Sensor'
-        ordering = ['-created']
+        ordering = ['-metadata']
 
 
 class SensorMetadata(models.Model):
@@ -100,6 +103,7 @@ class SensorMetadata(models.Model):
     class Meta:
         verbose_name = 'Sensor Metadata'
         verbose_name_plural = 'Sensor Metadata'
+        ordering = ['timestamp']
 
 
 class SensorData(models.Model):

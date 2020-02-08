@@ -1,3 +1,5 @@
+#!/bin/bash
+# Post user login to get "refresh" and "access" web tokens
 curl -X POST \
 -H 'Content-Type: application/json' \
 -d '{"username":"user1","password":"hunter2"}' \

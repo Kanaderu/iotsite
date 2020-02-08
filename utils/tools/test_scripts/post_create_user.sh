@@ -1,3 +1,5 @@
+#!/bin/bash
+# creates a user
 curl --request POST \
 --header 'content-type: application/json' \
 --data '{
