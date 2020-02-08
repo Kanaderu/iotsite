@@ -64,14 +64,12 @@ class Sensor(models.Model):
     )
     sensor = models.CharField(max_length=2, choices=SENSOR_CHOICES)
     sensor_id = models.CharField(max_length=64, blank=True)
+    coordinates = models.PointField(geography=True, default='POINT(0.0 0.0)')
+    timestamp = models.DateTimeField()
 
-    @property
-    def coordinates(self):
-        return self.metadata.coordinates
-
-    @property
-    def timestamp(self):
-        return self.created if self.metadata.timestamp is None else self.metadata.timestamp
+    #@property
+    #def coordinates(self):
+    #    return self.coordinates
 
     @property
     def sensor_data(self):
@@ -80,9 +78,9 @@ class Sensor(models.Model):
     class Meta:
         verbose_name = 'Sensor'
         verbose_name_plural = 'Sensor'
-        ordering = ['-metadata']
+        ordering = ['-timestamp']
 
-
+'''
 class SensorMetadata(models.Model):
     sensor = models.OneToOneField('Sensor', related_name='metadata', null=True, on_delete=models.CASCADE)
     coordinates = models.PointField(geography=True, default='POINT(0.0 0.0)')
@@ -104,6 +102,7 @@ class SensorMetadata(models.Model):
         verbose_name = 'Sensor Metadata'
         verbose_name_plural = 'Sensor Metadata'
         ordering = ['timestamp']
+'''
 
 
 class SensorData(models.Model):

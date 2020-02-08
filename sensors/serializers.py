@@ -11,6 +11,7 @@ class SensorDataSerializer(serializers.ModelSerializer):
         fields = ['data_id', 'type', 'data', 'units']
 
 
+'''
 class SensorMetadataSerializer(serializers.ModelSerializer):
     # serialize the point list only
     coordinates = serializers.ListField()
@@ -18,15 +19,19 @@ class SensorMetadataSerializer(serializers.ModelSerializer):
     class Meta:
         model = SensorMetadata
         fields = ['coordinates', 'timestamp']
+'''
 
 
 class SensorSerializer(serializers.ModelSerializer):
-    metadata = SensorMetadataSerializer(required=True)
+    #metadata = SensorMetadataSerializer(required=True)
     data = SensorDataSerializer(many=True, required=True)
+    coordinates = serializers.ListField()
 
     class Meta:
         model = Sensor
-        fields = ['sensor', 'sensor_id', 'metadata', 'data']
+        #fields = ['sensor', 'sensor_id', 'timestamp', 'coordinates', 'data']
+        fields = ['sensor', 'sensor_id', 'timestamp', 'coordinates', 'data']
+        #fields = ['sensor', 'sensor_id', 'metadata', 'data']
 
 
 class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
@@ -118,10 +123,12 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
         }
 
     def create(self, validated_data):
-        instance = Sensor.objects.create(sensor='LG', sensor_id=validated_data['sensor_id'])
-        SensorMetadata.objects.create(sensor=instance,
-                                      coordinates=Point(x=validated_data['longitude'], y=validated_data['latitude'], srid=4326),
-                                      timestamp=validated_data['timestamp'])
+        instance = Sensor.objects.create(sensor='LG', sensor_id=validated_data['sensor_id'],
+                                         coordinates=Point(x=validated_data['longitude'], y=validated_data['latitude'], srid=4326),
+                                         timestamp=validated_data['timestamp'])
+        #SensorMetadata.objects.create(sensor=instance,
+        #                              coordinates=Point(x=validated_data['longitude'], y=validated_data['latitude'], srid=4326),
+        #                              timestamp=validated_data['timestamp'])
         SensorData.objects.create(sensor=instance, data_id='b', data=validated_data['b'])
         SensorData.objects.create(sensor=instance, data_id='sm1', data=validated_data['sm1'])
         SensorData.objects.create(sensor=instance, data_id='sm2', data=validated_data['sm2'])
@@ -192,10 +199,12 @@ class FeatherSensorSerializer(serializers.BaseSerializer):
         }
 
     def create(self, validated_data):
-        instance = Sensor.objects.create(sensor='F', sensor_id=validated_data['sensor_id'])
-        SensorMetadata.objects.create(sensor=instance,
-                                      coordinates=Point(x=validated_data['longitude'], y=validated_data['latitude'], srid=4326),
-                                      timestamp=validated_data['timestamp'])
+        instance = Sensor.objects.create(sensor='F', sensor_id=validated_data['sensor_id'],
+                                         coordinates=Point(x=validated_data['longitude'], y=validated_data['latitude'], srid=4326),
+                                         timestamp=validated_data['timestamp'])
+        #SensorMetadata.objects.create(sensor=instance,
+        #                              coordinates=Point(x=validated_data['longitude'], y=validated_data['latitude'], srid=4326),
+        #                              timestamp=validated_data['timestamp'])
         for item in validated_data['data']:
             SensorData.objects.create(sensor=instance, data_id=item['data_id'], type=item['type'],
                                       data=item['data'], units=item['units'])
