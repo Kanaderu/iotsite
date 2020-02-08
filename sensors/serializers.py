@@ -12,7 +12,8 @@ class SensorDataSerializer(serializers.ModelSerializer):
 
 
 class SensorMetadataSerializer(serializers.ModelSerializer):
-    #coordinates = serializers.ListField(source='coordinates.coordinates')
+    # serialize the point list only
+    coordinates = serializers.ListField()
 
     class Meta:
         model = SensorMetadata
