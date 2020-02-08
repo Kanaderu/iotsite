@@ -1,8 +1,6 @@
-from django.shortcuts import render
 import json
 from djgeojson.serializers import Serializer
 from django.http import JsonResponse
-
 from .models import LINKStation
 
 

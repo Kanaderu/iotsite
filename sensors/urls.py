@@ -13,8 +13,6 @@ class Router(routers.DefaultRouter):
 
 
 router = Router()
-#router.get_api_root_view().cls.__name__ = "UD Root"
-#router.get_api_root_view().cls.__doc__ = "Your Description"
 router.register(r'sensors/?$(?i)', views.SensorViewSet)
 router.register(r'LoRaGateway/?$(?i)', views.LoRaGatewaySensorViewSet, base_name='LoRaGateway')
 router.register(r'Feather/?$(?i)', views.FeatherSensorViewSet, base_name='Feather')
@@ -22,18 +20,13 @@ router.register(r'Feather/?$(?i)', views.FeatherSensorViewSet, base_name='Feathe
 urlpatterns = [
     re_path(r'^hooks/', include(('thorn.django.rest_framework.urls', 'thorn'), namespace='webhook')),
     re_path(r'^api/', include(router.urls)),
-    # ...
-    # Use the `get_schema_view()` helper to add a `SchemaView` to project URLs.
-    #   * `title` and `description` parameters are passed to `SchemaGenerator`.
-    #   * Provide view name for use with `reverse()`.
+
     re_path('openapi', get_schema_view(
         title="UD Sensors API",
         description="An API to interact with UD based Sensors",
         permission_classes=(permissions.IsAuthenticatedOrReadOnly,)
     ), name='openapi-schema'),
 
-    # Route TemplateView to serve the ReDoc template.
-    #   * Provide `extra_context` with view name of `SchemaView`.
     re_path('docs/', TemplateView.as_view(
         template_name='sensors/redoc.html',
         extra_context={'schema_url': 'openapi-schema'}

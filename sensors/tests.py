@@ -1,7 +1,5 @@
 from django.test import TestCase
 
-# Create your tests here.
-
 import io
 from rest_framework.parsers import JSONParser
 from .serializers import *
