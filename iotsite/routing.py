@@ -1,7 +1,5 @@
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
-#import chat.routing
-#import vehicles.routing
 import sensors.routing
 
 application = ProtocolTypeRouter({
@@ -9,8 +7,6 @@ application = ProtocolTypeRouter({
     'websocket': AuthMiddlewareStack(
         URLRouter(
             sensors.routing.websocket_urlpatterns
-            #chat.routing.websocket_urlpatterns
-            #+ vehicles.routing.websocket_urlpatterns
         )
     ),
 })

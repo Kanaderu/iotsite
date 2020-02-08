@@ -1,20 +1,29 @@
 import graphene
+import json
+from django.contrib.gis.db import models
 from graphene_django.types import DjangoObjectType
-import graphql_geojson
-from .models import Sensor, SensorData#, SensorMetadata
+from graphene_django.converter import convert_django_field
+from .models import Sensor, SensorData
+
+
+class GeoJSON(graphene.Scalar):
+
+    @classmethod
+    def serialize(cls, value):
+        return json.loads(value.geojson)
+
+
+@convert_django_field.register(models.GeometryField)
+def convert_field_to_geojson(field, registry=None):
+    return graphene.Field(
+        GeoJSON,
+        description=field.help_text,
+        required=not field.null)
 
 
 class SensorType(DjangoObjectType):
     class Meta:
         model = Sensor
-
-
-'''
-class SensorMetadataType(DjangoObjectType):
-    class Meta:
-        model = SensorMetadata
-        geojson_field = 'coordinates'
-'''
 
 
 class SensorDataType(DjangoObjectType):
@@ -24,14 +33,10 @@ class SensorDataType(DjangoObjectType):
 
 class Query(object):
     all_sensors = graphene.List(SensorType)
-    #all_sensor_metadata = graphene.List(SensorMetadataType)
     all_sensor_data = graphene.List(SensorDataType)
 
     def resolve_all_sensors(self, info, **kwargs):
         return Sensor.objects.all()
-
-    #def resolve_all_sensor_metadata(self, info, **kwargs):
-    #    return SensorMetadata.objects.select_related('sensor').all()
 
     def resolve_all_sensor_data(self, info, **kwargs):
         return SensorData.objects.select_related('sensor').all()

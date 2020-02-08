@@ -12,9 +12,7 @@ urlpatterns = [
     path('linkstations.geojson', GeoJSONLinkStations, name='linkstations'),
     path('worldpoints.geojson', GeoJSONLayerView.as_view(model=WorldBorder, geometry_field='lat_lon', properties=('name',)), name='worldpoints'),
     path('worldborders.geojson', GeoJSONLayerView.as_view(model=WorldBorder, geometry_field='mpoly', properties=('name',)), name='worldborders'),
-    #path('linkstations.geojson', GeoJSONLayerView.as_view(model=LINKStation, properties=('name',)), name='linkstations'),
 
-    #path('sensor.geojson', GeoJSONLayerView.as_view(model=Sensor'''SensorMetadata''', geometry_field = 'coordinates',
     path('sensor.geojson', GeoJSONLayerView.as_view(model=Sensor, geometry_field='coordinates',
                                                       properties={'sensor_type': 'sensor_type',
                                                                   'timestamp': 'timestamp',
