@@ -52,7 +52,7 @@ class SensorsPage extends Component {
                     feather: responses.results.reverse().map(response => ({
                         sensor_id: response.sensor_id,
                         sensor: response.sensor,
-                        metadata: response.metadata,
+                        timestamp: response.timestamp,
                         data: response.data
                     }))
                 });
@@ -71,7 +71,7 @@ class SensorsPage extends Component {
                     lora: responses.results.reverse().map(response => ({
                         sensor_id: response.sensor_id,
                         sensor: response.sensor,
-                        metadata: response.metadata,
+                        timestamp: response.timestamp,
                         data: response.data
                     }))
                 });
@@ -96,7 +96,7 @@ class SensorsPage extends Component {
                         "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
         // lora data
         const lora_labels = data.lora.map((data) => {
-            const d = new Date(data.metadata.timestamp);
+            const d = new Date(data.timestamp);
             return months[d.getMonth()] + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
         });
         const lora_data = [
@@ -128,7 +128,7 @@ class SensorsPage extends Component {
 
         // feather data
         const feather_labels = data.feather.map((data) => {
-            const d = new Date(data.metadata.timestamp);
+            const d = new Date(data.timestamp);
             return months[d.getMonth()] + "-" + ('0' + d.getDate()).slice(-2) + " " + ('0' + d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2);
         });
         const feather_data = [

@@ -46,8 +46,8 @@ class SensorViewSet(viewsets.ModelViewSet):
     """
     queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
-    filterset_fields = '__all__'
-    search_fields = ['sensor', 'sensor_id']
+    filterset_fields = ['sensor', 'sensor_id']
+    search_fields = ['sensor', 'sensor_id', 'data']
     ordering_fields = '__all__'
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
     #filter_backends = (NameFilterBackend,)
