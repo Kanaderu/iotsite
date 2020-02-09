@@ -1,5 +1,6 @@
 from django.test import TestCase, SimpleTestCase, TransactionTestCase
 from django.urls import reverse
+from .models import Sensor
 
 
 class SensorRESTApiDocsTests(TestCase):
@@ -46,6 +47,41 @@ class SensorRESTApiTests(TestCase):
                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
         self.assertEqual(response.status_code, 200)
         self.assertJSONEqual(response.content.decode('utf-8'), {'count': 0, 'next': None, 'previous': None, 'results': []})
+
+    def test_retrieve_sensor(self):
+        generic_data = {
+            'sensor': 'F',
+            'sensor_id': '1',
+            'timestamp': '2019-10-03T19:17:10.067889-04:00',
+            'coordinates': [
+                -83.9972,
+                39.7771
+            ],
+            'data': [
+                {
+                    'data_id': '1',
+                    'type': 'Temperature',
+                    'data': 19.813000,
+                    'units': 'C'
+                },
+                {
+                    'data_id': '2',
+                    'type': 'Temperature',
+                    'data': '16.1880',
+                    'units': 'C'
+                }
+            ]
+        }
+        create_response = self.client.post(reverse('sensor-list'),
+                                           generic_data,
+                                           content_type='application/json',
+                                           **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        self.assertEqual(create_response.status_code, 201)
+
+        # get retrieve on added data
+        response = self.client.get(reverse('sensor-detail', kwargs={'pk': Sensor.objects.all()[0].pk}),
+                                   content_type='application/json')
+        self.assertEqual(response.status_code, 200)
 
     def test_generic_serializer(self):
         generic_data = {

@@ -13,7 +13,7 @@ class Router(routers.DefaultRouter):
 
 
 router = Router()
-router.register(r'sensors/?$(?i)', views.SensorViewSet)
+router.register('sensors/?', views.SensorViewSet)
 router.register(r'LoRaGateway/?$(?i)', views.LoRaGatewaySensorViewSet, base_name='LoRaGateway')
 router.register(r'Feather/?$(?i)', views.FeatherSensorViewSet, base_name='Feather')
 
