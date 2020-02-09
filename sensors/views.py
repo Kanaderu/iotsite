@@ -1,5 +1,5 @@
 from sensors.serializers import *
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, mixins, permissions
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 import json
@@ -42,12 +42,12 @@ class SensorViewSet(viewsets.ModelViewSet):
     #filter_backends = (NameFilterBackend,)
 
 
-class LoRaGatewaySensorViewSet(SensorViewSet):
+class LoRaGatewaySensorViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = LoRaGatewaySensorSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
 
 
-class FeatherSensorViewSet(SensorViewSet):
+class FeatherSensorViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = FeatherSensorSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
 

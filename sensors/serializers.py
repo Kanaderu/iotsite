@@ -28,7 +28,7 @@ class SensorSerializer(serializers.ModelSerializer):
                                          **validated_data)
         for data in sensor_data:
             SensorData.objects.create(sensor=instance, **data)
-            
+
         return instance
 
 
