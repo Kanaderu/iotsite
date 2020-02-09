@@ -18,6 +18,19 @@ class SensorSerializer(serializers.ModelSerializer):
         model = Sensor
         fields = ['sensor', 'sensor_id', 'timestamp', 'coordinates', 'data']
 
+    def create(self, validated_data):
+        sensor_data = validated_data.pop('data')
+        coordinates = validated_data.pop('coordinates')
+        longitude = coordinates[0]
+        latitude = coordinates[1]
+
+        instance = Sensor.objects.create(coordinates=Point(x=longitude, y=latitude, srid=4326),
+                                         **validated_data)
+        for data in sensor_data:
+            SensorData.objects.create(sensor=instance, **data)
+            
+        return instance
+
 
 class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
 

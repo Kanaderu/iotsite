@@ -1,173 +1,239 @@
 from django.test import TestCase, SimpleTestCase, TransactionTestCase
 from django.urls import reverse
 
-import io
-from rest_framework.parsers import JSONParser
-from .serializers import *
 
+class SensorRESTApiTests(TestCase):
 
-class SensorTests(TransactionTestCase):
+    def setUp(self):
+        # define test user credentials
+        self.username = 'test_user'
+        self.password = 'test_password'
 
-    def test_get_api_sensors(self):
-        response = self.client.get(reverse('sensor-list'), content_type='application/json')
-        #print(response)
+        # create user
+        create_user_response = self.client.post(reverse('user-register'),
+                                                {'username': self.username, 'password': self.password},
+                                                content_type='application/json')
+        self.assertEqual(create_user_response.status_code, 201)
 
-'''
-def test_FeatherSerializer():
-    json = b"""
-    {
-        "dev_id": 1,
-        "metadata": {
-              "location": "Apartment",
-              "latitude": 39.77710000,
-              "longitude": -83.99720000,
-              "time": "2019-10-02T19:17:10.067889-04:00"
-        },
-        "data": [
-         {
-             "sensor_id": 1,
-             "sensor_type": "Temperature",
-             "sensor_data": 19.813,
-             "sensor_units": "C"
-         },
-         {
-             "sensor_id": 2,
-             "sensor_type": "Temperature",
-             "sensor_data": 16.188,
-             "sensor_units": "C"
-         }
-         ]
-    }
-    """
-    stream = io.BytesIO(json)
-    data = JSONParser().parse(stream)
-    print(data)
+        # login user
+        login_response = self.client.post(reverse('user-login'),
+                                          {'username': self.username, 'password': self.password},
+                                          content_type='application/json')
+        access_token = login_response.json()['access']
+        self.assertEqual(login_response.status_code, 200)
 
-    serializer = FeatherSensorSerializer(data=data)
-    print('VALID' if serializer.is_valid() else 'NOT VALID')
-    print(serializer.validated_data)
+        # get user api token
+        token_response = self.client.get(reverse('api-token'),
+                                         content_type='application/json',
+                                         **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(access_token)})
+        self.api_token = token_response.json()['token']
+        self.assertIsNotNone(self.api_token)
 
+    def test_empty_sensors_list(self):
+        response = self.client.get(reverse('sensor-list'),
+                                   content_type='application/json',
+                                   **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content.decode('utf-8'), {'count': 0, 'next': None, 'previous': None, 'results': []})
 
-def test_LoRaSerializer():
-    json = b"""
-    {
-        "app_id":"dayton-engineering-and-geology",
-        "dev_id":"180291",
-        "hardware_serial":"000DB5390864367B",
-        "port":2,
-        "counter":4555,
-        "payload_raw":"0oCH/////w==",
-        "payload_fields":{
-            "b":4.2,
-            "sm1":255,
-            "sm2":255,
-            "sm3":255,
-            "sm4":255,
-            "t1":28,
-            "t2":35
-        },
-        "metadata":{
-            "time":"2019-09-29T17:17:03.147714091Z",
-            "frequency":904.9,
-            "modulation":"LORA",
-            "data_rate":"SF10BW125",
-            "coding_rate":"4/5",
-            "gateways":[
+    def test_generic_serializer(self):
+        generic_data = {
+            'sensor': 'F',
+            'sensor_id': '1',
+            'timestamp': '2019-10-03T19:17:10.067889-04:00',
+            'coordinates': [
+                -83.9972,
+                39.7771
+            ],
+            'data': [
                 {
-                    "gtw_id":"rg1xx294cb6",
-                    "gtw_trusted":true,
-                    "timestamp":10479492,
-                    "time":"",
-                    "channel":5,
-                    "rssi":-58,
-                    "snr":9.25,
-                    "rf_chain":1,
-                    "latitude":39.741287,
-                    "longitude":-84.18488
+                    'data_id': '1',
+                    'type': 'Temperature',
+                    'data': 19.813000,
+                    'units': 'C'
+                },
+                {
+                    'data_id': '2',
+                    'type': 'Temperature',
+                    'data': '16.1880',
+                    'units': 'C'
                 }
             ]
-        },
-        "downlink_url":"https://integrations.thethingsnetwork.org/ttn-us-west/api/v2/down/dayton-engineering-and-geology/webhook_test?key=ttn-account-v2.kY1MRQUoGICp7C9CAEvhEdGklPVWW-ztIiU0aVRLxno"
-    }
-    """
-    stream = io.BytesIO(json)
-    data = JSONParser().parse(stream)
-    print(data)
-
-    metadata_data = data.pop('metadata')
-    gateway_data = metadata_data.pop('gateways')
-    payload_fields_data = data.pop('payload_fields')
-
-    serializer = LoRaGatewaySensorSerializer(data=data)
-    print('VALID' if serializer.is_valid() else 'NOT VALID')
-    print(serializer.validated_data)
-
-    """
-    metadata_serializer = LoRaGatewayMetadataSerializer(data=metadata_data)
-    print('VALID' if metadata_serializer.is_valid() else 'NOT VALID')
-    print(metadata_serializer.validated_data)
-
-    #print(metadata_serializer.validated_data['time'])
-
-    gateway_serializer = LoRaGatewaySerializer(data=gateway_data)
-    print('VALID' if gateway_serializer.is_valid() else 'NOT VALID')
-    print(gateway_serializer.validated_data)
-
-    payload_fields_serializer = LoRaGatewayPayloadFieldsSerializer(data=payload_fields_data)
-    print('VALID' if payload_fields_serializer.is_valid() else 'NOT VALID')
-    print(payload_fields_serializer.validated_data)
-
-    print(payload_fields_serializer.validated_data['b'])
-    #Sensor.objects.create(sensor='LG', sensor_id=)
-    """
-
-def save_LoRaSerializer():
-    json = b"""
-    {
-        "app_id":"dayton-engineering-and-geology",
-        "dev_id":"180291",
-        "hardware_serial":"000DB5390864367B",
-        "port":2,
-        "counter":4555,
-        "payload_raw":"0oCH/////w==",
-        "payload_fields":{
-            "b":4.2,
-            "sm1":255,
-            "sm2":255,
-            "sm3":255,
-            "sm4":255,
-            "t1":28,
-            "t2":35
-        },
-        "metadata":{
-            "time":"2019-09-29T17:17:03.147714091Z",
-            "frequency":904.9,
-            "modulation":"LORA",
-            "data_rate":"SF10BW125",
-            "coding_rate":"4/5",
-            "gateways":[
+        }
+        response = self.client.post(reverse('sensor-list'),
+                                    generic_data,
+                                    content_type='application/json',
+                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        expected_response = {
+            'sensor': 'F',
+            'sensor_id': '1',
+            'timestamp': '2019-10-03T19:17:10.067889-04:00',
+            'coordinates': [-83.9972, 39.7771],
+            'data': [
                 {
-                    "gtw_id":"rg1xx294cb6",
-                    "gtw_trusted":true,
-                    "timestamp":10479492,
-                    "time":"",
-                    "channel":5,
-                    "rssi":-58,
-                    "snr":9.25,
-                    "rf_chain":1,
-                    "latitude":39.741287,
-                    "longitude":-84.18488
+                    'data_id': '2',
+                    'type': 'Temperature',
+                    'data': '16.18800000',
+                    'units': 'C'
+                },
+                {
+                    'data_id': '1',
+                    'type': 'Temperature',
+                    'data': '19.81300000',
+                    'units': 'C'
                 }
             ]
-        },
-        "downlink_url":"https://integrations.thethingsnetwork.org/ttn-us-west/api/v2/down/dayton-engineering-and-geology/webhook_test?key=ttn-account-v2.kY1MRQUoGICp7C9CAEvhEdGklPVWW-ztIiU0aVRLxno"
-    }
-    """
-    stream = io.BytesIO(json)
-    data = JSONParser().parse(stream)
-    print(data)
+        }
+        self.assertEqual(response.status_code, 201)
+        self.assertJSONEqual(response.content.decode('utf-8'), expected_response)
 
-    serializer = LoRaGatewaySensorSerializer(data=data)
-    print('VALID' if serializer.is_valid() else 'NOT VALID {}'.format(serializer.error_messages))
-    serializer.save()
-'''
+    def test_feather_serializer(self):
+        feather_data = {
+            'dev_id': 1,
+            'metadata': {
+                'location': 'Apartment',
+                'latitude': 39.77710000,
+                'longitude': -83.99720000,
+                'time': '2019-10-02T19:17:10.067889-04:00'
+            },
+            'data': [
+                {
+                    'sensor_id': 1,
+                    'sensor_type': "Temperature",
+                    'sensor_data': 19.813,
+                    'sensor_units': "C"
+                },
+                {
+                    'sensor_id': 2,
+                    'sensor_type': "Temperature",
+                    'sensor_data': 16.188,
+                    'sensor_units': 'C'
+                }
+            ]
+        }
+        response = self.client.post(reverse('Feather-list'),
+                                    feather_data,
+                                    content_type='application/json',
+                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        expected_response = {
+            'sensor': 'F',
+            'sensor_id': '1',
+            'timestamp': '2019-10-02T19:17:10.067889-04:00',
+            'coordinates': [
+                -83.9972,
+                39.7771
+            ],
+            'data': [
+                {
+                    'data_id': '1',
+                    'type': 'Temperature',
+                    'data': '19.81300000',
+                    'units': 'C'
+                },
+                {
+                    'data_id': '2',
+                    'type': 'Temperature',
+                    'data': '16.18800000',
+                    'units': 'C'
+                }
+            ]
+        }
+        self.assertEqual(response.status_code, 201)
+        self.assertJSONEqual(response.content.decode('utf-8'), expected_response)
+
+    def test_lora_gateway_serializer(self):
+        lora_data = {
+            'app_id': 'dayton-engineering-and-geology',
+            'dev_id': '180291',
+            'hardware_serial': '000DB5390864367B',
+            'port': 2,
+            'counter': 4555,
+            'payload_raw': '0oCH/////w==',
+            'payload_fields': {
+                'b': 4.2,
+                'sm1': 255,
+                'sm2': 255,
+                'sm3': 255,
+                'sm4': 255,
+                't1': 28,
+                't2': 35
+            },
+            'metadata': {
+                'time': '2019-09-29T17:17:03.147714091Z',
+                'frequency': 904.9,
+                'modulation': 'LORA',
+                'data_rate': 'SF10BW125',
+                'coding_rate': '4/5',
+                'gateways': [
+                    {
+                        'gtw_id': 'rg1xx294cb6',
+                        'gtw_trusted': True,
+                        'timestamp': 10479492,
+                        'time': '',
+                        'channel': 5,
+                        'rssi': -58,
+                        'snr': 9.25,
+                        'rf_chain': 1,
+                        'latitude': 39.741287,
+                        'longitude': -84.18488
+                    }
+                ]
+            },
+            'downlink_url': 'https://integrations.thethingsnetwork.org/ttn-us-west/api/v2/down/dayton-engineering-and-geology/webhook_test?key=ttn-account-v2.kY1MRQUoGICp7C9CAEvhEdGklPVWW-ztIiU0aVRLxno'
+        }
+        response = self.client.post(reverse('LoRaGateway-list'),
+                                    lora_data,
+                                    content_type='application/json',
+                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        expected_response = {
+            'sensor': 'LG',
+            'sensor_id': '180291',
+            'timestamp': '2019-09-29T17:17:03.147714091Z',
+            'coordinates': [-84.18488, 39.741287],
+            'data': [
+                {
+                    'data_id': 't2',
+                    'type': '',
+                    'data': '35.00000000',
+                    'units': ''
+                },
+                {
+                    'data_id': 't1',
+                    'type': '',
+                    'data': '28.00000000',
+                    'units': ''
+                },
+                {
+                    'data_id': 'sm4',
+                    'type': '',
+                    'data': '255.00000000',
+                    'units': ''
+                },
+                {
+                    'data_id': 'sm3',
+                    'type': '',
+                    'data': '255.00000000',
+                    'units': ''
+                },
+                {
+                    'data_id': 'sm2',
+                    'type': '',
+                    'data': '255.00000000',
+                    'units': ''
+                },
+                {
+                    'data_id': 'sm1',
+                    'type': '',
+                    'data': '255.00000000',
+                    'units': ''
+                },
+                {
+                    'data_id': 'b',
+                    'type': '',
+                    'data': '4.20000000',
+                    'units': ''
+                }
+            ]
+        }
+        self.assertEqual(response.status_code, 201)
+        self.assertJSONEqual(response.content.decode('utf-8'), expected_response)
