@@ -125,6 +125,5 @@ class UserCreationTests(TestCase):
                                             {'refresh': refresh_token},
                                             content_type='application/json',
                                             **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(access_token)})
-        refresh_access_token = refresh_response.json()['access']
         self.assertEqual(refresh_response.status_code, 200)
-        self.assertIsNotNone(refresh_access_token)
+        self.assertIsNotNone(refresh_response.json()['access'])
