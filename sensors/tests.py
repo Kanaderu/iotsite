@@ -2,6 +2,17 @@ from django.test import TestCase, SimpleTestCase, TransactionTestCase
 from django.urls import reverse
 
 
+class SensorRESTApiDocsTests(TestCase):
+    def test_openapi(self):
+        response = self.client.get(reverse('openapi-schema'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['content-type'], 'application/vnd.oai.openapi')
+
+    def test_api_docs(self):
+        response = self.client.get(reverse('redoc'))
+        self.assertEqual(response.status_code, 200)
+
+
 class SensorRESTApiTests(TestCase):
 
     def setUp(self):
@@ -87,6 +98,17 @@ class SensorRESTApiTests(TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertJSONEqual(response.content.decode('utf-8'), expected_response)
 
+        invalid_token_response = self.client.post(reverse('sensor-list'),
+                                                          generic_data,
+                                                          content_type='application/json',
+                                                          **{'HTTP_AUTHORIZATION': 'Bearer INVALID_TOKEN'})
+        self.assertNotEqual(invalid_token_response.status_code, 201)
+
+        no_token_response = self.client.post(reverse('sensor-list'),
+                                                     generic_data,
+                                                     content_type='application/json')
+        self.assertNotEqual(no_token_response.status_code, 201)
+
     def test_feather_serializer(self):
         feather_data = {
             'dev_id': 1,
@@ -140,6 +162,17 @@ class SensorRESTApiTests(TestCase):
         }
         self.assertEqual(response.status_code, 201)
         self.assertJSONEqual(response.content.decode('utf-8'), expected_response)
+
+        invalid_token_response = self.client.post(reverse('Feather-list'),
+                                                          feather_data,
+                                                          content_type='application/json',
+                                                          **{'HTTP_AUTHORIZATION': 'Bearer INVALID_TOKEN'})
+        self.assertNotEqual(invalid_token_response.status_code, 201)
+
+        no_token_response = self.client.post(reverse('Feather-list'),
+                                                     feather_data,
+                                                     content_type='application/json')
+        self.assertNotEqual(no_token_response.status_code, 201)
 
     def test_lora_gateway_serializer(self):
         lora_data = {
@@ -237,3 +270,14 @@ class SensorRESTApiTests(TestCase):
         }
         self.assertEqual(response.status_code, 201)
         self.assertJSONEqual(response.content.decode('utf-8'), expected_response)
+
+        invalid_token_response = self.client.post(reverse('LoRaGateway-list'),
+                                                          lora_data,
+                                                          content_type='application/json',
+                                                          **{'HTTP_AUTHORIZATION': 'Bearer INVALID_TOKEN'})
+        self.assertNotEqual(invalid_token_response.status_code, 201)
+
+        no_token_response = self.client.post(reverse('LoRaGateway-list'),
+                                                     lora_data,
+                                                     content_type='application/json')
+        self.assertNotEqual(no_token_response.status_code, 201)
