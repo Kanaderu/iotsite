@@ -7,14 +7,14 @@ import time
 class Command(BaseCommand):
     """ Django command to pause execution until database is available"""
     def handle(self, *args, **kwargs):
-        self.stdout.write('waiting for db ...')
+        #self.stdout.write('waiting for db ...')
         db_conn = None
         while not db_conn:
             try:
                 # get the database with keyword 'default' from settings.py
                 db_conn = connections['default']
                 # prints success messge in green
-                self.stdout.write(self.style.SUCCESS('db available'))
+                #self.stdout.write(self.style.SUCCESS('db available'))
             except OperationalError:
-                self.stdout.write("Database unavailable, waiting 1 second ...")
+                #self.stdout.write("Database unavailable, waiting 1 second ...")
                 time.sleep(1)

@@ -1,10 +1,18 @@
-from django.test import TestCase
+from django.test import TestCase, SimpleTestCase, TransactionTestCase
+from django.urls import reverse
 
 import io
 from rest_framework.parsers import JSONParser
 from .serializers import *
 
 
+class SensorTests(TransactionTestCase):
+
+    def test_get_api_sensors(self):
+        response = self.client.get(reverse('sensor-list'), content_type='application/json')
+        #print(response)
+
+'''
 def test_FeatherSerializer():
     json = b"""
     {
@@ -94,7 +102,7 @@ def test_LoRaSerializer():
     print('VALID' if serializer.is_valid() else 'NOT VALID')
     print(serializer.validated_data)
 
-    '''
+    """
     metadata_serializer = LoRaGatewayMetadataSerializer(data=metadata_data)
     print('VALID' if metadata_serializer.is_valid() else 'NOT VALID')
     print(metadata_serializer.validated_data)
@@ -111,7 +119,7 @@ def test_LoRaSerializer():
 
     print(payload_fields_serializer.validated_data['b'])
     #Sensor.objects.create(sensor='LG', sensor_id=)
-    '''
+    """
 
 def save_LoRaSerializer():
     json = b"""
@@ -162,3 +170,4 @@ def save_LoRaSerializer():
     serializer = LoRaGatewaySensorSerializer(data=data)
     print('VALID' if serializer.is_valid() else 'NOT VALID {}'.format(serializer.error_messages))
     serializer.save()
+'''
