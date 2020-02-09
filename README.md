@@ -10,7 +10,15 @@ Docker can be setup manually or using docker. A docker installation would be the
 
 A `Dockerfile` is written to setup the project and mount the volumes to the container. As a result, any changes reflected on the any of the files will be seen by the container. The `docker-compose.yml` sets up two services, one for the current project as described by the project's `Dockerfile` and another from the Docker-Hub that pulls a postgres database setup with postgis enabled. All database files from the are also mounted as a volume for easy database management purposes. The database files are stored in a folder at `./volumes/db/var/lib/postgres_data` in the project folder. Note that permissions may need to be changed in order to view them with either `chmod` or `chown` (or user added to the proper groups).
 
-To launch docker, navigate to the `docker-compose.yml` file (located in the project root folder) and run `docker-compose up`. The first time running the command will take quite a while to set everything up.
+To launch docker, navigate to the `docker-compose.yml` file (located in the project root folder) and execute the following code. Note that the first time running the command will take quite a while to set everything up.
+
+```bash
+# start up docker container and setup/install all requirements
+docker-compose up      # run docker in daemon mode with -d
+
+# close down the docker container, data is persisted
+docker-compose down
+```
 
 #### Docker Settings
 
