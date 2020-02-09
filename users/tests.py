@@ -29,6 +29,27 @@ class UserCreationTests(TestCase):
         self.assertIsNotNone(response.json()['access'])
         self.assertIsNotNone(response.json()['refresh'])
 
+    def test_user_logout(self):
+        # create user account
+        self.test_create_user()
+
+        # check if created user account is able to login with refresh and access tokens provided
+        login_response = self.client.post(reverse('user-login'),
+                                    {'username': self.username, 'password': self.password},
+                                    content_type='application/json')
+        access_token = login_response.json()['access']
+        refresh_token = login_response.json()['refresh']
+        self.assertEqual(login_response.status_code, 200)
+        self.assertIsNotNone(access_token)
+        self.assertIsNotNone(refresh_token)
+
+        # check if created user account is able to logout with refresh and access tokens provided
+        logout_response = self.client.post(reverse('user-logout'),
+                                    {'refresh': refresh_token},
+                                    content_type='application/json',
+                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(access_token)})
+        self.assertEqual(logout_response.status_code, 204)
+
     def test_user_retrieve_api_token(self):
         # create user account
         self.test_create_user()
@@ -37,9 +58,8 @@ class UserCreationTests(TestCase):
         login_response = self.client.post(reverse('user-login'),
                                     {'username': self.username, 'password': self.password},
                                     content_type='application/json')
-        self.assertEqual(login_response.status_code, 200)
-
         access_token = login_response.json()['access']
+        self.assertEqual(login_response.status_code, 200)
         self.assertIsNotNone(access_token)
 
         # check if user is able to generate an api token using the access token
