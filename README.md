@@ -2,7 +2,23 @@
 
 The IoT Site repository is used for implementing and testing the use of webhooks for use of publishing and distributing sensor data.
 
-## Quick Start
+## Repository Setup
+
+Docker can be setup manually or using docker. A docker installation would be the easiest method to get up and running quickly.
+
+### Docker Setup
+
+A `Dockerfile` is written to setup the project and mount the volumes to the container. As a result, any changes reflected on the any of the files will be seen by the container. The `docker-compose.yml` sets up two services, one for the current project as described by the project's `Dockerfile` and another from the Docker-Hub that pulls a postgres database setup with postgis enabled. All database files from the are also mounted as a volume for easy database management purposes. The database files are stored in a folder at `./volumes/db/var/lib/postgres_data` in the project folder. Note that permissions may need to be changed in order to view them with either `chmod` or `chown` (or user added to the proper groups).
+
+To launch docker, navigate to the `docker-compose.yml` file (located in the project root folder) and run `docker-compose up`. The first time running the command will take quite a while to set everything up.
+
+#### Docker Settings
+
+Docker pulls the from the user's environment variables the following: `DARKSKY_KEY` and `SECRET_KEY` to setup the local installation. Additional parameters can be modified in the `docker-compose.yml` file such as the default port and database configurations.
+
+The docker setup can be accessed at http://localhost:8080/
+
+### Manual Setup
 
 Commands to get the server quickly up and running locally.
 
@@ -13,14 +29,10 @@ git clone git@github.com:Kanaderu/iotsite.git       # clone the repo
 cd iotsite/                                         # change directory into repo
 pip install -r requirements                         # install python libraries
 
-# setup react
-cd dashboard/                                       # change into frontend react repo
-yarn                                                # install node libraries
-yarn build                                          # build the react/javascript frontend
-
 # install postgres database
-sudo apt install postgresql postgresql-contrib
+sudo apt install postgresql postgresql-contrib libpq-dev
 
+# install postgis support
 # refer to https://postgis.net/install/ to install postgis for other distributions
 sudo apt-get install python-software-properties
 sudo add-apt-repository ppa:ubuntugis/ppa
@@ -31,41 +43,42 @@ sudo apt install postgis
 sudo apt install binutils libproj-dev gdal-bin
 
 # setup postgres with user 'geo' with password 'geo' and database 'geodjango'
-sudo -u postgres psql -c "CREATE USER geo WITH ENCRYPTED PASSWORD 'geo';"
-sudo -u postgres psql -c "CREATE DATABASE geodjango with OWNER geo;"
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE geodjango TO geo;"
-sudo -u postgres psql -d geodjango -c "CREATE EXTENSION postgis;"
+sudo -u postgres psql -f utils/database/dev.sql
 
 # build database
 cd ../
 python manage.py makemigrations                     # prepare database commands and check Django ORM
 python manage.py migrate                            # build and commit database tables
 
+# build react frontend
+python manage.py install_frontend_dependencies
+python manage.py build_frontend
+
 # run server
 python manage.py runserver                          # run the server locally
 ```
 
-## Setup Instructions
+#### Manual Setup In-Depth Details
 
 Installation follows standard python project setups. Webhooks is implemented using [Thorn by Robinhood](https://github.com/robinhood/thorn).
+
+
+##### Building the Backend
 
 ```
 # install python dependencies
 pip install -r requirements.txt
-
-cd dashboard/
-
-# install node dependencies
-yarn
 ```
 
-Serving the project in production mode is avaliable but not fully implemented as it varies on the server configuration. uWSGI is setup for this project but is not required. To run the server in uWSGI use the `start_server.sh` script to load the server in production mode. The parameters in `iotsite/uwsgi.ini` and `iotsite/wsgi.py` may need to be configured properly. Running the server in debug mode should run fine without having use uWSGI. Debug mode is the default mode and should be run using regular Django development commands.
+###### Production Setup
 
-### Setup Environment Variables
+Serving the project in production mode is avaliable but not fully implemented as it varies on the server configuration. ASGI is setup for this project but is not required. The ASGI entrypoint can be found in `iotsite/asgi.py` (Prior setup previously used `iotsite/uwsgi.ini` and `iotsite/wsgi.py` which may still work with some features disabled as uWSGI does not support some features provided by ASGI). Running the server in debug mode should run fine without having use ASGI. Debug mode is the default mode and should be run using regular Django development commands.
 
-Private parameters that are not to be shared publicly are generally loaded in through envionment variables. A template of which variables to set are defined in the file `setup.env.template`. It is best to copy this template (`cp setup.env.template setup.env`) with user only permissions (`chmod 600 setup.env`) for security reasons. To use the `setup.env` parameters, run `source setup.ev` which will make the variables persist for the executing terminal only. Once the terminal has been closed, it will need to be resourced as they will be lost upon reopening.
+#### Setup Environment Variables
 
-### Building Frontend React
+Private parameters that are not to be shared publicly are generally loaded in through envionment variables. A template of which variables to set are defined in the file `utils/setup.env.template`. It is best to copy this template (`cp setup.env.template setup.env`) with user only permissions (`chmod 600 setup.env`) for security reasons. To use the `setup.env` parameters, run `source setup.ev` which will make the variables persist for the executing terminal only. Once the terminal has been closed, it will need to be resourced as they will be lost upon reopening.
+
+#### Building the Frontend
 
 React is used to build the frontend dashboard. Using React and Django involves the integration of two separate web development frameworks. Integration is being peformed with the used of webpack and node/yarn. The react app is stored into the `dashboard` folder. To build the `dashboard` app, `npm` and/or `yarn` needs to be installed. Run the following commands to build the `dashboard` react project.
 
@@ -75,7 +88,7 @@ yarn            # install node_modules/ packages
 yarn build      # build the production setup
 ```
 
-Inplace of `yarn`, `npm` can be used instead using the following commands.
+Inplace of `yarn`, `npm` can be used instead using the following commands (these ideally both do the same thing).
 
 ```
 cd dashboard/
@@ -106,11 +119,6 @@ yarn start      # start the react frontend with hotreloading
 ```
 
 Inplace of `yarn`, `npm` can be used instead using the following commands.
-
-```
-cd dashboard/
-npm run start      # start the react frontend with hotreloading
-```
 
 ### Running the server in development mode
 
@@ -143,7 +151,7 @@ JSON Web Tokens (JWT) is used for authentication and can be accessed at the foll
 
 ##### Registration
 
-To register users, send data to `/api/register/` or `/ws/api/register`.
+To register users, send data to `/api/register/`
 
 The following POST format is used to register users:
 
@@ -156,7 +164,7 @@ The following POST format is used to register users:
 
 ##### Login
 
-Located at `/api/login/` or `/ws/api/login` which will return an `access` token and a `refresh` token if the user login is valid.
+Located at `/api/login/` which will return an `access` token and a `refresh` token if the user login is valid.
 
 The following POST format is used to obtain a JWT token:
 
@@ -179,7 +187,7 @@ A valid response will appear as:
  
 ##### Verification
 
-Located at `/api/verify/` or `/ws/api/verify` which will return a `200` reponse if the provided token is valid.
+Located at `/api/verify/` which will return a `200` reponse if the provided token is valid.
 
 The following POST format is used for token verification:
 
@@ -247,5 +255,5 @@ curl -X POST \
          }
          ]
     }' \
-http://localhost/ws/api/Feather/
+http://localhost:8080/api/Feather/
 ```
