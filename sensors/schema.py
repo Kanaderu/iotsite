@@ -32,11 +32,11 @@ class SensorDataType(DjangoObjectType):
 
 
 class Query(object):
-    all_sensors = graphene.List(SensorType)
-    all_sensor_data = graphene.List(SensorDataType)
+    sensors = graphene.List(SensorType)
+    sensor_data = graphene.List(SensorDataType)
 
-    def resolve_all_sensors(self, info, **kwargs):
+    def resolve_sensors(self, info, **kwargs):
         return Sensor.objects.all()
 
-    def resolve_all_sensor_data(self, info, **kwargs):
+    def resolve_sensor_data(self, info, **kwargs):
         return SensorData.objects.select_related('sensor').all()

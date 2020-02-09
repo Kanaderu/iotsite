@@ -22,8 +22,8 @@ urlpatterns = [
     re_path(r'^api/', include(router.urls)),
 
     re_path('openapi', get_schema_view(
-        title="UD Sensors API",
-        description="An API to interact with UD based Sensors",
+        title='UD Sensors API',
+        description='An API to interact with UD based Sensors',
         permission_classes=(permissions.IsAuthenticatedOrReadOnly,)
     ), name='openapi-schema'),
 
