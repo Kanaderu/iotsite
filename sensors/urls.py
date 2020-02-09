@@ -14,8 +14,8 @@ class Router(routers.DefaultRouter):
 
 router = Router()
 router.register('sensors/?', views.SensorViewSet)
-router.register(r'LoRaGateway/?$(?i)', views.LoRaGatewaySensorViewSet, base_name='LoRaGateway')
-router.register(r'Feather/?$(?i)', views.FeatherSensorViewSet, base_name='Feather')
+router.register(r'LoRaGateway/?$(?i)', views.LoRaGatewaySensorViewSet, basename='LoRaGateway')
+router.register(r'Feather/?$(?i)', views.FeatherSensorViewSet, basename='Feather')
 
 urlpatterns = [
     re_path(r'^hooks/', include(('thorn.django.rest_framework.urls', 'thorn'), namespace='webhook')),
