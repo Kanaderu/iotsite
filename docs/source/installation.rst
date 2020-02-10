@@ -178,3 +178,5 @@ Alternatively, a Django management command is written in the *setup* app which d
 .. code-block:: bash
 
    python manage.py build_frontend
+
+Once the frontend has been built, the backend is setup to automatically setup the routes to render it. The page at http://localhost:8080 from before should now render the project.
