@@ -73,7 +73,17 @@
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#cloning-the-repository">Cloning the Repository</a></li>
 <li><a class="reference internal" href="#docker-installation">Docker Installation</a></li>
-<li><a class="reference internal" href="#manual-setup">Manual Setup</a></li>
+<li><a class="reference internal" href="#manual-setup">Manual Setup</a><ul>
+<li><a class="reference internal" href="#prerequisites-and-dependencies">Prerequisites and Dependencies</a></li>
+<li><a class="reference internal" href="#setting-up-the-database">Setting up the Database</a><ul>
+<li><a class="reference internal" href="#building-the-database">Building the Database</a></li>
+<li><a class="reference internal" href="#populating-the-database">Populating the Database</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-the-backend">Running the Backend</a></li>
+<li><a class="reference internal" href="#building-the-frontend">Building the Frontend</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -122,7 +132,17 @@
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#cloning-the-repository">Cloning the Repository</a></li>
 <li><a class="reference internal" href="#docker-installation">Docker Installation</a></li>
-<li><a class="reference internal" href="#manual-setup">Manual Setup</a></li>
+<li><a class="reference internal" href="#manual-setup">Manual Setup</a><ul>
+<li><a class="reference internal" href="#prerequisites-and-dependencies">Prerequisites and Dependencies</a></li>
+<li><a class="reference internal" href="#setting-up-the-database">Setting up the Database</a><ul>
+<li><a class="reference internal" href="#building-the-database">Building the Database</a></li>
+<li><a class="reference internal" href="#populating-the-database">Populating the Database</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-the-backend">Running the Backend</a></li>
+<li><a class="reference internal" href="#building-the-frontend">Building the Frontend</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -170,29 +190,114 @@
 <li><p><a class="reference internal" href="#docker-installation">Docker Installation</a></p></li>
 <li><p><a class="reference internal" href="#manual-setup">Manual Setup</a></p></li>
 </ul>
-<p>The docker instance allows a user to get setup quickly on a new machine. The docker instance currently sets up the project in development mode.
-The manual setup is a bit more involved but allows for a more traditional development setup.</p>
+<p>The docker instance allows a user to get setup quickly on a new machine. The docker instance currently sets up the project in development mode. The manual setup is a bit more involved but allows for a more traditional development setup.</p>
 <div class="section" id="cloning-the-repository">
 <h2>Cloning the Repository<a class="headerlink" href="#cloning-the-repository" title="Permalink to this headline">¶</a></h2>
-<p>Before starting the installation process, the user needs to first obtain the code. The code lives on GitHub and can be obtained <a class="reference external" href="https://github.com/Kanaderu/iotsite">here</a>.</p>
+<p>Before starting the installation process, the user needs to first obtain the code. The code lives on GitHub and can be obtained <a class="reference external" href="https://github.com/Kanaderu/iotsite">here</a>. The repository can be downloaded using <cite>git</cite> or by download directly from the <a class="reference external" href="https://github.com/Kanaderu/iotsite/archive/master.zip">GitHub Project Page</a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/Kanaderu/iotsite.git
+</pre></div>
+</div>
 </div>
 <div class="section" id="docker-installation">
 <h2>Docker Installation<a class="headerlink" href="#docker-installation" title="Permalink to this headline">¶</a></h2>
-<p>The Docker instance is described primarily by two main files, <strong>Dockerfile</strong> and <strong>docker-compose.yml</strong>.
-The <strong>Dockerfile</strong> file contains directives on how to compile a docker image for the current project.
+<p>The Docker instance is described primarily by two main files, <strong>Dockerfile</strong> and <strong>docker-compose.yml</strong>. The <strong>Dockerfile</strong> file contains directives on how to compile a docker image for the current project.
 The <strong>docker-compose.yml</strong> file contains directives on how to orchestrate multiple docker images and how they interact with each other.
 The <strong>docker-compose.yml</strong> file pulls an image from <a class="reference external" href="https://hub.docker.com/">Docker-Hub</a>, an repository of Docker images,
 to instantiate a PostgreSQL database with PostGIS extensions for Geo support. The docker image will download all the required dependencies within its image.</p>
 <p>To get the project setup with Docker, navigate to the location of the <strong>docker-compose.yml</strong> and run the following command.
 General Docker information can be found at the <a class="reference external" href="https://docs.docker.com/">Docker’s documentation</a>.</p>
-<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>docker-compose up
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose up
 </pre></div>
-</td></tr></table></div>
+</div>
 <p>Note that the docker container may take a significant amount of time to initially setup the required dependencies and services.
 Once the docker containers are up and running, it can be viewed locally at <a class="reference external" href="http://localhost:8080">http://localhost:8080</a>. To change the default port, modify the ports in the <strong>docker-compose.yml</strong> file.</p>
 </div>
 <div class="section" id="manual-setup">
 <h2>Manual Setup<a class="headerlink" href="#manual-setup" title="Permalink to this headline">¶</a></h2>
+<p>The manual setup is a bit more involved requiring the developer to setup the dependencies for their system.
+This setup will document how to setup the project on an Ubuntu/Debian based machine. Dependencies and requirements may slightly differ from different flavors of Linux but the packages
+should not be dependent to a specific flavor of Linux.</p>
+<div class="section" id="prerequisites-and-dependencies">
+<h3>Prerequisites and Dependencies<a class="headerlink" href="#prerequisites-and-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>The main development libraries are as follows:</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span>Python &gt;= 3.5
+PostgreSQL with PostGIS extensions
+Node and NPM
+</pre></div>
+</div>
+<p>To setup an python environment, it is recommended to either use <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> or <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a>. The python environment will separate the development environment for this project from
+other python projects on your system. PostGIS and PostgreSQL are left to be installed which will vary based on the system the user is running. Refer to <a class="reference external" href="https://postgis.net/">PostGIS</a> to determine how to install PostGIS capabilities for other operating systems.
+After python has been installed, download the additional required programs by running the following commands:</p>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># install ppa for postgis</span>
+sudo apt-get install python-software-properties
+sudo add-apt-repository ppa:ubuntugis/ppa
+sudo apt-get update
+
+<span class="c1"># install postgres</span>
+sudo apt-get install postgresql postgresql-contrib libpq-dev
+
+<span class="c1"># install geospatial libraries</span>
+sudo apt-get install binutils libproj-dev gdal-bin
+</pre></div>
+</td></tr></table></div>
+<p>Once the appropriate libraries have been installed, the python dependencies can be added. It’s recommended to first create a virtual environment as mentioned before. Install the python packages by running the following on the <cite>requirements.txt</cite> file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -r requirements.txt
+</pre></div>
+</div>
+<p>The frontend is built with javascript and <a class="reference external" href="https://reactjs.org/">React</a>. Installation of node may vary from platform to platform so viewing the documentation and installation instructions specific to the target platform is</p>
+</div>
+<div class="section" id="setting-up-the-database">
+<h3>Setting up the Database<a class="headerlink" href="#setting-up-the-database" title="Permalink to this headline">¶</a></h3>
+<p>The database first needs to be created before it can be populated. The first step involves building the database with a username and password. After a user has been created, a database is created specifically for the project and PostGIS extensions are enabled for the database.</p>
+<p>Once the database has been setup properly, Django can begin populating the database with its appropriate ORM tables.</p>
+<div class="section" id="building-the-database">
+<h4>Building the Database<a class="headerlink" href="#building-the-database" title="Permalink to this headline">¶</a></h4>
+<p>The database at this point is currently empty. To begin populating and setting up the database, a user will be created and a database table will be created with PostGIS extensions enabled. For convenience, a <cite>.sql</cite> script is available to create the user and database. To run the script run the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo -u postgres psql -f utils/database/dev.sql
+</pre></div>
+</div>
+<p>The script can be examined. In summary, it will:</p>
+<ul class="simple">
+<li><p>Create a user named <strong>geo</strong> with password <strong>geo</strong></p></li>
+<li><p>Create a database <strong>geodjango</strong></p></li>
+<li><p>Enable PostGIS extensions for the <strong>geodjango</strong> database</p></li>
+</ul>
+<p>The database and user information is used for the project installation located in the project’s settings file (<em>iotsite/settings/dev.py</em>).
+A separate settings file (<em>iotsite/settings/production.py</em>) is used for a production environment and is highly recommended to change the default username/password/database for security reasons.</p>
+</div>
+<div class="section" id="populating-the-database">
+<h4>Populating the Database<a class="headerlink" href="#populating-the-database" title="Permalink to this headline">¶</a></h4>
+<p>Populating the database, once it’s been created can be done using Django’s <em>./manage.py</em> script. Populate the database by running the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py makemigrations
+python manage.py migrate
+</pre></div>
+</div>
+<p>Note that these two steps are required every time the Django ORM model has been modified. Specifically, the <em>makemigrations</em> directive specifies how the current instance of the database will be altered
+and <em>migrate</em> with commit those changes to the database. If code changes are not made to any ORM models (any <em>models.py</em> changes), then migrations to the database do not need to be made.
+Refer to the <a class="reference external" href="https://docs.djangoproject.com/">Django documentation</a> for additional details.</p>
+</div>
+</div>
+<div class="section" id="running-the-backend">
+<h3>Running the Backend<a class="headerlink" href="#running-the-backend" title="Permalink to this headline">¶</a></h3>
+<p>Once the database has been built, the backend can be launched. To run the backend server, run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py runserver <span class="m">8080</span>       <span class="c1"># optional port 8080 is specified, otherwise defaults to 8000</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-the-frontend">
+<h3>Building the Frontend<a class="headerlink" href="#building-the-frontend" title="Permalink to this headline">¶</a></h3>
+<p>At this point, viewing the website at <a class="reference external" href="http://localhost:8080">http://localhost:8080</a> does not show the frontend. This is particularly due to the frontend hasn’t been built.
+To build the frontend</p>
+</div>
 </div>
 </div>
 
