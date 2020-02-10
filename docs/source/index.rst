@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to IoT Site's documentation!
+Welcome to IoT Site's Documentation!
 ====================================
 
 .. toctree::
@@ -11,7 +11,9 @@ Welcome to IoT Site's documentation!
    :caption: Contents:
 
    introduction
+   installation
 
+Welcome to the official documentation for the IoT Site setup.
 
 
 Indices and tables
