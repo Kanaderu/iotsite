@@ -1,7 +1,7 @@
 #!/bin/bash
 
 make html
-mv build/html/* ../
+mv -f build/html/* ../
 rm -rf build
 git add ../*
 
