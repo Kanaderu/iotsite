@@ -12,6 +12,8 @@ Welcome to IoT Site's Documentation!
 
    introduction
    installation
+   backend/apps
+   frontend/apps
 
 Welcome to the official documentation for the IoT Site setup.
 
