@@ -200,23 +200,74 @@
 </div>
 <div class="section" id="docker-installation">
 <h2>Docker Installation<a class="headerlink" href="#docker-installation" title="Permalink to this headline">¶</a></h2>
-<p>The Docker instance is described primarily by two main files, <strong>Dockerfile</strong> and <strong>docker-compose.yml</strong>. The <strong>Dockerfile</strong> file contains directives on how to compile a docker image for the current project.
-The <strong>docker-compose.yml</strong> file contains directives on how to orchestrate multiple docker images and how they interact with each other.
-The <strong>docker-compose.yml</strong> file pulls an image from <a class="reference external" href="https://hub.docker.com/">Docker-Hub</a>, an repository of Docker images,
-to instantiate a PostgreSQL database with PostGIS extensions for Geo support. The docker image will download all the required dependencies within its image.</p>
-<p>To get the project setup with Docker, navigate to the location of the <strong>docker-compose.yml</strong> and run the following command.
-General Docker information can be found at the <a class="reference external" href="https://docs.docker.com/">Docker’s documentation</a>.</p>
+<p>The Docker instance is described primarily by two main files, <strong>Dockerfile</strong> and <strong>docker-compose.yml</strong>. The <strong>Dockerfile</strong> file contains directives on how to compile a docker image for the current project. The <strong>docker-compose.yml</strong> file contains directives on how to orchestrate multiple docker images and how they interact with each other. The <strong>docker-compose.yml</strong> file pulls an image from <a class="reference external" href="https://hub.docker.com/">Docker-Hub</a>, an repository of Docker images, to instantiate a PostgreSQL database with PostGIS extensions for Geo support. The docker image will download all the required dependencies within its image.</p>
+<p>To get the project setup with Docker, navigate to the location of the <strong>docker-compose.yml</strong> and run the following command. General Docker information can be found at the <a class="reference external" href="https://docs.docker.com/">Docker’s documentation</a>.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose up
 </pre></div>
 </div>
-<p>Note that the docker container may take a significant amount of time to initially setup the required dependencies and services.
-Once the docker containers are up and running, it can be viewed locally at <a class="reference external" href="http://localhost:8080">http://localhost:8080</a>. To change the default port, modify the ports in the <strong>docker-compose.yml</strong> file.</p>
+<p>Note that the docker container may take a significant amount of time to initially setup the required dependencies and services. Once the docker containers are up and running, it can be viewed locally at <a class="reference external" href="http://localhost:8080">http://localhost:8080</a>. To change the default port, modify the ports in the <strong>docker-compose.yml</strong> file.</p>
 </div>
 <div class="section" id="manual-setup">
 <h2>Manual Setup<a class="headerlink" href="#manual-setup" title="Permalink to this headline">¶</a></h2>
-<p>The manual setup is a bit more involved requiring the developer to setup the dependencies for their system.
-This setup will document how to setup the project on an Ubuntu/Debian based machine. Dependencies and requirements may slightly differ from different flavors of Linux but the packages
-should not be dependent to a specific flavor of Linux.</p>
+<p>The manual setup is a bit more involved requiring the developer to setup the dependencies for their system. This setup will document how to setup the project on an Ubuntu/Debian based machine. Dependencies and requirements may slightly differ from different flavors of Linux but the packages should not be dependent to a specific flavor of Linux.</p>
+<p>A quick overview of the manual setup is below followed by details for each specific step.</p>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># install postgis support</span>
+<span class="c1"># refer to https://postgis.net/install/ to install postgis for other distributions</span>
+sudo apt-get install python-software-properties
+sudo add-apt-repository ppa:ubuntugis/ppa
+sudo apt-get update
+
+<span class="c1"># install postgres database</span>
+sudo apt-get install postgresql postgresql-contrib libpq-dev
+
+<span class="c1"># install geospatial libraries</span>
+sudo apt-get install binutils libproj-dev gdal-bin postgis
+
+<span class="c1"># setup postgres with user &#39;geo&#39; with password &#39;geo&#39; and database &#39;geodjango&#39;</span>
+sudo -u postgres psql -f utils/database/dev.sql
+
+<span class="c1"># setup python</span>
+pip install -r requirements                         <span class="c1"># install python libraries</span>
+
+<span class="c1"># build database</span>
+python manage.py makemigrations                     <span class="c1"># prepare database commands and check Django ORM</span>
+python manage.py migrate                            <span class="c1"># build and commit database tables</span>
+
+<span class="c1"># build react frontend</span>
+python manage.py install_frontend_dependencies
+python manage.py build_frontend
+
+<span class="c1"># run server</span>
+python manage.py runserver                          <span class="c1"># run the server locally</span>
+</pre></div>
+</td></tr></table></div>
 <div class="section" id="prerequisites-and-dependencies">
 <h3>Prerequisites and Dependencies<a class="headerlink" href="#prerequisites-and-dependencies" title="Permalink to this headline">¶</a></h3>
 <p>The main development libraries are as follows:</p>
@@ -225,9 +276,7 @@ PostgreSQL with PostGIS extensions
 Node and NPM
 </pre></div>
 </div>
-<p>To setup an python environment, it is recommended to either use <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> or <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a>. The python environment will separate the development environment for this project from
-other python projects on your system. PostGIS and PostgreSQL are left to be installed which will vary based on the system the user is running. Refer to <a class="reference external" href="https://postgis.net/">PostGIS</a> to determine how to install PostGIS capabilities for other operating systems.
-After python has been installed, download the additional required programs by running the following commands:</p>
+<p>To setup an python environment, it is recommended to either use <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> or <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a>. The python environment will separate the development environment for this project from other python projects on your system. PostGIS and PostgreSQL are left to be installed which will vary based on the system the user is running. Refer to <a class="reference external" href="https://postgis.net/">PostGIS</a> to determine how to install PostGIS capabilities for other operating systems. After python has been installed, download the additional required programs by running the following commands:</p>
 <div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -246,14 +295,22 @@ sudo apt-get update
 sudo apt-get install postgresql postgresql-contrib libpq-dev
 
 <span class="c1"># install geospatial libraries</span>
-sudo apt-get install binutils libproj-dev gdal-bin
+sudo apt-get install binutils libproj-dev gdal-bin postgis
 </pre></div>
 </td></tr></table></div>
 <p>Once the appropriate libraries have been installed, the python dependencies can be added. It’s recommended to first create a virtual environment as mentioned before. Install the python packages by running the following on the <cite>requirements.txt</cite> file:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -r requirements.txt
 </pre></div>
 </div>
-<p>The frontend is built with javascript and <a class="reference external" href="https://reactjs.org/">React</a>. Installation of node may vary from platform to platform so viewing the documentation and installation instructions specific to the target platform is</p>
+<p>The frontend is built with javascript and <a class="reference external" href="https://reactjs.org/">React</a>. Installation of node may vary from platform to platform so viewing the documentation and installation instructions specific to the target platform. Node and npm/yarn can be downloaded from the <a class="reference external" href="https://nodejs.org/en/download/">Node website</a> (the latest LTS is being used for stability).</p>
+<p>Once node and npm/yarn have been setup, the frontend dependencies can be installed. Navigate to the frontend in <em>dashboard/</em> where <strong>package.json</strong> is located. <strong>package.json</strong> defines the frontend project. Run the following commands to download the dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>yarn
+</pre></div>
+</div>
+<p>Alternatively, a Django management command is written in the <em>setup</em> app which does the same thing. To invoke this alternative, run the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py install_frontend_dependencies
+</pre></div>
+</div>
 </div>
 <div class="section" id="setting-up-the-database">
 <h3>Setting up the Database<a class="headerlink" href="#setting-up-the-database" title="Permalink to this headline">¶</a></h3>
@@ -271,8 +328,7 @@ sudo apt-get install binutils libproj-dev gdal-bin
 <li><p>Create a database <strong>geodjango</strong></p></li>
 <li><p>Enable PostGIS extensions for the <strong>geodjango</strong> database</p></li>
 </ul>
-<p>The database and user information is used for the project installation located in the project’s settings file (<em>iotsite/settings/dev.py</em>).
-A separate settings file (<em>iotsite/settings/production.py</em>) is used for a production environment and is highly recommended to change the default username/password/database for security reasons.</p>
+<p>The database and user information is used for the project installation located in the project’s settings file (<em>iotsite/settings/dev.py</em>). A separate settings file (<em>iotsite/settings/production.py</em>) is used for a production environment and is highly recommended to change the default username/password/database for security reasons.</p>
 </div>
 <div class="section" id="populating-the-database">
 <h4>Populating the Database<a class="headerlink" href="#populating-the-database" title="Permalink to this headline">¶</a></h4>
@@ -281,9 +337,7 @@ A separate settings file (<em>iotsite/settings/production.py</em>) is used for a
 python manage.py migrate
 </pre></div>
 </div>
-<p>Note that these two steps are required every time the Django ORM model has been modified. Specifically, the <em>makemigrations</em> directive specifies how the current instance of the database will be altered
-and <em>migrate</em> with commit those changes to the database. If code changes are not made to any ORM models (any <em>models.py</em> changes), then migrations to the database do not need to be made.
-Refer to the <a class="reference external" href="https://docs.djangoproject.com/">Django documentation</a> for additional details.</p>
+<p>Note that these two steps are required every time the Django ORM model has been modified. Specifically, the <em>makemigrations</em> directive specifies how the current instance of the database will be altered and <em>migrate</em> with commit those changes to the database. If code changes are not made to any ORM models (any <em>models.py</em> changes), then migrations to the database do not need to be made. Refer to the <a class="reference external" href="https://docs.djangoproject.com/">Django documentation</a> for additional details.</p>
 </div>
 </div>
 <div class="section" id="running-the-backend">
@@ -295,8 +349,14 @@ Refer to the <a class="reference external" href="https://docs.djangoproject.com/
 </div>
 <div class="section" id="building-the-frontend">
 <h3>Building the Frontend<a class="headerlink" href="#building-the-frontend" title="Permalink to this headline">¶</a></h3>
-<p>At this point, viewing the website at <a class="reference external" href="http://localhost:8080">http://localhost:8080</a> does not show the frontend. This is particularly due to the frontend hasn’t been built.
-To build the frontend</p>
+<p>At this point, viewing the website at <a class="reference external" href="http://localhost:8080">http://localhost:8080</a> does not show the frontend. This is particularly due to the frontend hasn’t been built. To build the frontend, navigate to the <cite>dashboard/</cite> app and run the following commands to build the frontend:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>yarn build
+</pre></div>
+</div>
+<p>Alternatively, a Django management command is written in the <em>setup</em> app which does the same thing. To invoke this alternative, run the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py build_frontend
+</pre></div>
+</div>
 </div>
 </div>
 </div>
