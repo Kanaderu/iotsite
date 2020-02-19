@@ -36,6 +36,7 @@ before_script:
     - psql -U postgres -f utils/database/dev.sql
 script:
     - python manage.py makemigrations
+    - python manage.py migrate
     - python manage.py test
     - pytest
 services:
