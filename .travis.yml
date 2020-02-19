@@ -1,14 +1,4 @@
 language: python
-services:
-    - postgresql
-    - redis
-addons:
-    postgresql: 12.2
-    apt:
-        packages:
-            - postgresql-12
-            - postgresql-client-12
-            - postgresql-12-postgis-3
 env:
   global:
     - PGPORT=5432
@@ -36,3 +26,16 @@ script:
     - python manage.py makemigrations
     - python manage.py test
     - pytest
+services:
+    - postgresql
+    - redis
+addons:
+    postgresql: 9.6 #12.2
+    apt:
+        packages:
+            - postgresql-9.6
+            - postgresql-client-9.6
+            - postgresql-9.6-postgis-2.3
+            #- postgresql-12
+            #- postgresql-client-12
+            #- postgresql-12-postgis-3
