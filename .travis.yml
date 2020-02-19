@@ -12,15 +12,17 @@ jobs:
           python:           # this works for Linux but is ignored on macOS or Windows
               - "3.7"
               - "3.8"
-        - name: "Python 3.8 on Windows"
-          os: windows       # Windows 10.0.17134 N/A Build 17134
-          language: shell   # 'language: python' is an error on Travis CI Windows
-          before_install:
-              - choco install python --version 3.8.0
-              - python -m pip install --upgrade pip
-          env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+#        - name: "Python 3.8 on Windows"
+#          os: windows       # Windows 10.0.17134 N/A Build 17134
+#          language: shell   # 'language: python' is an error on Travis CI Windows
+#          before_install:
+#              - choco install python --version 3.8.0
+#              - python -m pip install --upgrade pip
+#          env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 before_script:
-    - psql -U postgres psql -f utils/database/dev.sql
+    #- psql -U postgres psql -f utils/database/dev.sql
+    - psql -U postgres psql -c 'create database travis_ci_test;'
+    - psql -U postgres -c "create extension postgis"
 install:
     - pip install --upgrade pip
     - pip install -r requirements.txt
