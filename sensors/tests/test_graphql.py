@@ -1,4 +1,5 @@
 import pytest
+import json
 from django.urls import reverse
 from graphene_django.utils.testing import GraphQLTestCase
 
@@ -6,6 +7,15 @@ from django.contrib.gis.geos import Point
 
 from iotsite.schema import schema
 from sensors.models import Sensor, SensorData
+
+
+def ordered(obj):
+    if isinstance(obj, dict):
+        return sorted((k, ordered(v)) for k, v in obj.items())
+    if isinstance(obj, list):
+        return sorted(ordered(x) for x in obj)
+    else:
+        return obj
 
 
 class SensorGraphQLTests(GraphQLTestCase):
@@ -66,7 +76,7 @@ class SensorGraphQLTests(GraphQLTestCase):
             }
         }
         self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, expected_response)
+        self.assertEqual(ordered(json.loads(response.content)), ordered(expected_response))
 
     def test_list_sensors_query(self):
         response = self.query(
@@ -112,7 +122,7 @@ class SensorGraphQLTests(GraphQLTestCase):
                 ]
             }
         }
-        self.assertJSONEqual(response.content, expected_response)
+        self.assertEqual(ordered(json.loads(response.content)), ordered(expected_response))
         self.assertResponseNoErrors(response)
 
     def test_list_sensor_data_query(self):
@@ -153,5 +163,5 @@ class SensorGraphQLTests(GraphQLTestCase):
                 ]
             }
         }
-        self.assertJSONEqual(response.content, expected_response)
+        self.assertEqual(ordered(json.loads(response.content)), ordered(expected_response))
         self.assertResponseNoErrors(response)

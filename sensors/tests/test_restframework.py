@@ -1,7 +1,17 @@
 import pytest
+import json
 from django.test import TestCase
 from django.urls import reverse
 from sensors.models import Sensor
+
+
+def ordered(obj):
+    if isinstance(obj, dict):
+        return sorted((k, ordered(v)) for k, v in obj.items())
+    if isinstance(obj, list):
+        return sorted(ordered(x) for x in obj)
+    else:
+        return obj
 
 
 class SensorRESTApiDocsTests(TestCase):
@@ -138,7 +148,7 @@ class SensorRESTApiTests(TestCase):
             ]
         }
         self.assertEqual(response.status_code, 201)
-        self.assertJSONEqual(response.content.decode('utf-8'), expected_response)
+        self.assertEqual(ordered(json.loads(response.content)), ordered(expected_response))
 
         invalid_token_response = self.client.post(reverse('sensor-list'),
                                                           generic_data,
@@ -204,7 +214,7 @@ class SensorRESTApiTests(TestCase):
             ]
         }
         self.assertEqual(response.status_code, 201)
-        self.assertJSONEqual(response.content.decode('utf-8'), expected_response)
+        self.assertEqual(ordered(json.loads(response.content)), ordered(expected_response))
 
         invalid_token_response = self.client.post(reverse('Feather-list'),
                                                           feather_data,
@@ -313,7 +323,7 @@ class SensorRESTApiTests(TestCase):
             ]
         }
         self.assertEqual(response.status_code, 201)
-        self.assertJSONEqual(response.content.decode('utf-8'), expected_response)
+        self.assertEqual(ordered(json.loads(response.content)), ordered(expected_response))
 
         invalid_token_response = self.client.post(reverse('LoRaGateway-list'),
                                                           lora_data,
