@@ -6,7 +6,12 @@ addons:
     postgresql: 12.2
     apt:
         packages:
+            - postgresql-12
+            - postgresql-client-12
             - postgresql-12-postgis-3
+env:
+  global:
+    - PGPORT=5432
 jobs:
     include:
         - name: "Python 3.8 on Xenial Linux"
