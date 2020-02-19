@@ -7,6 +7,10 @@ env:
 jobs:
     include:
         - name: "Python 3.8 on Xenial Linux"
+          dist: xenial
+          os: linux
+          python: 3.8        # this works for Linux but is ignored on macOS or Windows
+        - name: "Python 3.8 on Bionic Linux"
           dist: bionic
           os: linux
           python: 3.8        # this works for Linux but is ignored on macOS or Windows
@@ -27,8 +31,8 @@ install:
     - pip install --upgrade pip
     - pip install -r requirements.txt
 before_script:
-    #- psql -U postgres psql -f utils/database/dev.sql
-    - psql -U postgres psql -c 'create database travis_ci_test;'
+    #- psql -U postgres -f utils/database/dev.sql
+    - psql -U postgres -c 'create database travis_ci_test;'
     - psql -U postgres -c "create extension postgis"
 script:
     - python manage.py makemigrations
