@@ -3,7 +3,7 @@ os: linux
 cache: pip
 env:
   global:
-    - PGPORT=5432
+    - PGPORT=5433
 jobs:
     include:
         - name: "Python 3.8 on Xenial Linux"
