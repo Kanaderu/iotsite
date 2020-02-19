@@ -1,6 +1,7 @@
 language: python
 services:
     - postgresql
+    - redis-server
 addons:
     postgresql: 12.2
     apt:
@@ -9,6 +10,7 @@ addons:
 jobs:
     include:
         - name: "Python 3.8 on Xenial Linux"
+          dist: bionic
           python:           # this works for Linux but is ignored on macOS or Windows
               - "3.7"
               - "3.8"
