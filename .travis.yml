@@ -1,4 +1,6 @@
 language: python
+os: linux
+cache: pip
 env:
   global:
     - PGPORT=5432
@@ -15,13 +17,19 @@ jobs:
 #              - choco install python --version 3.8.0
 #              - python -m pip install --upgrade pip
 #          env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+before_install:
+  - sudo apt-get update
+  - sudo apt-get --yes remove postgresql\*
+  - sudo apt-get install -y postgresql-12 postgresql-client-12
+  - sudo cp /etc/postgresql/{9.6,12}/main/pg_hba.conf
+  - sudo service postgresql restart 12
+install:
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
 before_script:
     #- psql -U postgres psql -f utils/database/dev.sql
     - psql -U postgres psql -c 'create database travis_ci_test;'
     - psql -U postgres -c "create extension postgis"
-install:
-    - pip install --upgrade pip
-    - pip install -r requirements.txt
 script:
     - python manage.py makemigrations
     - python manage.py test
@@ -30,12 +38,9 @@ services:
     - postgresql
     - redis
 addons:
-    postgresql: 9.6 #12.2
+    postgresql: 12.2
     apt:
         packages:
-            - postgresql-9.6
-            - postgresql-client-9.6
-            - postgresql-9.6-postgis-2.3
-            #- postgresql-12
-            #- postgresql-client-12
-            #- postgresql-12-postgis-3
+            - postgresql-12
+            - postgresql-client-12
+            - postgresql-12-postgis-3
