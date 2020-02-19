@@ -5,6 +5,9 @@ from sensors.models import Sensor
 
 
 class SensorRESTApiDocsTests(TestCase):
+    def setUp(self):
+        self.maxDiff = None
+
     def test_openapi(self):
         response = self.client.get(reverse('openapi-schema'))
         self.assertEqual(response.status_code, 200)
@@ -18,6 +21,8 @@ class SensorRESTApiDocsTests(TestCase):
 class SensorRESTApiTests(TestCase):
 
     def setUp(self):
+        self.maxDiff = None
+
         # define test user credentials
         self.username = 'test_user'
         self.password = 'test_password'

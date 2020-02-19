@@ -13,6 +13,7 @@ class SensorGraphQLTests(GraphQLTestCase):
     GRAPHQL_SCHEMA = schema
 
     def setUp(self):
+        self.maxDiff = None
         instance = Sensor.objects.create(sensor='LG', sensor_id='some_sensor_id',
                                          coordinates=Point(x=1.31415, y=-5.4321, srid=4326),
                                          timestamp='2019-10-02T19:17:10.067889-04:00')
