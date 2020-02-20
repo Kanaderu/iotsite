@@ -25,7 +25,10 @@ jobs:
         - name: "Deploy gh-pages Documentation"
           python: 3.8
           before_script: pip install -r docs/requirements.txt
-          script: ./docs/deploy_gh_pages.sh
+          script: #./docs/deploy_gh_pages.sh
+            - cd docs
+            - make html
+            - touch build/html/.nojekyll
           deploy:
               provider: pages
               skip_cleanup: true
@@ -33,6 +36,8 @@ jobs:
               keep_history: true
               on:
                   branch: master
+              local_dir: build/html/
+
 before_install:
     - sudo apt-get update
     - sudo apt-get --yes remove postgresql\*
