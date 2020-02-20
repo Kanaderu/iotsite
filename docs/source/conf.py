@@ -34,7 +34,7 @@ author = 'David Fan'
 extensions = [
     'sphinx.ext.autodoc',
     #'sphinx_rtd_theme',
-    'sphinxjp.themes.basicstrap',
+    #'sphinxjp.themes.basicstrap',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
