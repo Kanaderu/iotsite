@@ -8,6 +8,7 @@ env:
 jobs:
     include:
         - stage: "Deploy gh-pages Documentation"
+          python: 3.8
           before_script: pip install -r docs/requirements.txt
           script: ./docs/deploy_gh_pages.sh
           deploy:
