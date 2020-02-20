@@ -1,2 +1,2 @@
 sphinx
-sphinx-bootstrap-theme
+sphinxjp.themes.basicstrap

@@ -13,16 +13,18 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
+import datetime
 
 
 # -- Project information -----------------------------------------------------
-import sphinx_bootstrap_theme
+#import sphinx_bootstrap_theme
 #import sphinx_readable_theme
 
 
 
+now = datetime.datetime.now()
 project = 'IoT Site'
-copyright = '2020, David Fan'
+copyright = '{}, David Fan'.format(now.year)
 author = 'David Fan'
 
 
@@ -34,7 +36,7 @@ author = 'David Fan'
 extensions = [
     'sphinx.ext.autodoc',
     #'sphinx_rtd_theme',
-    #'sphinxjp.themes.basicstrap',
+    'sphinxjp.themes.basicstrap',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
