@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 import sphinx_bootstrap_theme
-import sphinx_readable_theme
+#import sphinx_readable_theme
 
 
 
