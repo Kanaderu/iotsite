@@ -1,5 +1,5 @@
 #!/bin/bash
 curl -X POST \
--H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTc0NzM1NDY2LCJqdGkiOiJlNWU0N2JhMzIzZmI0Y2UxOTZiY2JkNTU5OWY1N2IxZSIsInVzZXJfaWQiOjF9.Orp_ZH6eYk7NDhcyWzecvZq2qBjVkPeQ3Wa_pKfMQX4" \
+-H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTgxMTc5OTQzLCJqdGkiOiIzMjg2MjQ4ZDJhZWM0Yzk0ODI2YWYxMDgxNWNjNmU1MCIsInVzZXJfaWQiOjF9.fS788YHxtMRCQkOA3CDd5UeVn0SYOsMr9KDEIgX92D0" \
 -H "Content-Type: application/json" \
-http://localhost:8088/ws/api/token/
+http://localhost:8080/api/token/

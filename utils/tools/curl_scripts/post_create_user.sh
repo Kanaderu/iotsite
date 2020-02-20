@@ -4,4 +4,4 @@ curl --request POST \
   "username": "user1",
   "password": "hunter2"
 }' \
-http://localhost:8088/ws/api/register/
+http://localhost:8080/api/register/

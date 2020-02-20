@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.conf import settings
 
 from graphene_django.views import GraphQLView
@@ -25,7 +25,7 @@ urlpatterns = [
     path('', include('sensors.urls')),
     path('', include('geo.urls')),
     path('', include('users.urls')),
-    path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
+    re_path('graphql/?', GraphQLView.as_view(graphiql=True, schema=schema), name='graphql'),
     path('', include('geo.urls')),
 ]
 
