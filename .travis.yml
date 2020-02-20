@@ -24,7 +24,8 @@ jobs:
 #          env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
         - name: "Deploy gh-pages Documentation"
           python: 3.8
-          before_script: pip install -r docs/requirements.txt
+          before_script:
+            - pip install -r docs/requirements.txt
           script: #./docs/deploy_gh_pages.sh
             - cd docs
             - make html
@@ -34,9 +35,10 @@ jobs:
               skip_cleanup: true
               github_token: $GITHUB_TOKEN
               keep_history: true
+              local_dir: docs/build/html/
+              commit_message: "Built Tag ${TRAVIS_TAG} on Build ${TRAVIS_BUILD_NUMBER} for ${TRAVIS_COMMIT}"
               on:
                   branch: master
-              local_dir: docs/build/html/
 
 before_install:
     - sudo apt-get update
