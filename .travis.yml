@@ -104,9 +104,7 @@ jobs:
               - docker network ls
               - docker network inspect iotsite_default
               # wait for db to start up
-              - docker exec -it `docker container ls | grep iotsite_iotsite | cut -f 1 -d ' '` ./manage.py wait_for_db
-              # run tests
-              - docker exec -it `docker container ls | grep iotsite_iotsite | cut -f 1 -d ' '` ./manage.py test
+              - docker exec -it `docker container ls | grep iotsite_iotsite | cut -f 1 -d ' '` "./manage.py wait_for_db && ./manage.py test"
           services:
               - docker
           addons:
