@@ -92,14 +92,14 @@ jobs:
           dist: bionic
           os: linux
           before_install:
-              - mkdir -p ./volumes/db/var/lib/postgres_data # make folder beforehand to avoid permission issues
+              - mkdir -m 777 -p ./volumes/db/var/lib/postgres_data # make folder beforehand to avoid permission issues
           install:
               - docker-compose up -d
           script:
               - docker ps | grep -q iotsite_iotsite
               - docker ps | grep -q postgis
               - docker container ls
-              #- docker logs --tail --follow --timestamps `docker container ls | grep postgis | cut -f 1 -d ' '`
+              - docker logs --tail --follow --timestamps `docker container ls | grep postgis | cut -f 1 -d ' '`
               - docker exec -it `docker container ls | grep iotsite_iotsite | cut -f 1 -d ' '` ./manage.py test
           services:
               - docker
