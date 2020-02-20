@@ -1,4 +1,4 @@
-langauge: python
+language: python
 os: linux
 #env:
 #  global:
@@ -101,6 +101,7 @@ jobs:
               - docker container ls
               - docker logs --tail --follow --timestamps `docker container ls | grep postgis | cut -f 1 -d ' '`
               - docker network ls
+              - docker network inspect iotsite_default
               - docker exec -it `docker container ls | grep iotsite_iotsite | cut -f 1 -d ' '` ./manage.py test
           services:
               - docker
