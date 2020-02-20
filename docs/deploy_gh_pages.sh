@@ -7,8 +7,8 @@ if [[ $TRAVIS_BRANCH == "master" && $TRAVIS_PULL_REQUEST == "false" ]]; then
 echo "Starting to update gh-pages\n"
 
 # build documentation
-mkdir doc_build
-cd doc_build
+mkdir $HOME/doc_build
+cd $HOME/doc_build
 git clone --quiet https://${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GITHUB_REPO}.git master > /dev/null
 cd master/docs
 make html
