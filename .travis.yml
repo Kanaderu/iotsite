@@ -36,7 +36,7 @@ jobs:
               keep_history: true
               on:
                   branch: master
-              local_dir: build/html/
+              local_dir: docs/build/html/
 
 before_install:
     - sudo apt-get update
