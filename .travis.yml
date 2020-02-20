@@ -7,7 +7,7 @@ env:
 jobs:
     include:
         - stage: testing
-        - name: "Python 3.8 on Xenial Linux"
+          name: "Python 3.8 on Xenial Linux"
           cache: pip
           dist: xenial
           os: linux
@@ -82,7 +82,7 @@ jobs:
 #          env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 
         - stage: integrating
-        - name: "Docker Integration Testing"
+          name: "Docker Integration Testing"
           dist: bionic
           os: linux
           install:
@@ -94,7 +94,7 @@ jobs:
               - docker
 
         - stage: deploying
-        - name: "Deploy gh-pages Documentation"
+          name: "Deploy gh-pages Documentation"
           cache: pip
           python: 3.8
           before_script:
