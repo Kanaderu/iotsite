@@ -1,3 +1,5 @@
+langauge: python
+os: linux
 env:
   global:
     - PGPORT=5433
