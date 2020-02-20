@@ -1,6 +1,3 @@
-language: python
-os: linux
-cache: pip
 env:
   global:
     - PGPORT=5433
@@ -9,6 +6,7 @@ jobs:
     include:
         - stage: testing
         - name: "Python 3.8 on Xenial Linux"
+          cache: pip
           dist: xenial
           os: linux
           python: 3.8
@@ -41,6 +39,7 @@ jobs:
                       - postgresql-12-postgis-3
 
         - name: "Python 3.8 on Bionic Linux"
+          cache: pip
           dist: bionic
           os: linux
           python: 3.8
@@ -94,6 +93,8 @@ jobs:
 
         - stage: deploying
         - name: "Deploy gh-pages Documentation"
+          cache: pip
+          python: 3.8
           before_script:
             - pip install -r docs/requirements.txt
           script: #./docs/deploy_gh_pages.sh
