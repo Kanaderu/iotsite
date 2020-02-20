@@ -104,6 +104,10 @@ jobs:
               - docker exec -it `docker container ls | grep iotsite_iotsite | cut -f 1 -d ' '` ./manage.py test
           services:
               - docker
+          addons:
+              apt:
+                packages:
+                  - docker-ce
 
         - stage: deploying
           name: "Deploy gh-pages Documentation"
