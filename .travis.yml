@@ -7,6 +7,16 @@ env:
     - POSTGRES_PORT=5433
 jobs:
     include:
+        - stage: "Deploy gh-pages Documentation"
+          before_script: pip install -r docs/requirements.txt
+          script: ./deploy_gh_pages.sh
+          deploy:
+              provider: pages
+              skip_cleanup: true
+              github_token: $GITHUB_TOKEN
+              keep_history: true
+              on:
+                  branch: master
         - name: "Python 3.8 on Xenial Linux"
           dist: xenial
           os: linux
@@ -23,12 +33,12 @@ jobs:
 #              - python -m pip install --upgrade pip
 #          env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 before_install:
-  - sudo apt-get update
-  - sudo apt-get --yes remove postgresql\*
-  - sudo apt-get install -y postgresql-12 postgresql-client-12
-  - sudo apt-get install -y binutils libproj-dev gdal-bin postgis postgresql-12-postgis-3
-  - sudo cp /etc/postgresql/{9.6,12}/main/pg_hba.conf
-  - sudo service postgresql restart 12
+    - sudo apt-get update
+    - sudo apt-get --yes remove postgresql\*
+    - sudo apt-get install -y postgresql-12 postgresql-client-12
+    - sudo apt-get install -y binutils libproj-dev gdal-bin postgis postgresql-12-postgis-3
+    - sudo cp /etc/postgresql/{9.6,12}/main/pg_hba.conf
+    - sudo service postgresql restart 12
 install:
     - pip install --upgrade pip
     - pip install -r requirements.txt
