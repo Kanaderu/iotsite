@@ -93,6 +93,9 @@ jobs:
           os: linux
           install:
               - docker-compose up -d
+          before_script:
+              - mkdir -p ./volumes/db/var/lib/postgres_data
+              - chmod 777 ./volumes/db/var/lib/postgres_data
           script:
               - docker ps | grep -q iotsite_iotsite
               - docker ps | grep -q postgis
