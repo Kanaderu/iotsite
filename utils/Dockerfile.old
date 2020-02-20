@@ -1,0 +1,31 @@
+# Setup node/npm environment
+FROM node:latest AS frontend
+WORKDIR /usr/src/app
+COPY dashboard/package.json .
+WORKDIR /usr/src/app/dashboard
+RUN yarn install
+
+WORKDIR /usr/src/app
+COPY dashboard .
+#COPY ./dashboard/* ./
+WORKDIR /usr/src/app/dashboard
+RUN yarn run start
+
+# Setup python environment
+FROM python:3.7
+WORKDIR /root/
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# Setup project
+COPY . .
+COPY --from=frontend /usr/src/app/dashboard .
+#COPY --from=frontend /usr/src/app/ .
+
+EXPOSE 8000
+
+RUN python manage.py collectstatic
+RUN python manage.py makemigrations
+RUN python manage.py migrate
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
