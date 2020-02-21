@@ -6,14 +6,20 @@
 Welcome to IoT Site's Documentation!
 ====================================
 
+.. image:: https://travis-ci.com/Kanaderu/iotsite.svg?branch=master
+    :target: https://travis-ci.com/Kanaderu/iotsite
+
+.. image:: https://codecov.io/gh/Kanaderu/iotsite/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/Kanaderu/iotsite
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    introduction
    installation
-   backend/apps
-   frontend/apps
+   project/index
+   testing/index
 
 Welcome to the official documentation for the IoT Site setup.
 

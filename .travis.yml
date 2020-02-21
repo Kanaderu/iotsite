@@ -91,8 +91,8 @@ jobs:
 #              - python -m pip install --upgrade pip
 #          env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 
-        #- stage: integrating
-        - name: "Docker Integration Testing"
+        - stage: integration
+          name: "Docker Integration Testing"
           dist: bionic
           os: linux
           before_install:
@@ -122,7 +122,7 @@ jobs:
                 packages:
                   - docker-ce
 
-        - stage: deploying
+        - stage: deployment
           name: "Deploy gh-pages Documentation"
           cache: pip
           python: 3.8
