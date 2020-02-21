@@ -1,9 +1,9 @@
-langauge: python
+language: python
 os: linux
-env:
-  global:
-    - PGPORT=5433
-    - POSTGRES_PORT=5433
+#env:
+#  global:
+#    - PGPORT=5433
+#    - POSTGRES_PORT=5433
 jobs:
     include:
         - stage: testing
@@ -12,6 +12,9 @@ jobs:
           dist: xenial
           os: linux
           python: 3.8
+          env:
+              - PGPORT=5433
+              - POSTGRES_PORT=5433
           before_install:
               - sudo apt-get update
               - sudo apt-get --yes remove postgresql\*
@@ -27,8 +30,10 @@ jobs:
           script:
               - python manage.py makemigrations
               - python manage.py migrate
-              - python manage.py test
-              - pytest
+              - coverage run --source='.' manage.py test
+              - pytest --cov --cov-append
+          after_success:
+              - bash <(curl -s https://codecov.io/bash)
           services:
               - postgresql
               - redis
@@ -45,6 +50,9 @@ jobs:
           dist: bionic
           os: linux
           python: 3.8
+          env:
+              - PGPORT=5433
+              - POSTGRES_PORT=5433
           before_install:
               - sudo apt-get update
               - sudo apt-get --yes remove postgresql\*
@@ -60,8 +68,10 @@ jobs:
           script:
               - python manage.py makemigrations
               - python manage.py migrate
-              - python manage.py test
-              - pytest
+              - coverage run --source='.' manage.py test
+              - pytest --cov --cov-append
+          after_success:
+              - bash <(curl -s https://codecov.io/bash)
           services:
               - postgresql
               - redis
@@ -81,21 +91,38 @@ jobs:
 #              - python -m pip install --upgrade pip
 #          env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 
-        #- stage: integrating
-        - name: "Docker Integration Testing"
+        - stage: integration
+          name: "Docker Integration Testing"
           dist: bionic
           os: linux
+          before_install:
+              - mkdir -m 777 -p ./volumes/db/var/lib/postgres_data # make folder beforehand to avoid permission issues
           install:
               - docker-compose up -d
+          before_script:
+              - sleep 15
           script:
               - docker ps | grep -q iotsite_iotsite
               - docker ps | grep -q postgis
+              # debug information
               - docker container ls
-              - docker exec -it `docker container ls | grep iotsite_iotsite | cut -f 1 -d ' '` ./manage.py wait_for_db && ./manage.py test
+              - docker logs --tail --follow --timestamps `docker container ls | grep postgis | cut -f 1 -d ' '`
+              - docker network ls
+              - docker network inspect iotsite_default
+              # setup database
+              - docker-compose exec iotsite ./manage.py wait_for_db
+              - docker-compose exec iotsite ./manage.py makemigrations
+              - docker-compose exec iotsite ./manage.py migrate
+              # run tests
+              - docker-compose exec iotsite ./manage.py test
           services:
               - docker
+          addons:
+              apt:
+                packages:
+                  - docker-ce
 
-        - stage: deploying
+        - stage: deployment
           name: "Deploy gh-pages Documentation"
           cache: pip
           python: 3.8
