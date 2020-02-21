@@ -24,14 +24,17 @@ jobs:
               - sudo service postgresql restart 12
           install:
               - pip install --upgrade pip
+              - pip install coverage
               - pip install -r requirements.txt
           before_script:
               - psql -U postgres -f utils/database/dev.sql
           script:
               - python manage.py makemigrations
               - python manage.py migrate
-              - python manage.py test
-              - pytest
+              - coverage manage.py test
+              - pytest --cov --cov-append
+          after_success:
+              - bash <(curl -s https://codecov.io/bash)
           services:
               - postgresql
               - redis
@@ -60,14 +63,17 @@ jobs:
               - sudo service postgresql restart 12
           install:
               - pip install --upgrade pip
+              - pip install coverage
               - pip install -r requirements.txt
           before_script:
               - psql -U postgres -f utils/database/dev.sql
           script:
               - python manage.py makemigrations
               - python manage.py migrate
-              - python manage.py test
-              - pytest
+              - coverage manage.py test
+              - pytest --cov --cov-append
+          after_success:
+              - bash <(curl -s https://codecov.io/bash)
           services:
               - postgresql
               - redis
