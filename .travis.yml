@@ -93,9 +93,8 @@ jobs:
           os: linux
           before_install:
               - mkdir -m 777 -p ./volumes/db/var/lib/postgres_data # make folder beforehand to avoid permission issues
-          install:
-              - docker-compose up -d
           script:
+              - docker-compose up -d
               - docker ps | grep -q iotsite_iotsite
               - docker ps | grep -q postgis
               # debug information
