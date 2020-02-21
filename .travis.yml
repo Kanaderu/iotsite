@@ -105,11 +105,11 @@ jobs:
               - docker logs --tail --follow --timestamps `docker container ls | grep postgis | cut -f 1 -d ' '`
               - docker network ls
               - docker network inspect iotsite_default
-              # wait for db to start
-              #- docker exec -it `docker container ls | grep iotsite_iotsite | cut -f 1 -d ' '` ./manage.py wait_for_db
+              # setup database
               - docker-compose exec iotsite ./manage.py wait_for_db
-              # wait for db to start up
-              #- docker exec -it `docker container ls | grep iotsite_iotsite | cut -f 1 -d ' '` ./manage.py test
+              - docker-compose exec iotsite ./manage.py makemigrations
+              - docker-compose exec iotsite ./manage.py migrate
+              # run tests
               - docker-compose exec iotsite ./manage.py test
           services:
               - docker
