@@ -1,17 +1,15 @@
-Backend Applications
-====================
+Project Structure
+=================
 
 .. toctree::
    :maxdepth: 2
-   :caption: Project Apps:
+   :caption: Contents:
 
-   sensors
-   geo
-   setup
-   users
+   backend/apps
+   frontend/apps
 
 Project Apps
-============
+............
 
 Project apps are Django apps which collectively build up the backend.
 
