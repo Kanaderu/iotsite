@@ -68,6 +68,27 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">API Usage</a><ul>
+<li><a class="reference internal" href="#user">User</a><ul>
+<li><a class="reference internal" href="#registration-and-authentication">Registration and Authentication</a><ul>
+<li><a class="reference internal" href="#registration">Registration</a></li>
+<li><a class="reference internal" href="#login">Login</a></li>
+<li><a class="reference internal" href="#verification">Verification</a></li>
+<li><a class="reference internal" href="#refresh">Refresh</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
 
             
               <li><a href="index.html" title="Project Usage and Features" accesskey="P">previous </a></li>
@@ -107,6 +128,23 @@
          
 <div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API Usage</a><ul>
+<li><a class="reference internal" href="#user">User</a><ul>
+<li><a class="reference internal" href="#registration-and-authentication">Registration and Authentication</a><ul>
+<li><a class="reference internal" href="#registration">Registration</a></li>
+<li><a class="reference internal" href="#login">Login</a></li>
+<li><a class="reference internal" href="#verification">Verification</a></li>
+<li><a class="reference internal" href="#refresh">Refresh</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
                         title="previous chapter">Project Usage and Features</a></p>
@@ -148,6 +186,69 @@
                   
   <div class="section" id="api-usage">
 <h1>API Usage<a class="headerlink" href="#api-usage" title="Permalink to this headline">¶</a></h1>
+<p>The most up-to-date API usage can be found at <cite>/docs/</cite>. The following API shows how to use several of the endpoints for the backend and example <cite>curl</cite> calls to interact with the server.</p>
+<div class="section" id="user">
+<h2>User<a class="headerlink" href="#user" title="Permalink to this headline">¶</a></h2>
+<p>Basic users can be added from the registration page on the frontend site. Users can alternatively interact with the REST API (which is what the frontend uses).</p>
+<p>User login and resource access is based on the <cite>access</cite> and <cite>refresh</cite> strategy where both <cite>access</cite> and <cite>refresh</cite> tokens are used to verify the user. The <cite>access</cite> tokens are typically short-lived, expiring sooner,  and provide access to the server resources. The <cite>refresh</cite> tokens are a bit longer than the <cite>access</cite> tokens for their expiration date and are used to retrieve a new <cite>access</cite> token. The short-lived <cite>access</cite> token is setup for various security reasons, mainly if an attacker gets ahold of the token, the amount of time the attacker can use the token will be limited. Since both the <cite>access</cite> and <cite>refresh</cite> token can both expire, using the <a class="reference internal" href="#verification">Verification</a> API defined below can be used to check if a token is still valid. The <a class="reference internal" href="#refresh">Refresh</a> API is used to refresh user <cite>access</cite> tokens if the <cite>refresh</cite> token is still valid.</p>
+<div class="section" id="registration-and-authentication">
+<h3>Registration and Authentication<a class="headerlink" href="#registration-and-authentication" title="Permalink to this headline">¶</a></h3>
+<p>JSON Web Tokens (JWT) are used for authentication for user login and user actions. To login and perform actions the user must first register an account. The details to do so are listed below. To find out more information about JWT, read <a class="reference external" href="https://jwt.io/introduction/">here</a> and find the <a class="reference external" href="https://tools.ietf.org/rfc/rfc7519.txt">standard located here</a>.</p>
+<div class="section" id="registration">
+<h4>Registration<a class="headerlink" href="#registration" title="Permalink to this headline">¶</a></h4>
+<p>To register users, send data to <cite>/api/register/</cite>.</p>
+<p>The following POST format is used to register users.</p>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;user1&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;password1&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="login">
+<h4>Login<a class="headerlink" href="#login" title="Permalink to this headline">¶</a></h4>
+<p>To login users, send data to <cite>/api/login/</cite> which will return an <cite>access</cite> and <cite>refresh</cite> token if the user is valid.</p>
+<p>The following POST format is used to login users.</p>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;user1&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;password1&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>A valid response will return the following:</p>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;refresh&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU3NDEyNDg0NywianRpIjoiMDhiYjQxYTQ4ZWVhNDE4YWEzOTEwZWU1YWMxYjY2ZjciLCJ1c2VyX2lkIjoyfQ.cg7NQ8YwVbuX2mVEGg6AFkNVQc7PEs72ohDiOnr2ZPg&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;access&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTc0MDM4NzQ3LCJqdGkiOiIxYzk4NTM2MGQ3NDA0OWFiYmZkNDQzMDliYjAyMzhkMCIsInVzZXJfaWQiOjJ9.Uz_X2sECClBkfT7p1GyCI8L9buJNVvJ2gxq0VJOBqaM&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="verification">
+<h4>Verification<a class="headerlink" href="#verification" title="Permalink to this headline">¶</a></h4>
+<p>Verfication is used to ensure that the provided token is still valid. The verification endpoint is located at <cite>/api/verify/</cite> which will return a <cite>200</cite> response if the provided token is valid.</p>
+<p>The following POST format is used for token verification:</p>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;token&quot;</span><span class="p">:</span><span class="s2">&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTczODg2ODQ0LCJqdGkiOiI5ZjI3MzQxZDIyNGQ0YWIwODRmM2YwYTZmYmNlNWQ4YSIsInVzZXJfaWQiOjJ9.wq9C-a1wJDojXUDGo73fhxQylWVgtmOYNhtEl0Up052&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="refresh">
+<h4>Refresh<a class="headerlink" href="#refresh" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -183,7 +284,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2020, David Fan.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.4.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.4.3.
       </footer>
       <!-- /footer -->
 
