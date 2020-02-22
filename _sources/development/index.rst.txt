@@ -1,5 +1,5 @@
-Project Structure
-=================
+Developer Documentation
+=======================
 
 .. toctree::
    :maxdepth: 2
