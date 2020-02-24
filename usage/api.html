@@ -81,6 +81,11 @@
 <li><a class="reference internal" href="#refresh">Refresh</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#api-for-publishing-sensor-data">API for Publishing Sensor Data</a><ul>
+<li><a class="reference internal" href="#obtaining-an-api-token">Obtaining an API Token</a></li>
+<li><a class="reference internal" href="#publishing-data-with-an-api-token">Publishing Data with an API Token</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -139,6 +144,11 @@
 <li><a class="reference internal" href="#refresh">Refresh</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#api-for-publishing-sensor-data">API for Publishing Sensor Data</a><ul>
+<li><a class="reference internal" href="#obtaining-an-api-token">Obtaining an API Token</a></li>
+<li><a class="reference internal" href="#publishing-data-with-an-api-token">Publishing Data with an API Token</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -191,6 +201,10 @@
 <h2>User<a class="headerlink" href="#user" title="Permalink to this headline">¶</a></h2>
 <p>Basic users can be added from the registration page on the frontend site. Users can alternatively interact with the REST API (which is what the frontend uses).</p>
 <p>User login and resource access is based on the <cite>access</cite> and <cite>refresh</cite> strategy where both <cite>access</cite> and <cite>refresh</cite> tokens are used to verify the user. The <cite>access</cite> tokens are typically short-lived, expiring sooner,  and provide access to the server resources. The <cite>refresh</cite> tokens are a bit longer than the <cite>access</cite> tokens for their expiration date and are used to retrieve a new <cite>access</cite> token. The short-lived <cite>access</cite> token is setup for various security reasons, mainly if an attacker gets ahold of the token, the amount of time the attacker can use the token will be limited. Since both the <cite>access</cite> and <cite>refresh</cite> token can both expire, using the <a class="reference internal" href="#verification">Verification</a> API defined below can be used to check if a token is still valid. The <a class="reference internal" href="#refresh">Refresh</a> API is used to refresh user <cite>access</cite> tokens if the <cite>refresh</cite> token is still valid.</p>
+<p>To use the access token, the REST call must contain the access token in the <cite>Header</cite> in the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Authorization</span><span class="p">:</span> <span class="n">Bearer</span> <span class="o">&lt;</span><span class="n">ACCESS_TOKEN</span><span class="o">&gt;</span>
+</pre></div>
+</div>
 <div class="section" id="registration-and-authentication">
 <h3>Registration and Authentication<a class="headerlink" href="#registration-and-authentication" title="Permalink to this headline">¶</a></h3>
 <p>JSON Web Tokens (JWT) are used for authentication for user login and user actions. To login and perform actions the user must first register an account. The details to do so are listed below. To find out more information about JWT, read <a class="reference external" href="https://jwt.io/introduction/">here</a> and find the <a class="reference external" href="https://tools.ietf.org/rfc/rfc7519.txt">standard located here</a>.</p>
@@ -221,7 +235,7 @@
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
-<p>A valid response will return the following:</p>
+<p>A valid response will return the following format:</p>
 <div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -246,6 +260,95 @@
 </div>
 <div class="section" id="refresh">
 <h4>Refresh<a class="headerlink" href="#refresh" title="Permalink to this headline">¶</a></h4>
+<p>The Refresh API is used to obtain a new <cite>access</cite> token using a valid <cite>refresh</cite> token. A new valid <cite>access</cite> token will be provided from a valid refresh request.</p>
+<p>The following POST format is used for refreshing a token:</p>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;refresh&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU3NDEyNDg0NywianRpIjoiMDhiYjQxYTQ4ZWVhNDE4YWEzOTEwZWU1YWMxYjY2ZjciLCJ1c2VyX2lkIjoyfQ.cg7NQ8YwVbuX2mVEGg6AFkNVQc7PEs72ohDiOnr2ZPg&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>A valid response will return the following format:</p>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;access&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTc0MDM4NzY2LCJqdGkiOiJiNTZjYjJjNmZjMzc0OWRlYTZiYmJjYjJhZTM0ZjBjMCIsInVzZXJfaWQiOjJ9.9kKnf0QY1mM41mA-D0Ixl30yofOC78qU-fePWB6WnMM&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+<div class="section" id="api-for-publishing-sensor-data">
+<h3>API for Publishing Sensor Data<a class="headerlink" href="#api-for-publishing-sensor-data" title="Permalink to this headline">¶</a></h3>
+<p>Data on the backend will vary in which information will be private and public. Publishing data will additionally require the user to first obtain an API token in order to access and push up new data. The API token is to be used for publishing sensor data instead of the access token.</p>
+<p>To use the access token, the REST call must contain the access token in the <cite>Header</cite> in the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Authorization</span><span class="p">:</span> <span class="n">Bearer</span> <span class="o">&lt;</span><span class="n">API_TOKEN</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="obtaining-an-api-token">
+<h4>Obtaining an API Token<a class="headerlink" href="#obtaining-an-api-token" title="Permalink to this headline">¶</a></h4>
+<p>Obtaining an API token is done by requesting an API token from the endpoint located at <cite>/api/token/</cite> which will provide an API token for publishing sensor data.</p>
+</div>
+<div class="section" id="publishing-data-with-an-api-token">
+<h4>Publishing Data with an API Token<a class="headerlink" href="#publishing-data-with-an-api-token" title="Permalink to this headline">¶</a></h4>
+<p>Once an API token has been obtained, sensor data can be published to their respective endpoints.</p>
+<p>An example curl command can be used, with a valid API token, as follows:</p>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27</pre></div></td><td class="code"><div class="highlight"><pre><span></span>curl -X POST <span class="se">\</span>
+-H <span class="s2">&quot;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTc0MDM4NzY2LCJqdGkiOiJiNTZjYjJjNmZjMzc0OWRlYTZiYmJjYjJhZTM0ZjBjMCIsInVzZXJfaWQiOjJ9.9kKnf0QY1mM41mA-D0Ixl30yofOC78qU-fePWB6WnMM&quot;</span> <span class="se">\</span>
+-H <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
+-d <span class="s1">&#39;{</span>
+<span class="s1">        &quot;dev_id&quot;: 1,</span>
+<span class="s1">        &quot;metadata&quot;: {</span>
+<span class="s1">              &quot;location&quot;: &quot;Apartment&quot;,</span>
+<span class="s1">              &quot;latitude&quot;: 39.77710000,</span>
+<span class="s1">              &quot;longitude&quot;: -83.99720000,</span>
+<span class="s1">              &quot;time&quot;: &quot;2019-10-02T19:17:10.067889-04:00&quot;</span>
+<span class="s1">        },</span>
+<span class="s1">        &quot;data&quot;: [</span>
+<span class="s1">         {</span>
+<span class="s1">             &quot;sensor_id&quot;: 1,</span>
+<span class="s1">             &quot;sensor_type&quot;: &quot;Temperature&quot;,</span>
+<span class="s1">             &quot;sensor_data&quot;: 19.813,</span>
+<span class="s1">             &quot;sensor_units&quot;: &quot;C&quot;</span>
+<span class="s1">         },</span>
+<span class="s1">         {</span>
+<span class="s1">             &quot;sensor_id&quot;: 2,</span>
+<span class="s1">             &quot;sensor_type&quot;: &quot;Temperature&quot;,</span>
+<span class="s1">             &quot;sensor_data&quot;: 16.188,</span>
+<span class="s1">             &quot;sensor_units&quot;: &quot;C&quot;</span>
+<span class="s1">         }</span>
+<span class="s1">         ]</span>
+<span class="s1">    }&#39;</span> <span class="se">\</span>
+http://localhost:8080/api/Feather/
+</pre></div>
+</td></tr></table></div>
 </div>
 </div>
 </div>
