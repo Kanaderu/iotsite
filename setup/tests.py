@@ -2,6 +2,16 @@ from unittest.mock import patch
 from django.core.management import call_command
 from django.db.utils import OperationalError
 from django.test import TestCase
+from django.apps import apps
+
+from .apps import SetupConfig
+
+
+class SetupConfigTest(TestCase):
+
+    def test_apps(self):
+        self.assertEqual(SetupConfig.name, 'setup')
+        self.assertEqual(apps.get_app_config('setup').name, 'setup')
 
 
 class CommandTests(TestCase):
