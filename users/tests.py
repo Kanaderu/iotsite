@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from .models import Account
 
 class UserCreationTests(TestCase):
 
@@ -25,6 +26,8 @@ class UserCreationTests(TestCase):
     def test_create_user(self):
         # check if user account created response
         response = self.create_user()
+        users = Account.objects.all()
+        self.assertEqual(self.username, str(users[0]))
         self.assertEqual(response.status_code, 201)
         self.assertJSONEqual(response.content.decode('utf-8'), {'message': 'Account Created Successfully'})
 
