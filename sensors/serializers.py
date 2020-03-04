@@ -38,10 +38,14 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
         return SensorSerializer().to_representation(obj)
 
     def to_internal_value(self, data):
-        sensor_id = data.get('dev_id')
-        metadata = data.get('metadata')
-        timestamp = metadata.get('time')
-        gateways_data = metadata.get('gateways')
+        sensor_id = data['dev_id']
+        metadata = data['metadata']
+
+        if not isinstance(metadata, dict):
+            raise serializers.ValidationError('metadata is required')
+
+        timestamp = metadata['time']
+        gateways_data = metadata['gateways']
 
         if not isinstance(gateways_data, list):
             raise serializers.ValidationError({
@@ -50,24 +54,24 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
 
         gateways = []
         for item in gateways_data:
-            if item.get('latitude') is None:
+            if item['latitude'] is None:
                 raise serializers.ValidationError('latitude is required')
-            if item.get('longitude') is None:
+            if item['longitude'] is None:
                 raise serializers.ValidationError('longitude is required')
-            gateways.append({'latitude': item.get('latitude'),
-                             'longitude': item.get('longitude')})
+            gateways.append({'latitude': item['latitude'],
+                             'longitude': item['longitude']})
 
         latitude = gateways[0]['latitude']
         longitude = gateways[0]['longitude']
 
-        payload_fields = data.get('payload_fields')
-        b = payload_fields.get('b')
-        sm1 = payload_fields.get('sm1')
-        sm2 = payload_fields.get('sm2')
-        sm3 = payload_fields.get('sm3')
-        sm4 = payload_fields.get('sm4')
-        t1 = payload_fields.get('t1')
-        t2 = payload_fields.get('t2')
+        payload_fields = data['payload_fields']
+        b = payload_fields['b']
+        sm1 = payload_fields['sm1']
+        sm2 = payload_fields['sm2']
+        sm3 = payload_fields['sm3']
+        sm4 = payload_fields['sm4']
+        t1 = payload_fields['t1']
+        t2 = payload_fields['t2']
 
         if not sensor_id:
             raise serializers.ValidationError({
@@ -143,6 +147,10 @@ class FeatherSensorSerializer(serializers.BaseSerializer):
     def to_internal_value(self, data):
         dev_id = data['dev_id']
         metadata = data['metadata']
+
+        if not isinstance(metadata, dict):
+            raise serializers.ValidationError('metadata is required')
+
         latitude = metadata['latitude']
         longitude = metadata['longitude']
         timestamp = metadata['time']
