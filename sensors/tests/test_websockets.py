@@ -72,3 +72,4 @@ async def test_async_websocket_consumer():
     communicator = WebsocketCommunicator(application, "live/e/")
     connected, subprotocol = await communicator.connect()
     assert connected
+    await communicator.disconnect()
