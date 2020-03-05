@@ -1,12 +1,12 @@
 import pytest
 import json
-from channels.testing import HttpCommunicator
-from channels.testing import WebsocketCommunicator
-from sensors.consumers import SensorConsumer
 
 from django.conf.urls import url
 from django.urls import reverse
+
 from channels.routing import URLRouter
+from channels.testing import HttpCommunicator
+from channels.testing import WebsocketCommunicator
 
 from channels.generic.websocket import (
     AsyncJsonWebsocketConsumer,
@@ -14,6 +14,11 @@ from channels.generic.websocket import (
     JsonWebsocketConsumer,
     WebsocketConsumer,
 )
+
+from iotsite.routing import application
+#from sensors.routing import websocket_urlpatterns
+from sensors.consumers import SensorConsumer
+
 
 @pytest.mark.asyncio
 async def test_my_consumer():
@@ -64,13 +69,11 @@ async def test_my_consumer():
 #    await communicator.disconnect()
 #    '''
 
-
 @pytest.mark.asyncio
 @pytest.mark.filterwarnings('ignore::DeprecationWarning')
 async def test_async_websocket_consumer_connection():
-    # URLRouter from routing
-    application = URLRouter([url(r"^live/(?P<sensors>\w+)/$", SensorConsumer)])
-    communicator = WebsocketCommunicator(application, "live/e/")
+    # initialize communicator for application
+    communicator = WebsocketCommunicator(application, "live/test_room/")
 
     # connect
     connected, subprotocol = await communicator.connect()
