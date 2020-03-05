@@ -15,8 +15,7 @@ from channels.generic.websocket import (
     WebsocketConsumer,
 )
 
-from iotsite.routing import application
-#from sensors.routing import websocket_urlpatterns
+from iotsite.asgi import application
 from sensors.consumers import SensorConsumer
 
 
