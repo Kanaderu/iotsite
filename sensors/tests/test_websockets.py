@@ -65,11 +65,11 @@ async def test_my_consumer():
 
 @pytest.mark.asyncio
 @pytest.mark.filterwarnings('ignore::DeprecationWarning')
-async def test_async_websocket_consumer():
-    print('Attempting to test websocket')
+async def test_async_websocket_consumer_connection():
     # URLRouter from routing
     application = URLRouter([url(r"^live/(?P<sensors>\w+)/$", SensorConsumer)])
     communicator = WebsocketCommunicator(application, "live/e/")
+
     connected, subprotocol = await communicator.connect()
     assert connected
     await communicator.disconnect()

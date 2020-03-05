@@ -19,7 +19,7 @@ djangorestframework-csv==2.1.0
 djangorestframework-gis==0.14
 djangorestframework-simplejwt==4.3.0
 geoip2==2.9.0
-graphene-django==2.6.0
+graphene-django==2.8.2
 httpie==1.0.3
 psycopg2==2.8.3
 pytest-asyncio==0.10.0
