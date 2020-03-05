@@ -98,6 +98,13 @@ async def test_async_websocket_send_coordinates():
     connected, subprotocol = await communicator.connect()
     assert connected
 
+    # verify initial connection response
+    str_response = await communicator.receive_from()
+    response = json.loads(str_response)
+
+    assert response['type'] == 'sensor_initialize'
+    assert response['linkstations'] == reverse('linkstations')
+
     # verify client-sent data is broadcasted
     send_data = {
         'type': 'sensor_message',
