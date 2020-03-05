@@ -1,18 +1,5 @@
 version: '3'
 services:
-    postgis:
-        image: kartoza/postgis:latest
-        environment:
-            - POSTGRES_DBNAME=geodjango
-            - POSTGRES_USER=geo
-            - POSTGRES_PASS=geo
-            - ALLOW_IP_RANGE=0.0.0.0/0
-            #- PGDATA=/var/lib/postgresql/data
-        volumes:
-            #- ./volumes/db/var/lib/postgresql/data:/var/lib/postgresql/data
-            - ./volumes/db/var/lib/postgres_data:/var/lib/postgresql
-            - /etc/localtime:/etc/localtime:ro
-        restart: unless-stopped
 
     iotsite:
         build: .
@@ -37,4 +24,23 @@ services:
         volumes:
             - ./:/app
         working_dir: /app
+        restart: unless-stopped
+
+    postgis:
+        image: kartoza/postgis:latest
+        environment:
+            - POSTGRES_DBNAME=geodjango
+            - POSTGRES_USER=geo
+            - POSTGRES_PASS=geo
+            - ALLOW_IP_RANGE=0.0.0.0/0
+            #- PGDATA=/var/lib/postgresql/data
+        volumes:
+            #- ./volumes/db/var/lib/postgresql/data:/var/lib/postgresql/data
+            - ./volumes/db/var/lib/postgres_data:/var/lib/postgresql
+            - /etc/localtime:/etc/localtime:ro
+        restart: unless-stopped
+
+    redis:
+        image: redis
+        container_name: redis
         restart: unless-stopped
