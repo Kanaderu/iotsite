@@ -70,7 +70,7 @@ async def test_my_consumer():
 
 @pytest.mark.asyncio
 @pytest.mark.filterwarnings('ignore::DeprecationWarning')
-async def test_async_websocket_consumer_connection():
+async def test_async_websocket_initialization():
     # initialize communicator for application
     communicator = WebsocketCommunicator(application, "live/test_room/")
 
@@ -78,12 +78,36 @@ async def test_async_websocket_consumer_connection():
     connected, subprotocol = await communicator.connect()
     assert connected
 
-    # verifiy initial connection response
+    # verify initial connection response
     str_response = await communicator.receive_from()
     response = json.loads(str_response)
 
     assert response['type'] == 'sensor_initialize'
     assert response['linkstations'] == reverse('linkstations')
+
+    # disconnect
+    await communicator.disconnect()
+
+@pytest.mark.asyncio
+@pytest.mark.filterwarnings('ignore::DeprecationWarning')
+async def test_async_websocket_send_coordinates():
+    # initialize communicator for application
+    communicator = WebsocketCommunicator(application, "live/test_room/")
+
+    # connect
+    connected, subprotocol = await communicator.connect()
+    assert connected
+
+    # verify client-sent data is broadcasted
+    send_data = {
+        'type': 'sensor_message',
+        'message': 'UUID_1',
+        'lat': 10.1234,
+        'lon': -13.2345,
+    }
+    await communicator.send_to(text_data=json.dumps(send_data))
+    response = await communicator.receive_from()
+    assert json.loads(response) == send_data
 
     # disconnect
     await communicator.disconnect()
