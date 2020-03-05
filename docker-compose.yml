@@ -5,6 +5,7 @@ services:
         build: .
         depends_on:
             - postgis
+            - redis
         command: bash -c "./manage.py install_frontend_dependencies &&
                           ./manage.py build_frontend &&
                           ./manage.py wait_for_db 2> /dev/null &&
