@@ -222,12 +222,13 @@ SIMPLE_JWT = {
 }
 
 # Channels
+REDIS_HOST = os.environ['REDIS_HOST'] if 'REDIS_HOST' in os.environ and os.environ['REDIS_HOST'] else 'localhost'
 ASGI_APPLICATION = 'iotsite.routing.application'
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("redis", 6379)],
+            "hosts": [(REDIS_HOST, 6379)],
         },
     },
 }

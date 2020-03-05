@@ -20,6 +20,7 @@ services:
             - POSTGRES_PASSWORD=geo
             - POSTGRES_HOST=postgis
             - POSTGRES_PORT=5432
+            - REDIS_HOST=redis
         ports:
             - 8080:8000
         volumes:
