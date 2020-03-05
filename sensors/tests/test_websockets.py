@@ -1,9 +1,11 @@
 import pytest
+import json
 from channels.testing import HttpCommunicator
 from channels.testing import WebsocketCommunicator
 from sensors.consumers import SensorConsumer
 
 from django.conf.urls import url
+from django.urls import reverse
 from channels.routing import URLRouter
 
 from channels.generic.websocket import (
@@ -70,6 +72,16 @@ async def test_async_websocket_consumer_connection():
     application = URLRouter([url(r"^live/(?P<sensors>\w+)/$", SensorConsumer)])
     communicator = WebsocketCommunicator(application, "live/e/")
 
+    # connect
     connected, subprotocol = await communicator.connect()
     assert connected
+
+    # verifiy initial connection response
+    str_response = await communicator.receive_from()
+    response = json.loads(str_response)
+
+    assert response['type'] == 'sensor_initialize'
+    assert response['linkstations'] == reverse('linkstations')
+
+    # disconnect
     await communicator.disconnect()
