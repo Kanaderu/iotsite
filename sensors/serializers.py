@@ -46,7 +46,7 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
             sensor_id = data['dev_id']
         except KeyError:
             raise serializers.ValidationError({
-                'dev_id': 'This field is required. (sensor_id)',
+                'dev_id': 'This field is required.',
             })
 
         try:
@@ -177,7 +177,7 @@ class FeatherSensorSerializer(serializers.BaseSerializer):
             dev_id = str(data['dev_id'])
         except KeyError:
             raise serializers.ValidationError({
-                'dev_id': 'This field is required. (sensor_id)',
+                'dev_id': 'This field is required.',
             })
 
         try:
@@ -188,18 +188,18 @@ class FeatherSensorSerializer(serializers.BaseSerializer):
                 })
         except KeyError:
             raise serializers.ValidationError({
-                'metadata': 'This field is required. (metadata)',
+                'metadata': 'This field is required.',
             })
 
         try:
             timestamp = parse_datetime(metadata['time'])
-            if isinstance(timestamp, datetime.time):
-                raise serializers.ValidationError({
-                    'time': 'This field must be a string in ISO-8601 format.',
-                })
         except KeyError:
             raise serializers.ValidationError({
                 'time': 'This field is required.',
+            })
+        except TypeError:
+            raise serializers.ValidationError({
+                'time': 'This field must be a string in ISO-8601 format.',
             })
 
         try:

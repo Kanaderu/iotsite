@@ -72,7 +72,7 @@ class SensorSerializersTests(TestCase):
                                     **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
 
         expected_response = {
-            'dev_id': 'This field is required. (sensor_id)'
+            'dev_id': 'This field is required.'
         }
 
         self.assertEqual(response.status_code, 400)
@@ -102,7 +102,7 @@ class SensorSerializersTests(TestCase):
                                     **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
 
         expected_response = {
-            'metadata': 'This field is required. (metadata)'
+            'metadata': 'This field is required.'
         }
 
         self.assertEqual(response.status_code, 400)
@@ -204,6 +204,35 @@ class SensorSerializersTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(response.content, expected_response)
 
+        # test missing time
+        feather_data['metadata']['latitude'] = 12.12345
+        feather_data['metadata'].pop('time')
+        response = self.client.post(reverse('Feather-list'),
+                                    feather_data,
+                                    content_type='application/json',
+                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+
+        expected_response = {
+            'time': 'This field is required.'
+        }
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, expected_response)
+
+        # test invalid time
+        feather_data['metadata']['time'] = 1234
+        response = self.client.post(reverse('Feather-list'),
+                                    feather_data,
+                                    content_type='application/json',
+                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+
+        expected_response = {
+            'time': 'This field must be a string in ISO-8601 format.'
+        }
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, expected_response)
+
     def test_feather_serializer_missing_data(self):
         feather_data = {
             'dev_id': 1,
@@ -249,30 +278,60 @@ class SensorSerializersTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(response.content, expected_response)
 
-        feather_data = {
-            'dev_id': 1,
-            'metadata': {
-                'location': 'Apartment',
-                'latitude': 39.77710000,
-                'longitude': -83.99720000,
-                'time': '2019-10-02T19:17:10.067889-04:00'
-            },
-            'data': [
-                {
-                    'sensor_id': None,
-                    'sensor_type': None,
-                    'sensor_data': None,
-                    'sensor_units': None
-                }
-            ]
-        }
+        feather_data['data'] = [{
+            'sensor_type': "Temperature",
+            'sensor_data': 19.813,
+            'sensor_units': "C"
+        }]
         response = self.client.post(reverse('Feather-list'),
                                     feather_data,
                                     content_type='application/json',
                                     **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
 
         expected_response = {
-            'sensor_data': 'This field must be a number.'
+            'sensor_id': 'This field is required.'
+        }
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, expected_response)
+
+        feather_data['data'][0]['sensor_id'] = 1
+        feather_data['data'][0].pop('sensor_type')
+        response = self.client.post(reverse('Feather-list'),
+                                    feather_data,
+                                    content_type='application/json',
+                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+
+        expected_response = {
+            'sensor_type': 'This field is required.'
+        }
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, expected_response)
+
+        feather_data['data'][0]['sensor_type'] = 'Temperature'
+        feather_data['data'][0].pop('sensor_data')
+        response = self.client.post(reverse('Feather-list'),
+                                    feather_data,
+                                    content_type='application/json',
+                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+
+        expected_response = {
+            'sensor_data': 'This field is required.'
+        }
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, expected_response)
+
+        feather_data['data'][0]['sensor_data'] = 123.45
+        feather_data['data'][0].pop('sensor_units')
+        response = self.client.post(reverse('Feather-list'),
+                                    feather_data,
+                                    content_type='application/json',
+                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+
+        expected_response = {
+            'sensor_units': 'This field is required.'
         }
 
         self.assertEqual(response.status_code, 400)
