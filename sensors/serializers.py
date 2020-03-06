@@ -71,7 +71,7 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
             gateways_data = metadata['gateways']
             if not isinstance(gateways_data, list):
                 raise serializers.ValidationError({
-                    'gateways': 'This field is must be a list.'
+                    'gateways': 'This field must be a list.'
                 })
         except KeyError:
             raise serializers.ValidationError({
@@ -131,7 +131,7 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
             })
         try:
             sm2 = payload_fields['sm2']
-            if not isinstance(sm1, numbers.Number):
+            if not isinstance(sm2, numbers.Number):
                 raise serializers.ValidationError({
                     'sm2': 'This field must be a number.'
                 })
@@ -151,7 +151,7 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
             })
         try:
             sm4 = payload_fields['sm4']
-            if not isinstance(sm1, numbers.Number):
+            if not isinstance(sm4, numbers.Number):
                 raise serializers.ValidationError({
                     'sm4': 'This field must be a number.'
                 })
