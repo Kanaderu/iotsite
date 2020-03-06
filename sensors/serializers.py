@@ -43,7 +43,7 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
 
     def to_internal_value(self, data):
         try:
-            sensor_id = data['dev_id']
+            sensor_id = str(data['dev_id'])
         except KeyError:
             raise serializers.ValidationError({
                 'dev_id': 'This field is required.',
@@ -51,21 +51,31 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
 
         try:
             metadata = data['metadata']
-            timestamp = metadata['time']
-            gateways_data = metadata['gateways']
+            if not isinstance(metadata, dict):
+                raise serializers.ValidationError({
+                    'metadata': 'This field must be a nested JSON.'
+                })
         except KeyError:
             raise serializers.ValidationError({
-                'metadata': 'This field is required. (metadata)',
+                'metadata': 'This field is required.',
             })
 
-        if not isinstance(metadata, dict):
+        try:
+            timestamp = parse_datetime(metadata['time'])
+        except KeyError:
             raise serializers.ValidationError({
-                'metadata': 'This field must be a nested JSON.'
+                'time': 'This field is required.',
             })
 
-        if not isinstance(gateways_data, list):
+        try:
+            gateways_data = metadata['gateways']
+            if not isinstance(gateways_data, list):
+                raise serializers.ValidationError({
+                    'gateways': 'This field is must be a list.'
+                })
+        except KeyError:
             raise serializers.ValidationError({
-                'gateways': 'This field is must be a list.'
+                'gateways': 'This field is required.',
             })
 
         gateways = []
@@ -92,48 +102,80 @@ class LoRaGatewaySensorSerializer(serializers.BaseSerializer):
         latitude = gateways[0]['latitude']
         longitude = gateways[0]['longitude']
 
-        payload_fields = data['payload_fields']
-        b = payload_fields['b']
-        sm1 = payload_fields['sm1']
-        sm2 = payload_fields['sm2']
-        sm3 = payload_fields['sm3']
-        sm4 = payload_fields['sm4']
-        t1 = payload_fields['t1']
-        t2 = payload_fields['t2']
+        try:
+            payload_fields = data['payload_fields']
+        except KeyError:
+            raise serializers.ValidationError({
+                'payload_fields': 'This field is required.'
+            })
 
-        if not sensor_id:
-            raise serializers.ValidationError({
-                'sensor_id': 'This field is required.'
-            })
-        if not timestamp:
-            raise serializers.ValidationError({
-                'timestamp': 'This field is required.'
-            })
-        if not b:
+        try:
+            b = payload_fields['b']
+            if not isinstance(b, numbers.Number):
+                raise serializers.ValidationError({
+                    'b': 'This field must be a number.'
+                })
+        except KeyError:
             raise serializers.ValidationError({
                 'b': 'This field is required.'
             })
-        if not sm1:
+        try:
+            sm1 = payload_fields['sm1']
+            if not isinstance(sm1, numbers.Number):
+                raise serializers.ValidationError({
+                    'sm1': 'This field must be a number.'
+                })
+        except KeyError:
             raise serializers.ValidationError({
                 'sm1': 'This field is required.'
             })
-        if not sm2:
+        try:
+            sm2 = payload_fields['sm2']
+            if not isinstance(sm1, numbers.Number):
+                raise serializers.ValidationError({
+                    'sm2': 'This field must be a number.'
+                })
+        except KeyError:
             raise serializers.ValidationError({
                 'sm2': 'This field is required.'
             })
-        if not sm3:
+        try:
+            sm3 = payload_fields['sm3']
+            if not isinstance(sm3, numbers.Number):
+                raise serializers.ValidationError({
+                    'sm3': 'This field must be a number.'
+                })
+        except KeyError:
             raise serializers.ValidationError({
                 'sm3': 'This field is required.'
             })
-        if not sm4:
+        try:
+            sm4 = payload_fields['sm4']
+            if not isinstance(sm1, numbers.Number):
+                raise serializers.ValidationError({
+                    'sm4': 'This field must be a number.'
+                })
+        except KeyError:
             raise serializers.ValidationError({
                 'sm4': 'This field is required.'
             })
-        if not t1:
+        try:
+            t1 = payload_fields['t1']
+            if not isinstance(t1, numbers.Number):
+                raise serializers.ValidationError({
+                    't1': 'This field must be a number.'
+                })
+        except KeyError:
             raise serializers.ValidationError({
                 't1': 'This field is required.'
             })
-        if not t2:
+        try:
+            t2 = payload_fields['t2']
+            if not isinstance(t2, numbers.Number):
+                raise serializers.ValidationError({
+                    't2': 'This field must be a number.'
+                })
+        except KeyError:
             raise serializers.ValidationError({
                 't2': 'This field is required.'
             })
