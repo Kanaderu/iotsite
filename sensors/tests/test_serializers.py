@@ -323,6 +323,19 @@ class SensorSerializersTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(response.content, expected_response)
 
+        feather_data['data'][0]['sensor_data'] = 'ABCD'
+        response = self.client.post(reverse('Feather-list'),
+                                    feather_data,
+                                    content_type='application/json',
+                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+
+        expected_response = {
+            'sensor_data': 'This field must be a number.'
+        }
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, expected_response)
+
         feather_data['data'][0]['sensor_data'] = 123.45
         feather_data['data'][0].pop('sensor_units')
         response = self.client.post(reverse('Feather-list'),
