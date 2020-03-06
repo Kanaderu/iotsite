@@ -1,5 +1,16 @@
+from django.apps import apps
 from django.test import TestCase
 from django.urls import reverse
+
+from .apps import UsersConfig
+from .models import Account
+
+
+class UsersConfigTest(TestCase):
+
+    def test_apps(self):
+        self.assertEqual(UsersConfig.name, 'users')
+        self.assertEqual(apps.get_app_config('users').name, 'users')
 
 
 class UserCreationTests(TestCase):
@@ -25,8 +36,25 @@ class UserCreationTests(TestCase):
     def test_create_user(self):
         # check if user account created response
         response = self.create_user()
+        users = Account.objects.all()
+        self.assertEqual(self.username, str(users[0]))
         self.assertEqual(response.status_code, 201)
         self.assertJSONEqual(response.content.decode('utf-8'), {'message': 'Account Created Successfully'})
+
+    def test_create_no_username_user(self):
+        response = self.client.post(reverse('user-register'),
+                                    {'password': self.password},
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_create_duplicate_user(self):
+        # check if user account created response
+        response = self.create_user()
+        self.assertEqual(response.status_code, 201)
+
+        # check if creating a duplicate user will return an error
+        response = self.create_user()
+        self.assertEqual(response.status_code, 400)
 
     def test_user_login(self):
         # create user account

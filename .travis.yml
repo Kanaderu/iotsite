@@ -30,8 +30,8 @@ jobs:
           script:
               - python manage.py makemigrations
               - python manage.py migrate
-              - coverage run --source='.' manage.py test
-              - pytest --cov --cov-append
+              - python manage.py test
+              - pytest
           after_success:
               - bash <(curl -s https://codecov.io/bash)
           services:
@@ -68,8 +68,8 @@ jobs:
           script:
               - python manage.py makemigrations
               - python manage.py migrate
-              - coverage run --source='.' manage.py test
-              - pytest --cov --cov-append
+              - python manage.py test
+              - pytest
           after_success:
               - bash <(curl -s https://codecov.io/bash)
           services:
@@ -115,6 +115,7 @@ jobs:
               - docker-compose exec iotsite ./manage.py migrate
               # run tests
               - docker-compose exec iotsite ./manage.py test
+              - docker-compose exec iotsite pytest
           services:
               - docker
           addons:

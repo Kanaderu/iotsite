@@ -10,7 +10,7 @@ from rest_framework_simplejwt.tokens import SlidingToken
 class CreateAccountView(APIView):
     permission_classes = (permissions.AllowAny, )
 
-    def post(self,request):
+    def post(self, request):
         user = request.data.get('username')
         if not user:
             #return Response({'response' : 'error', 'message' : 'No data found'})

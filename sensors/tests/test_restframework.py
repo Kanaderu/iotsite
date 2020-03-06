@@ -275,7 +275,7 @@ class SensorRESTApiTests(TestCase):
         expected_response = {
             'sensor': 'LG',
             'sensor_id': '180291',
-            'timestamp': '2019-09-29T17:17:03.147714091Z',
+            'timestamp': '2019-09-29T13:17:03.147714-04:00',
             'coordinates': [-84.18488, 39.741287],
             'data': [
                 {
