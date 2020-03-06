@@ -342,6 +342,10 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
     def test_lora_gateway_serializer(self):
+        post_data = lambda lora_data: self.client.post(reverse('LoRaGateway-list'),
+                                                       lora_data,
+                                                       content_type='application/json',
+                                                       **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
         lora_data = {
             'dev_id': '180291',
             'metadata': {
@@ -365,10 +369,7 @@ class SensorSerializersTests(TestCase):
         }
 
         lora_data.pop('dev_id')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'dev_id': 'This field is required.'
@@ -379,10 +380,7 @@ class SensorSerializersTests(TestCase):
 
         lora_data['dev_id'] = 123
         lora_data['metadata'].pop('time')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'time': 'This field is required.'
@@ -393,10 +391,7 @@ class SensorSerializersTests(TestCase):
 
         lora_data['metadata']['time'] = '2019-09-29T17:17:03.147714091Z'
         lora_data['metadata']['gateways'][0].pop('latitude')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'latitude': 'This field is required.',
@@ -407,10 +402,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data['metadata']['gateways'][0]['latitude'] = None
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'latitude': 'This field must be a number.'
@@ -421,10 +413,7 @@ class SensorSerializersTests(TestCase):
 
         lora_data['metadata']['gateways'][0]['latitude'] = 12.345
         lora_data['metadata']['gateways'][0].pop('longitude')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'latitude': 'This field is required.',
@@ -435,10 +424,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data['metadata']['gateways'][0]['longitude'] = None
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'longitude': 'This field must be a number.'
@@ -449,10 +435,7 @@ class SensorSerializersTests(TestCase):
 
         lora_data['metadata']['gateways'][0]['longitude'] = 12.345
         lora_data['payload_fields'].pop('b')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'b': 'This field is required.'
@@ -462,10 +445,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data['payload_fields']['b'] = None
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'b': 'This field must be a number.'
@@ -476,10 +456,7 @@ class SensorSerializersTests(TestCase):
 
         lora_data['payload_fields']['b'] = 1.23
         lora_data['payload_fields'].pop('sm1')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'sm1': 'This field is required.'
@@ -489,10 +466,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data['payload_fields']['sm1'] = None
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'sm1': 'This field must be a number.'
@@ -503,10 +477,7 @@ class SensorSerializersTests(TestCase):
 
         lora_data['payload_fields']['sm1'] = 1.23
         lora_data['payload_fields'].pop('sm2')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'sm2': 'This field is required.'
@@ -516,10 +487,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data['payload_fields']['sm2'] = None
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'sm2': 'This field must be a number.'
@@ -530,10 +498,7 @@ class SensorSerializersTests(TestCase):
 
         lora_data['payload_fields']['sm2'] = 1.23
         lora_data['payload_fields'].pop('sm3')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'sm3': 'This field is required.'
@@ -543,10 +508,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data['payload_fields']['sm3'] = None
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'sm3': 'This field must be a number.'
@@ -557,10 +519,7 @@ class SensorSerializersTests(TestCase):
 
         lora_data['payload_fields']['sm3'] = 1.23
         lora_data['payload_fields'].pop('sm4')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'sm4': 'This field is required.'
@@ -570,10 +529,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data['payload_fields']['sm4'] = None
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'sm4': 'This field must be a number.'
@@ -584,10 +540,7 @@ class SensorSerializersTests(TestCase):
 
         lora_data['payload_fields']['sm4'] = 1.23
         lora_data['payload_fields'].pop('t1')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             't1': 'This field is required.'
@@ -597,10 +550,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data['payload_fields']['t1'] = None
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             't1': 'This field must be a number.'
@@ -611,10 +561,7 @@ class SensorSerializersTests(TestCase):
 
         lora_data['payload_fields']['t1'] = 1.23
         lora_data['payload_fields'].pop('t2')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             't2': 'This field is required.'
@@ -624,10 +571,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data['payload_fields']['t2'] = None
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             't2': 'This field must be a number.'
@@ -637,10 +581,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data.pop('payload_fields')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'payload_fields': 'This field is required.'
@@ -659,10 +600,7 @@ class SensorSerializersTests(TestCase):
             't2': 35
         }
         lora_data.pop('metadata')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'metadata': 'This field is required.'
@@ -672,10 +610,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data['metadata'] = None
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'metadata': 'This field must be a nested JSON.'
@@ -694,10 +629,7 @@ class SensorSerializersTests(TestCase):
             ]
         }
         lora_data['metadata'].pop('gateways')
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'gateways': 'This field is required.'
@@ -707,10 +639,7 @@ class SensorSerializersTests(TestCase):
         self.assertJSONEqual(response.content, expected_response)
 
         lora_data['metadata']['gateways'] = None
-        response = self.client.post(reverse('LoRaGateway-list'),
-                                    lora_data,
-                                    content_type='application/json',
-                                    **{'HTTP_AUTHORIZATION': 'Bearer {}'.format(self.api_token)})
+        response = post_data(lora_data)
 
         expected_response = {
             'gateways': 'This field must be a list.'
