@@ -29,3 +29,4 @@ pytest-django==3.8.0
 PyYAML==5.1.2
 git+https://github.com/robinhood/thorn.git#egg=thorn
 uritemplate==3.0.0
+vine==1.3.0
